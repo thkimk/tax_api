@@ -13,3 +13,11 @@ spring:
     hibernate:
       ddl-auto: update
 
+logging:
+  register-shutdown-hook: false
+  config: /home/tax/tax_api/config/logback-dev.xml
+  level:
+    root: INFO
+    com.kt.weather: INFO
+    org.apache.http: INFO
+    org.mybatis: WARN

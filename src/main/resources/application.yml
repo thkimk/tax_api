@@ -1,15 +1,11 @@
 spring:
   profiles:
-    active: loc
+    active: local
   messages:
     basename: i18n/exception
     encoding: UTF-8
   jwt:
     secret: pepega524832857240
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher

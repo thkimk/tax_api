@@ -3,10 +3,10 @@ package com.example.apiserver.controller;
 import com.example.apiserver.Constants;
 import com.example.apiserver.advice.exception.UserNotFoundException;
 import com.example.apiserver.dto.UserDto;
-import com.example.apiserver.entity.User;
+//import com.example.apiserver.entity.User;
 import com.example.apiserver.model.response.ApiDataResult;
 
-import com.example.apiserver.repository.UserJpaRepository;
+//import com.example.apiserver.repository.UserJpaRepository;
 import com.example.apiserver.service.ResponseService;
 import com.example.apiserver.service.UserService;
 import com.example.apiserver.vo.JobsVo;
@@ -33,7 +33,7 @@ public class UserController {
     @Autowired
     ResponseService responseService; // API 요청 결과에 대한 code, messageㅍ
 
-    private final UserJpaRepository userJpaRepo; // Jpa를 활용한 CRUD 쿼리 가능
+//    private final UserJpaRepository userJpaRepo; // Jpa를 활용한 CRUD 쿼리 가능
     private UserService userService;
 /*
 

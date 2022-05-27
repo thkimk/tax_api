@@ -15,6 +15,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/*
 @Builder // builder를 사용할 수 있게 한다.
 @Entity // jpa entity 임을 알린다.
 @Getter //user 필드 값의 getter를 자동생성한다.
@@ -90,4 +91,4 @@ public class User implements UserDetails {
         return true;
     }
 
-}
+}*/

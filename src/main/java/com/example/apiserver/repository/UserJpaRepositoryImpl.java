@@ -2,7 +2,7 @@ package com.example.apiserver.repository;
 
 import com.example.apiserver.dto.QUserDto;
 import com.example.apiserver.dto.UserDto;
-import com.example.apiserver.entity.User;
+//import com.example.apiserver.entity.User;
 import com.example.apiserver.vo.UserVo;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -16,8 +16,9 @@ import javax.persistence.EntityManager;
 import java.util.List;
 import static org.springframework.util.StringUtils.hasText;
 
-import static com.example.apiserver.entity.QUser.user;
+//import static com.example.apiserver.entity.QUser.user;
 
+/*
 public class UserJpaRepositoryImpl extends QuerydslRepositorySupport implements CustomUserJpaRepository {
 
     private final JPAQueryFactory queryFactory;
@@ -72,3 +73,4 @@ public class UserJpaRepositoryImpl extends QuerydslRepositorySupport implements 
         return ageLoe != null ? user.age.loe(ageLoe) : null;
     }
 }
+*/

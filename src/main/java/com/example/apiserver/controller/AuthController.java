@@ -4,9 +4,9 @@ import com.example.apiserver.Constants;
 import com.example.apiserver.advice.exception.EmailSigninFailedException;
 import com.example.apiserver.config.security.JwtTokenProvider;
 import com.example.apiserver.dto.AppInitsDto;
-import com.example.apiserver.entity.User;
+//import com.example.apiserver.entity.User;
 import com.example.apiserver.model.response.ApiDataResult;
-import com.example.apiserver.repository.UserJpaRepository;
+//import com.example.apiserver.repository.UserJpaRepository;
 import com.example.apiserver.service.ResponseService;
 import com.example.apiserver.vo.LoginVo;
 import com.example.apiserver.vo.SignupVo;
@@ -29,7 +29,7 @@ public class AuthController {
     @Autowired
     ResponseService responseService; // API 요청 결과에 대한 code, messageㅍ
 
-    private final UserJpaRepository userJpaRepo; // jpa 쿼리 활용
+//    private final UserJpaRepository userJpaRepo; // jpa 쿼리 활용
     private final JwtTokenProvider jwtTokenProvider; // jwt 토큰 생성
     private final PasswordEncoder passwordEncoder; // 비밀번호 암호화
 
