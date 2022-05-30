@@ -36,6 +36,7 @@ public class MessageConfiguration implements WebMvcConfigurer {
     @Override // 인터셉터를 시스템 레지스트리에 등록
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(localeChangeInterceptor());
+        registry.addInterceptor(taxApiInterceptor());
     }
 
     @Bean // yml 파일을 참조하는 MessageSource 선언
@@ -58,5 +59,11 @@ public class MessageConfiguration implements WebMvcConfigurer {
         protected ResourceBundle doGetBundle(String basename, Locale locale) throws MissingResourceException {
             return ResourceBundle.getBundle(basename, locale, YamlResourceBundle.Control.INSTANCE);
         }
+    }
+
+
+    @Bean
+    public TaxApiInterceptor taxApiInterceptor() {
+        return new TaxApiInterceptor();
     }
 }

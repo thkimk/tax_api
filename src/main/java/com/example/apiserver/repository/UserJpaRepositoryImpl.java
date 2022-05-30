@@ -1,5 +1,6 @@
 package com.example.apiserver.repository;
 
+/*
 import com.example.apiserver.dto.QUserDto;
 import com.example.apiserver.dto.UserDto;
 //import com.example.apiserver.entity.User;
@@ -15,6 +16,7 @@ import org.springframework.data.support.PageableExecutionUtils;
 import javax.persistence.EntityManager;
 import java.util.List;
 import static org.springframework.util.StringUtils.hasText;
+*/
 
 //import static com.example.apiserver.entity.QUser.user;
 

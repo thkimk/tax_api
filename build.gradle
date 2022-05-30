@@ -2,7 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.4.4'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
-	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
+//	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 }
 
 bootJar {
@@ -48,8 +48,10 @@ dependencies {
 	//언어 설정
 	implementation 'net.rakugakibox.util:yaml-resource-bundle:1.1'
 
+/*
 	//querydsl
 	implementation 'com.querydsl:querydsl-jpa'
+*/
 
 	annotationProcessor("jakarta.persistence:jakarta.persistence-api")
 	annotationProcessor("jakarta.annotation:jakarta.annotation-api")
@@ -66,20 +68,19 @@ tasks.named('test') {
 }
 
 //querydsl 추가 시작
-def querydslDir = "$buildDir/generated/querydsl"
+//def querydslDir = "$buildDir/generated/querydsl"
+//querydsl {
+//	jpa = true
+//	querydslSourcesDir = querydslDir
+//}
 
-querydsl {
-	jpa = true
-	querydslSourcesDir = querydslDir
-}
+//sourceSets {
+//	main.java.srcDir querydslDir
+//}
+//
+//configurations {
+//	querydsl.extendsFrom compileClasspath }
 
-sourceSets {
-	main.java.srcDir querydslDir
-}
-
-configurations {
-	querydsl.extendsFrom compileClasspath }
-
-compileQuerydsl {
-	options.annotationProcessorPath = configurations.querydsl
-}
+//compileQuerydsl {
+//	options.annotationProcessorPath = configurations.querydsl
+//}

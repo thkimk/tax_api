@@ -67,12 +67,14 @@ public class AuthController {
     @ApiOperation(value = "본인 확인", notes = "본인확인 인증 토큰으로 최종 확정한다.")
     @PostMapping(value = "/verify")
     public ApiDataResult verify() {
+
         return responseService.result(new String("verify result"));
     }
 
     @ApiOperation(value = "비밀번호 재등록", notes = "사용자의 비밀번호를 재등록한다.")
     @PostMapping(value = "/saveAuth")
     public ApiDataResult saveAuth() {
+
         return responseService.result(new String("saveAuth result"));
     }
 
