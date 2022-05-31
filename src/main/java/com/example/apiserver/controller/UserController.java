@@ -33,8 +33,11 @@ public class UserController {
     @Autowired
     ResponseService responseService; // API 요청 결과에 대한 code, messageㅍ
 
+    @Autowired
+    UserService userService;
+
 //    private final UserJpaRepository userJpaRepo; // Jpa를 활용한 CRUD 쿼리 가능
-    private UserService userService;
+//    private UserService userService;
 /*
 
     @Secured("ROLE_USER")
@@ -93,6 +96,9 @@ public class UserController {
     @ApiOperation(value = "사용자 업종 선택", notes = "사용자의 업종을 선택해서 저장한다.")
     @PostMapping(value = "/saveJob")
     public ApiDataResult saveJob(@ApiParam(value = "회원ID : 이메일", required = true) @RequestBody SaveJobVo saveJobVo) {
+        // cust_info_dtl 업데이트 필요
+        String result = userService.saveJob(saveJobVo);
+
         return responseService.result(new String("saveJob result"));
     }
 

@@ -5,8 +5,10 @@ import com.example.apiserver.advice.exception.EmailSigninFailedException;
 import com.example.apiserver.config.security.JwtTokenProvider;
 import com.example.apiserver.dto.AppInitsDto;
 //import com.example.apiserver.entity.User;
+import com.example.apiserver.dto.SignupDto;
 import com.example.apiserver.model.response.ApiDataResult;
 //import com.example.apiserver.repository.UserJpaRepository;
+import com.example.apiserver.service.AuthService;
 import com.example.apiserver.service.ResponseService;
 import com.example.apiserver.vo.LoginVo;
 import com.example.apiserver.vo.SignupVo;
@@ -29,6 +31,9 @@ public class AuthController {
     @Autowired
     ResponseService responseService; // API 요청 결과에 대한 code, messageㅍ
 
+    @Autowired
+    AuthService authService;
+
 //    private final UserJpaRepository userJpaRepo; // jpa 쿼리 활용
     private final JwtTokenProvider jwtTokenProvider; // jwt 토큰 생성
     private final PasswordEncoder passwordEncoder; // 비밀번호 암호화
@@ -49,8 +54,9 @@ public class AuthController {
 
     @ApiOperation(value = "회원 가입", notes = "회원가입 처리를 한다.")
     @PostMapping(value = "/signup")
-    public ApiDataResult signup(@ApiParam(value = "회원ID : 이메일", required = true) @RequestBody SignupVo signupVo) {
-        return responseService.result(new String("signup result"));
+    public ApiDataResult signup(@ApiParam(value = "회원가입에 필요한 정보를 전달하고, 회원가입 처리", required = true) @RequestBody SignupVo signupVo) {
+        SignupDto signupDto = authService.signup(signupVo);
+        return responseService.result(signupDto);
 /*
 
         userJpaRepo.save(User.builder()

@@ -23,7 +23,6 @@ public class AppService {
     @Autowired
     NotiMsgRepository notiMsgRepository;
 
-    @Autowired
     public AppInitsDto appInits() {
         AppInitsDto appInitsDto = new AppInitsDto();
 

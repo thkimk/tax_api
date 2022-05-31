@@ -1,7 +1,9 @@
 package com.example.apiserver.service;
 
+import com.example.apiserver.Constants;
 import com.example.apiserver.dto.UserDto;
 //import com.example.apiserver.repository.UserJpaRepository;
+import com.example.apiserver.vo.SaveJobVo;
 import com.example.apiserver.vo.UserVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -22,5 +24,8 @@ public class UserService {
         return  userJpaRepo.search(condition, pageable);
     }
 */
+    public String saveJob(SaveJobVo saveJobVo) {
+        return Constants.CODE_RET_OK;
+    }
 
 }
