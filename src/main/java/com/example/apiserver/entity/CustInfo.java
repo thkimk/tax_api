@@ -22,8 +22,8 @@ import java.time.LocalDateTime;
 public class CustInfo {
 
     @Id
-    @Column(length = 9)
-    private String cust_id;
+    @Column(name="cust_id", length = 9)
+    private String custId;
 
     @Column(length = 50)
     private String name;
@@ -52,7 +52,7 @@ public class CustInfo {
 
     // 회원가입시 생성
     CustInfo(SignupVo signupVo, String cust_id) {
-        this.cust_id = cust_id;
+        this.custId = cust_id;
         this.name = signupVo.getName();
         this.email = signupVo.getEmail();
         this.birth = signupVo.getBirth();

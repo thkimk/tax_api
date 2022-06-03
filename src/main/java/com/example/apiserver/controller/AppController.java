@@ -1,6 +1,8 @@
 package com.example.apiserver.controller;
 
 import com.example.apiserver.Constants;
+import com.example.apiserver.advice.exception.InvalidInputValueException;
+import com.example.apiserver.advice.exception.UserNotFoundException;
 import com.example.apiserver.dto.AppInitsDto;
 import com.example.apiserver.model.response.ApiDataResult;
 import com.example.apiserver.service.AppService;
@@ -28,7 +30,8 @@ public class AppController {
 
     @ApiOperation(value = "App 기동시 셋업데이터", notes = "App 기동시 필요한 데이터를 제공한다.")
     @GetMapping(value = "/inits")
-    public ApiDataResult appInits() {
+    public ApiDataResult appInits() throws Exception {
+        if (true) throw new InvalidInputValueException();
         log.info("## AppController: appInits() starts..");
         AppInitsDto appInitsDto = appService.appInits();
         return responseService.result(appInitsDto);

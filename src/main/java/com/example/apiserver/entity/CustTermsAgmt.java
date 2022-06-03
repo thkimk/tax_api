@@ -16,12 +16,12 @@ import java.time.LocalDateTime;
 @Getter //user 필드 값의 getter를 자동생성한다.
 @NoArgsConstructor // 인자 없는 생성자를 자동으로 생성한다.
 @AllArgsConstructor // 인자를 모두 갖춘 생성자를 자동으로 생성한다.
-@Table(name = "terms_agmt_hst") // 'user' 테이블과 매핑됨을 명시한다.
-public class TermsAgmtHst {
+@Table(name = "cust_terms_agmt") // 'user' 테이블과 매핑됨을 명시한다.
+public class CustTermsAgmt {
 
     @Id
-    @Column(length = 9)
-    private String cust_id;
+    @Column(name="cust_id", length = 9)
+    private String custId;
 
     @Column()
     private long terms_id;

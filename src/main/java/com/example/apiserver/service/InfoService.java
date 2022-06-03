@@ -33,11 +33,19 @@ public class InfoService {
     }
 
 
+/*
     public JobsDto jobs(String code, String name) {
         JobsDto jobsDto = new JobsDto();
-        List<Industry> terms = industryRepository.findAll();
+        List<Industry> industries = industryRepository.findAll();
+
+        for (Industry industry : industries) {
+        }
 
         return jobsDto;
+    }
+*/
+    public List<Industry> jobs(String code, String name) {
+        return industryRepository.findAll();
     }
 
 }

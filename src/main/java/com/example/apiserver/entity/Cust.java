@@ -19,8 +19,8 @@ import java.time.LocalDateTime;
 public class Cust {
 
     @Id
-    @Column(length = 9)
-    private String cust_id;
+    @Column(name="cust_id", length = 9)
+    private String custId;
 
     @Column(length = 2)
     private String cust_status;
@@ -48,7 +48,7 @@ public class Cust {
 
     // 회원가입시 생성
     Cust(SignupVo signupVo) {
-        this.cust_id = "0000";
+        this.custId = "0000";
         this.cust_status = Constants.CUST_ST_NORMAL;
         this.cust_grade = Constants.CUST_GR_ASOC;
 

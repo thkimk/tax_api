@@ -1,8 +1,10 @@
 package com.example.apiserver.controller;
 
 import com.example.apiserver.Constants;
+import com.example.apiserver.advice.exception.UserNotFoundException;
 import com.example.apiserver.dto.JobsDto;
 import com.example.apiserver.dto.TermsDto;
+import com.example.apiserver.entity.Industry;
 import com.example.apiserver.model.response.ApiDataResult;
 import com.example.apiserver.repository.TermsRepository;
 import com.example.apiserver.service.InfoService;
@@ -15,6 +17,8 @@ import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Api(tags = {"Info 정보"})
 @RequiredArgsConstructor
@@ -39,15 +43,15 @@ public class InfoController {
     @ApiOperation(value = "업종리스트", notes = "업종리스트를 제공한다. 전체를 제공하거나, 검색을 통한 일부를 제공할 수 있다.")
     @GetMapping(value = "/jobs")
     public ApiDataResult jobs(@ApiParam(value = "업종 코드", required = false) @RequestParam(required = false) String code,
-                              @ApiParam(value = "업종명", required = false) @RequestParam(required = false) String name) {
+                              @ApiParam(value = "업종명", required = false) @RequestParam(required = false) String name) throws Exception {
 //    public ApiDataResult jobs(@ApiParam(value = "회원ID : 이메일", required = false) @RequestBody JobsVo jobsVo) {
 /*
         if (code == null && name == null) {
             return responseService.result(new String("jobs ALL result"));
         }
 */
-        JobsDto jobsDto = infoService.jobs(code, name);
-        return responseService.result(new String("jobs result"));
+        List<Industry> jobsDto = infoService.jobs(code, name);
+        return responseService.result(jobsDto);
     }
 
 

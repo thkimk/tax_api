@@ -80,6 +80,7 @@ public class ResponseService {
     }
 
     public ApiDataResult failResult() {
+
         return failResult(Response.FAIL.getCode(), Response.FAIL.getMsg(), null);
     }
 

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 
 @RequiredArgsConstructor
@@ -24,13 +25,26 @@ import javax.servlet.http.HttpServletRequest;
 // @RestControllerAdvice(basePackages = "com.example.api_server") : api_server 하위의 Controller 에만 로직 적용
 public class ExceptionAdvice {
 
-    private final ResponseService responseService; // 결과에 대한 정보를 도출하는 클래스 명시
+    private final ResponseService responseService;
     private final MessageSource messageSource;
+
+    // MessageSource(code) 정보에 해당하는 메시지를 조회한다.
+    private String getMessage(String code) {
+        return messageSource.getMessage(code, null, LocaleContextHolder.getLocale());
+    }
+
+    // code 정보, 추가 argument로 현재 locale에 맞는 메시지를 조회한다.
+    private String getMessage(String code, Object[] args) {
+        return messageSource.getMessage(code, args, LocaleContextHolder.getLocale());
+    }
+
+    /* 예외처리 핸들러 종류별 구현 */
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     protected ApiDataResult defaultException(HttpServletRequest request, Exception e) {
         // CommonResult : 응답 결과에 대한 정보
+        System.out.println("## "+ e.getClass().toString()+ ", "+e.getMessage());
         return responseService.failResult(Integer.valueOf(getMessage("unKnown.code")), getMessage("unKnown.msg"));
         // 예외 처리 메시지를 MessageSource에서 가져오도록 수정, exception_ko.yml 파일에서 가져온 것임
         // getFailResult : setSuccess, setCode, setMsg
@@ -41,8 +55,6 @@ public class ExceptionAdvice {
     protected ApiDataResult userNotFoundException(HttpServletRequest request, UserNotFoundException e) {
         // CommonResult : 응답 결과에 대한 정보
         return responseService.failResult(Integer.valueOf(getMessage("userNotFound.code")), getMessage("userNotFound.msg"));
-        // 예외 처리 메시지를 MessageSource에서 가져오도록 수정
-        // getFailResult : setSuccess, setCode, setMsg
     }
 
     @ExceptionHandler(EmailSigninFailedException.class)
@@ -73,14 +85,5 @@ public class ExceptionAdvice {
         return responseService.failResult(Integer.valueOf(getMessage("notImplemented.code")), getMessage("notImplemented.msg"), e);
     }
 
-    // code 정보에 해당하는 메시지를 조회한다.
-    private String getMessage(String code) {
-        return getMessage(code, null);
-    }
-
-    // code 정보, 추가 argument로 현재 locale에 맞는 메시지를 조회한다.
-    private String getMessage(String code, Object[] args) {
-        return messageSource.getMessage(code, args, LocaleContextHolder.getLocale());
-    }
 }
 

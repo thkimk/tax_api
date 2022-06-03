@@ -3,15 +3,16 @@ package com.example.apiserver.controller;
 import com.example.apiserver.Constants;
 import com.example.apiserver.advice.exception.EmailSigninFailedException;
 import com.example.apiserver.config.security.JwtTokenProvider;
-import com.example.apiserver.dto.AppInitsDto;
+import com.example.apiserver.dto.*;
 //import com.example.apiserver.entity.User;
-import com.example.apiserver.dto.SignupDto;
 import com.example.apiserver.model.response.ApiDataResult;
 //import com.example.apiserver.repository.UserJpaRepository;
 import com.example.apiserver.service.AuthService;
 import com.example.apiserver.service.ResponseService;
 import com.example.apiserver.vo.LoginVo;
+import com.example.apiserver.vo.SaveAuthVo;
 import com.example.apiserver.vo.SignupVo;
+import com.example.apiserver.vo.VerifyVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -49,7 +50,9 @@ public class AuthController {
 
         return responseService.result(jwtTokenProvider.createToken(String.valueOf(user.getMsrl()), user.getRoles()));
 */
-        return responseService.result(new String("login result"));
+        LoginDto loginDto = authService.login(loginVo);
+
+        return responseService.result(loginDto);
     }
 
     @ApiOperation(value = "회원 가입", notes = "회원가입 처리를 한다.")
@@ -72,14 +75,15 @@ public class AuthController {
 
     @ApiOperation(value = "본인 확인", notes = "본인확인 인증 토큰으로 최종 확정한다.")
     @PostMapping(value = "/verify")
-    public ApiDataResult verify() {
-
-        return responseService.result(new String("verify result"));
+    public ApiDataResult verify(VerifyVo verifyVo) {
+        VerifyDto verifyDto = new VerifyDto();
+        return responseService.result(verifyDto);
     }
 
     @ApiOperation(value = "비밀번호 재등록", notes = "사용자의 비밀번호를 재등록한다.")
     @PostMapping(value = "/saveAuth")
-    public ApiDataResult saveAuth() {
+    public ApiDataResult saveAuth(SaveAuthVo saveAuthVo) {
+        SaveAuthDto saveAuthDto = authService.saveAuth(saveAuthVo);
 
         return responseService.result(new String("saveAuth result"));
     }
