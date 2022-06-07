@@ -41,7 +41,7 @@ public class CustInfo {
     private char gender;
 
     @Column()
-    private char is_marriage;
+    private char isMarriage;
 
     @Column()
     private LocalDateTime create_dt;
@@ -51,14 +51,14 @@ public class CustInfo {
 
 
     // 회원가입시 생성
-    CustInfo(SignupVo signupVo, String cust_id) {
-        this.custId = cust_id;
+    CustInfo(SignupVo signupVo, String custId) {
+        this.custId = custId;
         this.name = signupVo.getName();
         this.email = signupVo.getEmail();
         this.birth = signupVo.getBirth();
         this.mobile = signupVo.getMobile();
         this.gender = signupVo.getGender();
-        this.is_marriage = signupVo.getIs_marriage();
+        this.isMarriage = signupVo.getIsMarriage();
 
     }
 }

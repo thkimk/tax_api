@@ -11,9 +11,9 @@ public class SignupVo {
     String birth;
     String mobile;
     char gender;
-    char is_marriage;
-    char is_agree_terms;
-    String push_token;
-    String dev_uid;
+    char isMarriage;
+    char isAgreeTerms;
+    String pushToken;
+    String devUid;
 
 }

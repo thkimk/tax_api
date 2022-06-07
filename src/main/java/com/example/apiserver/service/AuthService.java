@@ -68,7 +68,7 @@ public class AuthService {
 //        String jwtToken = jwtTokenProvider.createToken(authInfo.getCustId(), "00");
         String jwtToken = jwtTokenProvider.createToken("123456789", "00");
         LoginDto loginDto = new LoginDto();
-        loginDto.setJwt_token(jwtToken);
+        loginDto.setJwtToken(jwtToken);
 
         // login_hst에 이력 저장
 

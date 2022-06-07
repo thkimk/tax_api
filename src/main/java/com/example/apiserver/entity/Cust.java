@@ -26,7 +26,7 @@ public class Cust {
     private String cust_status;
 
     @Column(length = 2)
-    private String cust_grade;
+    private String custGrade;
 
     @Column()
     private LocalDateTime asct_in_dt;
@@ -50,7 +50,7 @@ public class Cust {
     Cust(SignupVo signupVo) {
         this.custId = "0000";
         this.cust_status = Constants.CUST_ST_NORMAL;
-        this.cust_grade = Constants.CUST_GR_ASOC;
+        this.custGrade = Constants.CUST_GR_ASOC;
 
     }
 
