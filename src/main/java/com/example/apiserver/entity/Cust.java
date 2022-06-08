@@ -22,34 +22,34 @@ public class Cust {
     @Column(name="cust_id", length = 9)
     private String custId;
 
-    @Column(length = 2)
-    private String cust_status;
+    @Column(name="cust_status", length = 2)
+    private String custStatus;
 
-    @Column(length = 2)
+    @Column(name="cust_grade", length = 2)
     private String custGrade;
 
-    @Column()
-    private LocalDateTime asct_in_dt;
+    @Column(name="asct_in_dt")
+    private LocalDateTime asctInDt;
 
-    @Column()
-    private LocalDateTime asct_out_dt;
+    @Column(name="asct_out_dt")
+    private LocalDateTime asctOutDt;
 
-    @Column()
-    private LocalDateTime reg_in_dt;
+    @Column(name="reg_in_dt")
+    private LocalDateTime regInDt;
 
-    @Column()
-    private LocalDateTime reg_out_dt;
+    @Column(name="reg_out_dt")
+    private LocalDateTime regOutDt;
 
-    @Column()
-    private LocalDateTime create_dt;
+    @Column(name="create_dt")
+    private LocalDateTime createDt;
 
-    @Column()
-    private LocalDateTime update_dt;
+    @Column(name="update_dt")
+    private LocalDateTime updateDt;
 
     // 회원가입시 생성
     Cust(SignupVo signupVo) {
         this.custId = "0000";
-        this.cust_status = Constants.CUST_ST_NORMAL;
+        this.custStatus = Constants.CUST_ST_NORMAL;
         this.custGrade = Constants.CUST_GR_ASOC;
 
     }

@@ -24,12 +24,12 @@ public class CustTermsAgmt {
     private String custId;
 
     @Column()
-    private long terms_id;
+    private long termsId;
 
     @Column()
-    private char is_agree;
+    private char isAgree;
 
     @Column()
-    private LocalDateTime agmt_dt;
+    private LocalDateTime agmtDt;
 
 }

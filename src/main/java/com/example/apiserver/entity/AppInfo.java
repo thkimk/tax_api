@@ -20,23 +20,23 @@ public class AppInfo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(length = 3)
-    private String os_name;
+    @Column(name="os_name", length = 3)
+    private String osName;
 
-    @Column(length = 20)
-    private String rct_ver;
+    @Column(name="rct_ver", length = 20)
+    private String rctVer;
 
-    @Column()
-    private char upt_yn;
+    @Column(name="upt_yn")
+    private char uptYn;
 
-    @Column()
-    private LocalDateTime apply_dt;
+    @Column(name="apply_dt")
+    private LocalDateTime applDt;
 
-    @Column()
-    private LocalDateTime create_dt;
+    @Column(name="create_dt")
+    private LocalDateTime createDt;
 
-    @Column()
-    private LocalDateTime update_dt;
+    @Column(name="update_dt")
+    private LocalDateTime updateDt;
 
     @Column(length = 50)
     private String creater;

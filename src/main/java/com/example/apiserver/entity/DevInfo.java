@@ -23,19 +23,19 @@ public class DevInfo {
 
     @Id
     @Column(length = 36)
-    private String dev_id;
+    private String devId;
 
     @Column(length = 50)
-    private String dev_name;
+    private String devName;
 
     @Column(length = 10)
-    private String os_type;
+    private String osType;
 
     @Column(length = 20)
-    private String os_ver;
+    private String osVer;
 
     @Column()
-    private LocalDateTime create_dt;
+    private LocalDateTime createDt;
 
 
 }

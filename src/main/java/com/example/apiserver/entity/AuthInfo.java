@@ -26,19 +26,19 @@ public class AuthInfo {
     @Column(length = 100)
     private String ci;
 
-    @Column()
-    private char is_main;
+    @Column(name="is_main")
+    private char isMain;
 
-    @Column(length = 2)
-    private String auth_status;
+    @Column(name="auth_status", length = 2)
+    private String authStatus;
 
-    @Column()
-    private int fail_cnt;
+    @Column(name="fail_cnt")
+    private int failCnt;
 
-    @Column()
-    private LocalDateTime create_dt;
+    @Column(name="create_dt")
+    private LocalDateTime createDt;
 
-    @Column()
-    private LocalDateTime update_dt;
+    @Column(name="update_dt")
+    private LocalDateTime updateDt;
 
 }

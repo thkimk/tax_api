@@ -22,7 +22,7 @@ public class NotiMsg {
     private long id;
 
     @Column()
-    private char noti_type;
+    private char notiType;
 
     @Column(length = 200)
     private String subject;
@@ -31,16 +31,16 @@ public class NotiMsg {
     private String content;
 
     @Column()
-    private char send_type;
+    private char sendType;
 
     @Column(length = 3)
-    private String send_status;
+    private String sendStatus;
 
     @Column()
-    private LocalDateTime create_dt;
+    private LocalDateTime createDt;
 
     @Column()
-    private LocalDateTime update_dt;
+    private LocalDateTime updateDt;
 
     @Column(length = 50)
     private String creater;

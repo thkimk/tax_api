@@ -22,22 +22,22 @@ public class Terms {
     private long id;
 
     @Column(length = 50)
-    private String terms_name;
+    private String termsName;
 
     @Column(length = 5)
-    private String terms_version;
+    private String termsVersion;
 
     @Column(length = 2)
-    private String terms_type;
+    private String termsType;
 
     @Column()
-    private char view_yn;
+    private char viewYn;
 
     @Column(length = 2000)
-    private String terms_stmt;
+    private String termsStmt;
 
     @Column()
-    private LocalDateTime create_dt;
+    private LocalDateTime createDt;
 
     @Column(length = 50)
     private String creater;

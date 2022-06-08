@@ -9,4 +9,5 @@ import java.util.List;
 public class AppInitsDto {
     List<AppInfoDto> appInfos = new ArrayList<>();
     List<NotiMsgDto> notiMsgs = new ArrayList<>();
+    boolean isMember = false;
 }

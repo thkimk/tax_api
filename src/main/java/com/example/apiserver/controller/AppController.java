@@ -7,6 +7,7 @@ import com.example.apiserver.dto.AppInitsDto;
 import com.example.apiserver.model.response.ApiDataResult;
 import com.example.apiserver.service.AppService;
 import com.example.apiserver.service.ResponseService;
+import com.example.apiserver.vo.NomemberVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +36,13 @@ public class AppController {
         log.info("## AppController: appInits() starts..");
         AppInitsDto appInitsDto = appService.appInits();
         return responseService.result(appInitsDto);
+    }
+
+    @ApiOperation(value = "App 기동시 비회원 메타정보", notes = "App 기동시, App에서 비회원 메타정보를 서버로 전달한다.")
+    @PostMapping(value = "/nomember")
+    public ApiDataResult nomember(@RequestBody NomemberVo nomemberVo) throws Exception {
+//        Nom appInitsDto = appService.appInits();
+        return responseService.successResult();
     }
 
 }

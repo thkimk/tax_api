@@ -24,32 +24,32 @@ public class CustInfoDtl {
     @Column(name="cust_id", length = 9)
     private String custId;
 
-    @Column(length = 6)
-    private String indst_code;;
+    @Column(name="indst_code", length = 6)
+    private String indstCode;;
 
-    @Column()
-    private char is_disorder;
+    @Column(name="is_disorder")
+    private char isDisorder;
 
-    @Column()
-    private char is_hshld;
+    @Column(name="is_hshld")
+    private char isHshld;
 
-    @Column()
-    private char is_ag_mydata;
+    @Column(name="is_ag_mydata")
+    private char isAgMydata;
 
-    @Column()
-    private char is_ag_mkrecv;
+    @Column(name="is_ag_mkrecv")
+    private char isAgMkrecv;
 
-    @Column()
-    private char is_new_bsns;
+    @Column(name="is_new_bsns")
+    private char isNewBsns;
 
-    @Column(length = 36)
-    private String dev_id;;
+    @Column(name="dev_id", length = 36)
+    private String devId;;
 
-    @Column()
-    private LocalDateTime create_dt;
+    @Column(name="create_dt")
+    private LocalDateTime createDt;
 
-    @Column()
-    private LocalDateTime update_dt;
+    @Column(name="update_dt")
+    private LocalDateTime updateDt;
 
 
     CustInfoDtl(SaveJobVo saveJobVo) {

@@ -26,22 +26,22 @@ public class Industry {
     private String name;
 
     @Column()
-    private BigDecimal simple_exrt;
+    private BigDecimal simpleExrt;
 
     @Column()
-    private BigDecimal simple_exrt_exc;
+    private BigDecimal simpleExrtExc;
 
     @Column()
-    private BigDecimal standard_exrt;
+    private BigDecimal standardExrt;
 
     @Column(length = 200)
-    private String search_terms;
+    private String searchTerms;
 
     @Column()
-    private LocalDateTime create_dt;
+    private LocalDateTime createDt;
 
     @Column()
-    private LocalDateTime update_dt;
+    private LocalDateTime updateDt;
 
     @Column(length = 50)
     private String creater;

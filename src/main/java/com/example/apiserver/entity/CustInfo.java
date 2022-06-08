@@ -40,14 +40,14 @@ public class CustInfo {
     @Column()
     private char gender;
 
-    @Column()
+    @Column(name="is_marriage")
     private char isMarriage;
 
-    @Column()
-    private LocalDateTime create_dt;
+    @Column(name="create_dt")
+    private LocalDateTime createDt;
 
-    @Column()
-    private LocalDateTime update_dt;
+    @Column(name="update_dt")
+    private LocalDateTime updateDt;
 
 
     // 회원가입시 생성
