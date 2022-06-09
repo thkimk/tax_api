@@ -5,6 +5,7 @@ import com.example.apiserver.advice.exception.UserNotFoundException;
 import com.example.apiserver.dto.JobsDto;
 import com.example.apiserver.dto.TermsDto;
 import com.example.apiserver.entity.Industry;
+import com.example.apiserver.entity.Terms;
 import com.example.apiserver.model.response.ApiDataResult;
 import com.example.apiserver.repository.TermsRepository;
 import com.example.apiserver.service.InfoService;
@@ -36,22 +37,16 @@ public class InfoController {
     @ApiOperation(value = "약관 정보", notes = "약관동의에 필요한 약관정보를 제공한다.")
     @GetMapping(value = "/terms")
     public ApiDataResult terms() {
-        TermsDto termsDto = infoService.terms();
-        return responseService.result(new String("terms result"));
+        List<Terms> terms = infoService.terms();
+        return responseService.result(terms);
     }
 
     @ApiOperation(value = "업종리스트", notes = "업종리스트를 제공한다. 전체를 제공하거나, 검색을 통한 일부를 제공할 수 있다.")
     @GetMapping(value = "/jobs")
     public ApiDataResult jobs(@ApiParam(value = "업종 코드", required = false) @RequestParam(required = false) String code,
                               @ApiParam(value = "업종명", required = false) @RequestParam(required = false) String name) throws Exception {
-//    public ApiDataResult jobs(@ApiParam(value = "회원ID : 이메일", required = false) @RequestBody JobsVo jobsVo) {
-/*
-        if (code == null && name == null) {
-            return responseService.result(new String("jobs ALL result"));
-        }
-*/
-        List<Industry> jobsDto = infoService.jobs(code, name);
-        return responseService.result(jobsDto);
+        List<Industry> industries = infoService.jobs(code, name);
+        return responseService.result(industries);
     }
 
 

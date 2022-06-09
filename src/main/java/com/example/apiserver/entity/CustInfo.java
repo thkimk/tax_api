@@ -1,16 +1,14 @@
 package com.example.apiserver.entity;
 
 import com.example.apiserver.Constants;
+import com.example.apiserver.vo.SaveAuthVo;
 import com.example.apiserver.vo.SignupVo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Builder // builder를 사용할 수 있게 한다.
@@ -51,7 +49,7 @@ public class CustInfo {
 
 
     // 회원가입시 생성
-    CustInfo(SignupVo signupVo, String custId) {
+    public CustInfo(SignupVo signupVo, String custId) {
         this.custId = custId;
         this.name = signupVo.getName();
         this.email = signupVo.getEmail();
@@ -59,6 +57,21 @@ public class CustInfo {
         this.mobile = signupVo.getMobile();
         this.gender = signupVo.getGender();
         this.isMarriage = signupVo.getIsMarriage();
+        this.createDt = LocalDateTime.now();
 
     }
+
+    public CustInfo(SaveAuthVo saveAuthVo) {
+        this.custId = saveAuthVo.getCustId();
+        this.name = saveAuthVo.getName();
+        this.email = saveAuthVo.getEmail();
+        this.birth = saveAuthVo.getBirth();
+        this.mobile = saveAuthVo.getMobile();
+        this.gender = saveAuthVo.getGender();
+        this.isMarriage = saveAuthVo.getIsMarriage();
+        this.updateDt = LocalDateTime.now();
+
+        this.createDt = LocalDateTime.now();
+    }
+
 }

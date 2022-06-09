@@ -31,17 +31,17 @@ public class AppController {
 
     @ApiOperation(value = "App 기동시 셋업데이터", notes = "App 기동시 필요한 데이터를 제공한다.")
     @GetMapping(value = "/inits")
-    public ApiDataResult appInits() throws Exception {
-        if (true) throw new InvalidInputValueException();
-        log.info("## AppController: appInits() starts..");
-        AppInitsDto appInitsDto = appService.appInits();
+    public ApiDataResult inits() throws Exception {
+        AppInitsDto appInitsDto = appService.inits();
         return responseService.result(appInitsDto);
     }
+
 
     @ApiOperation(value = "App 기동시 비회원 메타정보", notes = "App 기동시, App에서 비회원 메타정보를 서버로 전달한다.")
     @PostMapping(value = "/nomember")
     public ApiDataResult nomember(@RequestBody NomemberVo nomemberVo) throws Exception {
-//        Nom appInitsDto = appService.appInits();
+        appService.nomember(nomemberVo);
+
         return responseService.successResult();
     }
 

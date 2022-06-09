@@ -5,6 +5,7 @@ import com.example.apiserver.entity.AppInfo;
 import com.example.apiserver.entity.NotiMsg;
 import com.example.apiserver.repository.AppInfoRepository;
 import com.example.apiserver.repository.NotiMsgRepository;
+import com.example.apiserver.vo.NomemberVo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,20 +24,22 @@ public class AppService {
     @Autowired
     NotiMsgRepository notiMsgRepository;
 
-    public AppInitsDto appInits() {
+    public AppInitsDto inits() {
         AppInitsDto appInitsDto = new AppInitsDto();
 
         // app_info 테이블
         List<AppInfo> appInfos = appInfoRepository.findAll();
+        appInitsDto.fillAppInfos(appInfos);
 
         // noti_msg 테이블
         List<NotiMsg> notiMsgs = notiMsgRepository.findAll();
-
-//        appInitsDto.setApp_infos(appInfos);
-//        appInitsDto.setNoti_msgs(notiMsgs);
+        appInitsDto.fillNotiMsgs(notiMsgs);
 
         return appInitsDto;
     }
 
+
+    public void nomember(NomemberVo nomemberVo) {
+    }
 
 }

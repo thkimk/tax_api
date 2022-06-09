@@ -1,6 +1,8 @@
 package com.example.apiserver.entity;
 
 
+import com.example.apiserver.vo.SaveAuthVo;
+import com.example.apiserver.vo.SignupVo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -40,5 +42,26 @@ public class AuthInfo {
 
     @Column(name="update_dt")
     private LocalDateTime updateDt;
+
+
+    public AuthInfo(SignupVo signupVo, String custId) {
+        this.custId = custId;
+        this.pin = signupVo.getPin();
+        this.ci = signupVo.getCi();
+
+        this.createDt = LocalDateTime.now();
+
+    }
+
+
+    public AuthInfo(SaveAuthVo saveAuthVo) {
+        this.custId = saveAuthVo.getCustId();
+        this.pin = saveAuthVo.getPin();
+        this.ci = saveAuthVo.getCi();
+
+        this.updateDt = LocalDateTime.now();
+        this.createDt = LocalDateTime.now();
+
+    }
 
 }

@@ -10,6 +10,7 @@ import com.example.apiserver.model.response.ApiDataResult;
 import com.example.apiserver.service.ResponseService;
 import com.example.apiserver.service.UserService;
 import com.example.apiserver.vo.JobsVo;
+import com.example.apiserver.vo.NomemberVo;
 import com.example.apiserver.vo.SaveJobVo;
 import com.example.apiserver.vo.UserVo;
 import io.swagger.annotations.*;
@@ -101,5 +102,6 @@ public class UserController {
 
         return responseService.result(new String("saveJob result"));
     }
+
 
 }

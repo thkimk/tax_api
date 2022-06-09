@@ -3,6 +3,7 @@ package com.example.apiserver.service;
 import com.example.apiserver.dto.JobsDto;
 import com.example.apiserver.dto.TermsDto;
 import com.example.apiserver.entity.Industry;
+import com.example.apiserver.entity.NotiMsg;
 import com.example.apiserver.entity.Terms;
 import com.example.apiserver.repository.IndustryRepository;
 import com.example.apiserver.repository.TermsRepository;
@@ -11,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -25,11 +27,8 @@ public class InfoService {
     IndustryRepository industryRepository;
 
 
-    public TermsDto terms() {
-        TermsDto termsDto = new TermsDto();
-        List<Terms> terms = termsRepository.findAll();
-
-        return termsDto;
+    public List<Terms> terms() {
+        return termsRepository.findAll();
     }
 
 
@@ -45,8 +44,27 @@ public class InfoService {
     }
 */
     public List<Industry> jobs(String code, String name) {
+        List<Industry> industries = null;
+
+        if (code != null) {
+            industries = industryRepository.findAllByCode(code);
+        } else if (name != null) {
+            industries = industryRepository.findAllByName(name);
+        } else {
+            industries = industryRepository.findAll();
+        }
+
+        return industries;
+    }
+/*
+    public List<Industry> jobs(String code, String name) {
+        List<JobsDto> jobsDtos = new ArrayList<>();
+        List<Industry> notiMsgs = industryRepository.findAll();
+
+        jobsDtos.fill(appInfos);
         return industryRepository.findAll();
     }
+*/
 
 }
 

@@ -75,14 +75,14 @@ public class AuthController {
 
     @ApiOperation(value = "본인 확인", notes = "본인확인 인증 토큰으로 최종 확정한다.")
     @PostMapping(value = "/verify")
-    public ApiDataResult verify(VerifyVo verifyVo) {
+    public ApiDataResult verify(@RequestBody VerifyVo verifyVo) {
         VerifyDto verifyDto = new VerifyDto();
         return responseService.result(verifyDto);
     }
 
     @ApiOperation(value = "비밀번호 재등록", notes = "사용자의 비밀번호를 재등록한다.")
     @PostMapping(value = "/saveAuth")
-    public ApiDataResult saveAuth(SaveAuthVo saveAuthVo) {
+    public ApiDataResult saveAuth(@RequestBody SaveAuthVo saveAuthVo) {
         SaveAuthDto saveAuthDto = authService.saveAuth(saveAuthVo);
 
         return responseService.result(new String("saveAuth result"));

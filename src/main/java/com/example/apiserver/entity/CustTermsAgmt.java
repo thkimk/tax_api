@@ -1,5 +1,7 @@
 package com.example.apiserver.entity;
 
+import com.example.apiserver.Constants;
+import com.example.apiserver.vo.SignupVo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -31,5 +33,12 @@ public class CustTermsAgmt {
 
     @Column()
     private LocalDateTime agmtDt;
+
+    CustTermsAgmt(SignupVo signupVo) {
+        this.custId = "0000";
+        this.isAgree = 'Y';
+        this.agmtDt = LocalDateTime.now();
+
+    }
 
 }

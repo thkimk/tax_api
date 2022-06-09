@@ -1,6 +1,8 @@
 package com.example.apiserver.entity;
 
 import com.example.apiserver.Constants;
+import com.example.apiserver.Utils;
+import com.example.apiserver.vo.SaveAuthVo;
 import com.example.apiserver.vo.SignupVo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -47,10 +49,11 @@ public class Cust {
     private LocalDateTime updateDt;
 
     // 회원가입시 생성
-    Cust(SignupVo signupVo) {
-        this.custId = "0000";
+    public Cust(SignupVo signupVo) {
+        this.custId = Utils.genCustId();
         this.custStatus = Constants.CUST_ST_NORMAL;
         this.custGrade = Constants.CUST_GR_ASOC;
+        this.createDt = LocalDateTime.now();
 
     }
 
