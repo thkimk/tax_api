@@ -1,6 +1,14 @@
 package com.example.apiserver;
 
+import org.springframework.beans.factory.annotation.Value;
+
 public class Constants {
+    public static String APP_NAME = "00";
+    @Value("${spring.application.name}")
+    public void setAppName(String value) {
+        APP_NAME = value;
+    }
+
     public final static String API = "/api";
     public final static String VERSION = "v1";
 
@@ -15,4 +23,5 @@ public class Constants {
     // 고객 등급코드
     public final static String CUST_GR_ASOC = "00";
     public final static String CUST_GR_REGL = "01";
+
 }

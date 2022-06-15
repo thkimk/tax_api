@@ -12,6 +12,8 @@ spring:
   output:
     ansi:
       enabled: always
+  application:
+    name: 01
 
 management:
   endpoints:

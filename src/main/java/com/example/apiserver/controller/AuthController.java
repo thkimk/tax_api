@@ -9,10 +9,7 @@ import com.example.apiserver.model.response.ApiDataResult;
 //import com.example.apiserver.repository.UserJpaRepository;
 import com.example.apiserver.service.AuthService;
 import com.example.apiserver.service.ResponseService;
-import com.example.apiserver.vo.LoginVo;
-import com.example.apiserver.vo.SaveAuthVo;
-import com.example.apiserver.vo.SignupVo;
-import com.example.apiserver.vo.VerifyVo;
+import com.example.apiserver.vo.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -73,12 +70,14 @@ public class AuthController {
     }
 
 
+/*
     @ApiOperation(value = "본인 확인", notes = "본인확인 인증 토큰으로 최종 확정한다.")
     @PostMapping(value = "/verify")
     public ApiDataResult verify(@RequestBody VerifyVo verifyVo) {
         VerifyDto verifyDto = new VerifyDto();
         return responseService.result(verifyDto);
     }
+*/
 
     @ApiOperation(value = "비밀번호 재등록", notes = "사용자의 비밀번호를 재등록한다.")
     @PostMapping(value = "/saveAuth")
@@ -86,6 +85,31 @@ public class AuthController {
         SaveAuthDto saveAuthDto = authService.saveAuth(saveAuthVo);
 
         return responseService.result(new String("saveAuth result"));
+    }
+
+
+    @ApiOperation(value = "본인확인 OTP 요청", notes = "본인확인을 위한 OTP발송을 요청한다.")
+    @PostMapping(value = "/idenOtpReq")
+    public ApiDataResult idenOtpReq(@RequestBody IdenOtpReqVo idenOtpReqVo) {
+        IdenOtpReqDto idenOtpReqDto = authService.idenOtpReq(idenOtpReqVo);
+
+        return responseService.result(idenOtpReqDto);
+    }
+
+    @ApiOperation(value = "본인확인 OTP 재요청", notes = "본인확인을 위한 OTP발송을 재요청한다.")
+    @PostMapping(value = "/idenOtpReqRetry")
+    public ApiDataResult idenOtpReqRetry(@RequestBody IdenOtpReqVo idenOtpReqVo) {
+        IdenOtpReqDto idenOtpReqDto = authService.idenOtpReq(idenOtpReqVo);
+
+        return responseService.result(idenOtpReqDto);
+    }
+
+    @ApiOperation(value = "본인확인 OTP 확인", notes = "본인확인을 위한 OTP확인을 요청한다.")
+    @PostMapping(value = "/idenOtpConfirm")
+    public ApiDataResult idenOtpConfirm(@RequestBody IdenOtpConfirmVo idenOtpConfirmVo) {
+        IdenOtpConfirmDto idenOtpConfirmDto = authService.idenOtpConfirm(idenOtpConfirmVo);
+
+        return responseService.result(idenOtpConfirmDto);
     }
 
 }

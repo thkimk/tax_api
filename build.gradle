@@ -48,6 +48,14 @@ dependencies {
 	//언어 설정
 	implementation 'net.rakugakibox.util:yaml-resource-bundle:1.1'
 
+	// added
+	implementation files('libs/OkCert3-java1.5-2.3.1.jar')
+//	implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+	// gson: JsonObject/Array
+//	implementation 'com.google.code.gson:gson:2.8.7'
+
+
 /*
 	//querydsl
 	implementation 'com.querydsl:querydsl-jpa'
