@@ -1,23 +1,20 @@
 package com.example.apiserver.service;
 
 import com.example.apiserver.Constants;
-import com.example.apiserver.dto.SignupDto;
-import com.example.apiserver.dto.UserDto;
 //import com.example.apiserver.repository.UserJpaRepository;
-import com.example.apiserver.vo.NomemberVo;
+import com.example.apiserver.entity.CustInfo;
+import com.example.apiserver.entity.CustInfoDtl;
+import com.example.apiserver.repository.CustInfoDtlRepository;
 import com.example.apiserver.vo.SaveJobVo;
-import com.example.apiserver.vo.SignupVo;
-import com.example.apiserver.vo.UserVo;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class CustService {
+    @Autowired
+    CustInfoDtlRepository custInfoDtlRepository;
 
 //    private final UserJpaRepository userJpaRepo; // Jpa를 활용한 CRUD 쿼리 가능
 
@@ -28,6 +25,13 @@ public class UserService {
         }
     */
     public String saveJob(SaveJobVo saveJobVo) {
+        CustInfoDtl custInfoDtl = custInfoDtlRepository.findByCustId(saveJobVo.getCustId());
+        if (custInfoDtl == null) {
+            return Constants.CODE_RET_OK;
+        }
+
+        custInfoDtl.fill(saveJobVo);
+        custInfoDtlRepository.save(custInfoDtl);
 
         return Constants.CODE_RET_OK;
     }

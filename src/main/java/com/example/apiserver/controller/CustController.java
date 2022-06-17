@@ -1,27 +1,16 @@
 package com.example.apiserver.controller;
 
 import com.example.apiserver.Constants;
-import com.example.apiserver.advice.exception.UserNotFoundException;
-import com.example.apiserver.dto.UserDto;
 //import com.example.apiserver.entity.User;
 import com.example.apiserver.model.response.ApiDataResult;
 
 //import com.example.apiserver.repository.UserJpaRepository;
 import com.example.apiserver.service.ResponseService;
-import com.example.apiserver.service.UserService;
-import com.example.apiserver.vo.JobsVo;
-import com.example.apiserver.vo.NomemberVo;
+import com.example.apiserver.service.CustService;
 import com.example.apiserver.vo.SaveJobVo;
-import com.example.apiserver.vo.UserVo;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 //@PreAuthorize("hasRole('ROLE_USER')") //추가내용
@@ -29,13 +18,13 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor // class 내부의 final 객체는 Constructor Injection 수행, @Autowired도 가능
 @RestController // 결과를 JSON으로 도출
 @RequestMapping(value = Constants.API +"/v1"+ "/user") // api resource를 버전별로 관리, /v1 을 모든 리소스 주소에 적용
-public class UserController {
+public class CustController {
 
     @Autowired
     ResponseService responseService; // API 요청 결과에 대한 code, messageㅍ
 
     @Autowired
-    UserService userService;
+    CustService custService;
 
 //    private final UserJpaRepository userJpaRepo; // Jpa를 활용한 CRUD 쿼리 가능
 //    private UserService userService;
@@ -98,7 +87,7 @@ public class UserController {
     @PostMapping(value = "/saveJob")
     public ApiDataResult saveJob(@ApiParam(value = "회원ID : 이메일", required = true) @RequestBody SaveJobVo saveJobVo) {
         // cust_info_dtl 업데이트 필요
-        String result = userService.saveJob(saveJobVo);
+        custService.saveJob(saveJobVo);
 
         return responseService.result(new String("saveJob result"));
     }

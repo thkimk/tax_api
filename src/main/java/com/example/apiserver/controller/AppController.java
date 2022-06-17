@@ -10,6 +10,7 @@ import com.example.apiserver.service.ResponseService;
 import com.example.apiserver.vo.NomemberVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,8 +32,8 @@ public class AppController {
 
     @ApiOperation(value = "App 기동시 셋업데이터", notes = "App 기동시 필요한 데이터를 제공한다.")
     @GetMapping(value = "/inits")
-    public ApiDataResult inits() throws Exception {
-        AppInitsDto appInitsDto = appService.inits();
+    public ApiDataResult inits(@ApiParam(value = "디바이스 식별키", required = true) @RequestParam String devUid) throws Exception {
+        AppInitsDto appInitsDto = appService.inits(devUid);
         return responseService.result(appInitsDto);
     }
 

@@ -2,8 +2,11 @@ package com.example.apiserver.service;
 
 import com.example.apiserver.dto.AppInitsDto;
 import com.example.apiserver.entity.AppInfo;
+import com.example.apiserver.entity.CustInfo;
+import com.example.apiserver.entity.CustNomember;
 import com.example.apiserver.entity.NotiMsg;
 import com.example.apiserver.repository.AppInfoRepository;
+import com.example.apiserver.repository.CustNomemberRepository;
 import com.example.apiserver.repository.NotiMsgRepository;
 import com.example.apiserver.vo.NomemberVo;
 import lombok.RequiredArgsConstructor;
@@ -24,8 +27,12 @@ public class AppService {
     @Autowired
     NotiMsgRepository notiMsgRepository;
 
-    public AppInitsDto inits() {
+    @Autowired
+    CustNomemberRepository custNomemberRepository;
+
+    public AppInitsDto inits(String devUid) {
         AppInitsDto appInitsDto = new AppInitsDto();
+        log.info("## [CALLED] AppService::inits() : devUid({})", devUid);
 
         // app_info 테이블
         List<AppInfo> appInfos = appInfoRepository.findAll();
@@ -40,6 +47,10 @@ public class AppService {
 
 
     public void nomember(NomemberVo nomemberVo) {
+        if (nomemberVo.getIsAgree() == 'Y') {
+            CustNomember custNomember = new CustNomember(nomemberVo);
+            custNomemberRepository.save(custNomember);
+        }
     }
 
 }

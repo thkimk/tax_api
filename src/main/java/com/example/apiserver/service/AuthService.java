@@ -153,8 +153,8 @@ public class AuthService {
 
             reqJson.put("NAME", idenOtpReqVo.getName()); // 성명
             reqJson.put("BIRTHDAY", idenOtpReqVo.getBirth());       // 생년월일
-            reqJson.put("SEX_CD", idenOtpReqVo.getSexCd());         // 성별 (M, F)
-            reqJson.put("NTV_FRNR_CD", idenOtpReqVo.getFrnrCd());   // 내외국인구분 (L, F)
+            reqJson.put("SEX_CD", String.valueOf(idenOtpReqVo.getSexCd()));         // 성별 (M, F)
+            reqJson.put("NTV_FRNR_CD", String.valueOf(idenOtpReqVo.getFrnrCd()));   // 내외국인구분 (L, F)
             reqJson.put("TEL_COM_CD", idenOtpReqVo.getTelComCd());  // 통신사코드
             reqJson.put("TEL_NO", idenOtpReqVo.getTelNo());         // 휴대폰번호
             reqJson.put("USER_IP", "10.0.0.1");
@@ -166,7 +166,7 @@ public class AuthService {
 
             if (idenOtpReqVo.getTxSeqNo() != null) {
                 reqJson.put("TX_SEQ_NO", idenOtpReqVo.getTxSeqNo());       // 거래고유번호. 동일문자열을 두번 사용할 수 없음.
-                reqJson.put("SMS_RESEND_YN", "N");
+                reqJson.put("SMS_RESEND_YN", "Y");
             } else {
                 reqJson.put("SMS_RESEND_YN", "N");
             }
