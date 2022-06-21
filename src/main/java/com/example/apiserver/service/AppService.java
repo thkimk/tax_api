@@ -32,7 +32,6 @@ public class AppService {
 
     public AppInitsDto inits(String devUid) {
         AppInitsDto appInitsDto = new AppInitsDto();
-        log.info("## [CALLED] AppService::inits() : devUid({})", devUid);
 
         // app_info 테이블
         List<AppInfo> appInfos = appInfoRepository.findAll();

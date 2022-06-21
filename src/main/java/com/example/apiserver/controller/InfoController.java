@@ -1,6 +1,7 @@
 package com.example.apiserver.controller;
 
 import com.example.apiserver.Constants;
+import com.example.apiserver.Utils;
 import com.example.apiserver.advice.exception.UserNotFoundException;
 import com.example.apiserver.dto.JobsDto;
 import com.example.apiserver.dto.TermsDto;
@@ -37,6 +38,8 @@ public class InfoController {
     @ApiOperation(value = "약관 정보", notes = "약관동의에 필요한 약관정보를 제공한다.")
     @GetMapping(value = "/terms")
     public ApiDataResult terms() {
+        Utils.logCalled("terms", null);
+
         List<Terms> terms = infoService.terms();
         return responseService.result(terms);
     }
@@ -45,6 +48,7 @@ public class InfoController {
     @GetMapping(value = "/jobs")
     public ApiDataResult jobs(@ApiParam(value = "업종 코드", required = false) @RequestParam(required = false) String code,
                               @ApiParam(value = "업종명", required = false) @RequestParam(required = false) String name) throws Exception {
+        Utils.logCalled("jobs", code+", "+name);
         List<Industry> industries = infoService.jobs(code, name);
         return responseService.result(industries);
     }

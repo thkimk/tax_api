@@ -2,11 +2,13 @@ package com.example.apiserver.controller;
 
 import com.example.apiserver.Constants;
 //import com.example.apiserver.entity.User;
+import com.example.apiserver.Utils;
 import com.example.apiserver.model.response.ApiDataResult;
 
 //import com.example.apiserver.repository.UserJpaRepository;
 import com.example.apiserver.service.ResponseService;
 import com.example.apiserver.service.CustService;
+import com.example.apiserver.vo.SaveFamilyVo;
 import com.example.apiserver.vo.SaveJobVo;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @Api(tags = {"User 사용자"}) // UserController를 대표하는 최상단 타이틀 영역에 표시될 값 세팅
 @RequiredArgsConstructor // class 내부의 final 객체는 Constructor Injection 수행, @Autowired도 가능
 @RestController // 결과를 JSON으로 도출
-@RequestMapping(value = Constants.API +"/v1"+ "/user") // api resource를 버전별로 관리, /v1 을 모든 리소스 주소에 적용
+@RequestMapping(value = Constants.API +"/v1"+ "/cust") // api resource를 버전별로 관리, /v1 을 모든 리소스 주소에 적용
 public class CustController {
 
     @Autowired
@@ -86,11 +88,22 @@ public class CustController {
     @ApiOperation(value = "사용자 업종 선택", notes = "사용자의 업종을 선택해서 저장한다.")
     @PostMapping(value = "/saveJob")
     public ApiDataResult saveJob(@ApiParam(value = "회원ID : 이메일", required = true) @RequestBody SaveJobVo saveJobVo) {
+        Utils.logCalled("saveJob", saveJobVo);
         // cust_info_dtl 업데이트 필요
         custService.saveJob(saveJobVo);
 
         return responseService.result(new String("saveJob result"));
     }
 
+
+    @ApiOperation(value = "부양가족 저장", notes = "사용자의 부양가족 정보를 저장한다.")
+    @PostMapping(value = "/saveFamily")
+    public ApiDataResult saveFamily(@ApiParam(value = "회원ID : 이메일", required = true) @RequestBody SaveFamilyVo saveFamilyVo) {
+        Utils.logCalled("saveFamily", saveFamilyVo);
+        // cust_info_dtl 업데이트 필요
+        custService.saveFamily(saveFamilyVo);
+
+        return responseService.result(new String("saveJob result"));
+    }
 
 }

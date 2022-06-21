@@ -15,5 +15,8 @@ public class SignupVo {
     char isAgreeTerms;
     String pushToken;
     String devUid;
+    String devName;
+    String devOstype;
+    String devOsversion;
 
 }

@@ -5,11 +5,9 @@ import com.example.apiserver.Constants;
 import com.example.apiserver.advice.exception.UserNotFoundException;
 import com.example.apiserver.config.security.JwtTokenProvider;
 import com.example.apiserver.dto.*;
-import com.example.apiserver.entity.AuthInfo;
-import com.example.apiserver.entity.Cust;
-import com.example.apiserver.entity.CustInfo;
-import com.example.apiserver.entity.CustTermsAgmt;
+import com.example.apiserver.entity.*;
 import com.example.apiserver.repository.AuthInfoRepository;
+import com.example.apiserver.repository.CustInfoDtlRepository;
 import com.example.apiserver.repository.CustInfoRepository;
 import com.example.apiserver.repository.CustRepository;
 import com.example.apiserver.vo.*;
@@ -46,6 +44,9 @@ public class AuthService {
     @Autowired
     JwtTokenProvider jwtTokenProvider;
 
+    @Autowired
+    CustInfoDtlRepository custInfoDtlRepository;
+
 
     public SignupDto signup(SignupVo signupVo) {
         SignupDto signupDto = new SignupDto();
@@ -57,6 +58,10 @@ public class AuthService {
         // cust_info 저장
         CustInfo custInfo = new CustInfo(signupVo, cust.getCustId());
         custInfoRepository.save(custInfo);
+
+        // cust_info_dtl
+        CustInfoDtl custInfoDtl = new CustInfoDtl(signupVo, cust.getCustId());
+        custInfoDtlRepository.save(custInfoDtl);
 
         // CustTermsAgmt 저장?? 필요한가~
 //        CustTermsAgmt custTermsAgmt = new CustTermsAgmt(signupVo);

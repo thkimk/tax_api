@@ -30,6 +30,7 @@ public class TestController {
     @ApiOperation(value = "fail test", notes = "fail test mock")
     @GetMapping(value = "/fail")
     public ApiDataResult fail() {
+
         return responseService.failResult();
     }
 

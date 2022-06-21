@@ -1,6 +1,7 @@
 package com.example.apiserver.controller;
 
 import com.example.apiserver.Constants;
+import com.example.apiserver.Utils;
 import com.example.apiserver.advice.exception.InvalidInputValueException;
 import com.example.apiserver.advice.exception.UserNotFoundException;
 import com.example.apiserver.dto.AppInitsDto;
@@ -33,6 +34,8 @@ public class AppController {
     @ApiOperation(value = "App 기동시 셋업데이터", notes = "App 기동시 필요한 데이터를 제공한다.")
     @GetMapping(value = "/inits")
     public ApiDataResult inits(@ApiParam(value = "디바이스 식별키", required = true) @RequestParam String devUid) throws Exception {
+        Utils.logCalled("inits", devUid);
+
         AppInitsDto appInitsDto = appService.inits(devUid);
         return responseService.result(appInitsDto);
     }
@@ -41,6 +44,7 @@ public class AppController {
     @ApiOperation(value = "App 기동시 비회원 메타정보", notes = "App 기동시, App에서 비회원 메타정보를 서버로 전달한다.")
     @PostMapping(value = "/nomember")
     public ApiDataResult nomember(@RequestBody NomemberVo nomemberVo) throws Exception {
+        Utils.logCalled("nomember", nomemberVo);
         appService.nomember(nomemberVo);
 
         return responseService.successResult();

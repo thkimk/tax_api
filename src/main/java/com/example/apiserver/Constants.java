@@ -24,4 +24,7 @@ public class Constants {
     public final static String CUST_GR_ASOC = "00";
     public final static String CUST_GR_REGL = "01";
 
+    // KCB 본인인증 응답코드
+    public final static String KCB_RES_B000 = "B000";   // 정상 처리
+
 }

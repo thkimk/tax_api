@@ -40,7 +40,7 @@ public class ExceptionAdvice {
 
     /* 예외처리 핸들러 종류별 구현 */
 
-/*    @ExceptionHandler(Exception.class)
+    @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     protected ApiDataResult defaultException(HttpServletRequest request, Exception e) {
         // CommonResult : 응답 결과에 대한 정보
@@ -83,7 +83,7 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.NOT_IMPLEMENTED)
     protected ApiDataResult HttpRequestMethodNotSupportedException(HttpServletRequest request, Exception e) {
         return responseService.failResult(Integer.valueOf(getMessage("notImplemented.code")), getMessage("notImplemented.msg"), e);
-    }*/
+    }
 
 }
 

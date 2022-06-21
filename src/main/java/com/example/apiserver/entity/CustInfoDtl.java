@@ -1,6 +1,7 @@
 package com.example.apiserver.entity;
 
 import com.example.apiserver.vo.SaveJobVo;
+import com.example.apiserver.vo.SignupVo;
 import lombok.*;
 
 import javax.persistence.Column;
@@ -39,8 +40,17 @@ public class CustInfoDtl {
     @Column(name="is_new_bsns")
     private char isNewBsns;
 
-    @Column(name="dev_id", length = 36)
-    private String devId;;
+    @Column(length = 36)
+    private String devUid;;
+
+    @Column(length = 50)
+    private String devName;;
+
+    @Column(length = 10)
+    private String devOstype;;
+
+    @Column(length = 20)
+    private String devOsversion;;
 
     @Column(name="create_dt")
     private LocalDateTime createDt;
@@ -49,10 +59,20 @@ public class CustInfoDtl {
     private LocalDateTime updateDt;
 
 
-    public CustInfoDtl(SaveJobVo saveJobVo) {
+    public CustInfoDtl(SignupVo signupVo, String custId) {
+        this.custId = custId;
+
+        this.devUid = signupVo.getDevUid();
+        this.devName = signupVo.getDevName();
+        this.devOstype = signupVo.getDevOstype();
+        this.devOsversion = signupVo.getDevOsversion();
+
+        this.createDt = LocalDateTime.now();
+
     }
 
     public void fill(SaveJobVo saveJobVo) {
+
         indstCode = saveJobVo.getJobCode();
     }
 

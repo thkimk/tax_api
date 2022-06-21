@@ -1,5 +1,6 @@
 package com.example.apiserver.service;
 
+import com.example.apiserver.Utils;
 import com.example.apiserver.model.response.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,6 +31,8 @@ public class ResponseService {
         ApiDataResult result = new ApiDataResult();
         result.setData(data);
         setSuccessResult(result);
+
+        Utils.logCallReturned("success", data);
         return result;
     }
 //    // 결과를 처리하는 메소드
@@ -97,6 +100,7 @@ public class ResponseService {
             result.setDevMsg(e.toString());
         }
 
+        Utils.logCallReturned("fail", msg);
         return result;
     }
 
