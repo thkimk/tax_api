@@ -1,6 +1,10 @@
 package com.example.apiserver;
 
+import com.example.apiserver.entity.Cust;
+import com.example.apiserver.repository.CustRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -8,14 +12,7 @@ import java.time.format.DateTimeFormatter;
 
 @Slf4j
 public class Utils {
-    static int randCustId = 0;
 
-
-    public static String genCustId() {
-        String yymm = LocalDate.now().format(DateTimeFormatter.ofPattern("YYMM"));
-        String rand = String.format("%05d", randCustId++);
-        return yymm.concat(rand);
-    }
 
     public static void logCalled(String op, Object object) {
         if (object == null) log.info("## [CALLED] {}() : null", op);

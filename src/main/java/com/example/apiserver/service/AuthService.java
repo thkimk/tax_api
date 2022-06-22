@@ -21,6 +21,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Service
 @RequiredArgsConstructor
@@ -48,11 +50,24 @@ public class AuthService {
     CustInfoDtlRepository custInfoDtlRepository;
 
 
+    public String genCustId() {
+        String custId = custRepository.getLastCustId();
+        int currentId = 0;
+        String yymm = LocalDate.now().format(DateTimeFormatter.ofPattern("YYMM"));
+        if (custId.startsWith(yymm)) {
+            currentId = Integer.parseInt(custId.substring(4));
+        }
+
+        String rand = String.format("%06d", currentId+1);
+        return yymm.concat(rand);
+    }
+
+
     public SignupDto signup(SignupVo signupVo) {
         SignupDto signupDto = new SignupDto();
 
         // cust 저장
-        Cust cust = new Cust(signupVo);
+        Cust cust = new Cust(signupVo, genCustId());
         custRepository.save(cust);
 
         // cust_info 저장

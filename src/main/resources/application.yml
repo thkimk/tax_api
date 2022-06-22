@@ -13,7 +13,7 @@ spring:
     ansi:
       enabled: always
   application:
-    name: 01
+    name: tax-api
 
 management:
   endpoints:
@@ -24,4 +24,7 @@ management:
     health:
       show-details: always
 
+tax:
+  kcbMemberKey: P09510000000
+  instance: 0
 

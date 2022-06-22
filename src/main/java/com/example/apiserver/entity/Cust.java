@@ -49,10 +49,11 @@ public class Cust {
     private LocalDateTime updateDt;
 
     // 회원가입시 생성
-    public Cust(SignupVo signupVo) {
-        this.custId = Utils.genCustId();
+    public Cust(SignupVo signupVo, String custId) {
+        this.custId = custId;
         this.custStatus = Constants.CUST_ST_NORMAL;
         this.custGrade = Constants.CUST_GR_ASOC;
+        
         this.createDt = LocalDateTime.now();
 
     }

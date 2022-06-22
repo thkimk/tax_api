@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -25,12 +26,24 @@ public class TaxApiInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         log.info("## TaxApiInterceptor: preHandle(): {}", request.getRequestURI());
+        log.info("## TaxApiInterceptor: preHandle(): User-Agent : {}", request.getHeader("User-Agent"));
+        log.info("## TaxApiInterceptor: preHandle(): CI : {}", request.getHeader("ci"));
+        log.info("## TaxApiInterceptor: preHandle(): DevUid : {}", request.getHeader("uid"));
+        log.info("## TaxApiInterceptor: preHandle(): jwtToken : {}", request.getHeader("jwt"));
+
+        MDC.put("ci", request.getHeader("ci"));
+        MDC.put("uid", request.getHeader("uid"));
 
         return true;
     }
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+/*
+        log.info("## postHandle: [1] {}", MDC.get("ci"));
+        Thread.sleep(5000);
+        log.info("## postHandle: [2] {}", MDC.get("ci"));
+*/
     }
 
     @Override
