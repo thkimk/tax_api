@@ -58,4 +58,18 @@ public class TestController {
         return responseService.result(infoList);
     }
 
+
+    @ApiOperation(value = "마디데이터 정기수집", notes = "쿠콘의 배치성데이터를 일단위로 연동하여 마이데이터를 수집한다.")
+    @GetMapping(value = "mydataBankFile")
+    public ApiDataResult mydataBankFile() {
+        return responseService.successResult();
+    }
+
+
+    @ApiOperation(value = "마디데이터 정기수집", notes = "쿠콘의 배치성데이터를 일단위로 연동하여 마이데이터를 수집한다.")
+    @GetMapping(value = "mydataCardFile")
+    public ApiDataResult mydataCardFile() {
+        return responseService.successResult();
+    }
+
 }
