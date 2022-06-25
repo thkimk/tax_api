@@ -1,4 +1,4 @@
-package com.example.apiserver.vo;
+package com.example.apiserver.config.security;
 
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
@@ -11,9 +11,7 @@ import java.util.stream.Collectors;
 @Data
 public class CustomUserDetails implements UserDetails {
 
-    // private String userId;
-    private String userName;
-    private String email;
+    private String username;
     private String password;
 
     /*
@@ -37,19 +35,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return userName;
-    }
-
-    public void setName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+        return username;
     }
 
     @Override

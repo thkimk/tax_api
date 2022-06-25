@@ -114,7 +114,7 @@ public class AuthService {
 
         // JWT 토큰 생성 및 저장
         Cust cust = custRepository.findByCustId(loginVo.getCustId());
-        String jwtToken = jwtTokenProvider.createToken(authInfo.getCustId(), "00");
+        String jwtToken = jwtTokenProvider.createToken(authInfo.getCustId());
         LoginDto loginDto = new LoginDto();
         loginDto.fillCust(cust);
         loginDto.setJwtToken(jwtToken);

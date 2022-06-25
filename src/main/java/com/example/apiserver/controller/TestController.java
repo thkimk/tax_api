@@ -16,7 +16,7 @@ import java.util.Map;
 //@Api(tags = {"0. Test"})
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(value = Constants.API + "/" + Constants.VERSION + "/test")
+@RequestMapping(value = "/test")
 public class TestController {
 
     private final ResponseService responseService;
@@ -56,20 +56,6 @@ public class TestController {
             infoList.add(info);
         }
         return responseService.result(infoList);
-    }
-
-
-    @ApiOperation(value = "마디데이터 정기수집", notes = "쿠콘의 배치성데이터를 일단위로 연동하여 마이데이터를 수집한다.")
-    @GetMapping(value = "mydataBankFile")
-    public ApiDataResult mydataBankFile() {
-        return responseService.successResult();
-    }
-
-
-    @ApiOperation(value = "마디데이터 정기수집", notes = "쿠콘의 배치성데이터를 일단위로 연동하여 마이데이터를 수집한다.")
-    @GetMapping(value = "mydataCardFile")
-    public ApiDataResult mydataCardFile() {
-        return responseService.successResult();
     }
 
 }

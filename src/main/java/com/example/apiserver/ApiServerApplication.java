@@ -16,8 +16,10 @@ public class ApiServerApplication {
 		log.info("## ApiServerApplication(): app starts....");
 	}
 
+/*
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return PasswordEncoderFactories.createDelegatingPasswordEncoder();
 	}
+*/
 }

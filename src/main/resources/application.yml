@@ -27,4 +27,5 @@ management:
 tax:
   kcbMemberKey: P09510000000
   instance: 0
-
+  jwt:
+    secret: testtesttesttesttesttesttesttest

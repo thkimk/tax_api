@@ -32,6 +32,7 @@ public class JwtTokenProvider { // JWT토큰을 생성 및 검증 모듈
 
     @PostConstruct
     protected void init() {
+
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
@@ -47,7 +48,7 @@ public class JwtTokenProvider { // JWT토큰을 생성 및 검증 모듈
                 .signWith(SignatureAlgorithm.HS256, secretKey) // 암호화 알고리즘, 암호키
                 .compact();
     }
-    public String createToken(String custId, String grade) {
+    public String createToken(String custId) {
         Claims claims = Jwts.claims().setSubject(custId);
 //        claims.put("role", grade);
         Date now = new Date();
@@ -61,17 +62,18 @@ public class JwtTokenProvider { // JWT토큰을 생성 및 검증 모듈
 
     // Jwt 토큰으로 인증 정보 조회
     public Authentication getAuthentication(String token) {
-        UserDetails userDetails = customUserDetailService.loadUserByUsername(this.getUserPk(token));
+        UserDetails userDetails = customUserDetailService.loadUserByUsername(this.getCustId(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
     // Jwt 토큰에서 회원 구별 정보 추출
-    public String getUserPk(String token) {
+    public String getCustId(String token) {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
 
     // Request의 Header에서 token 파싱 : "EX-AUTH-TOKN: jwt토큰"
     public String resolveToken(HttpServletRequest req) {
+
         return req.getHeader("jwt");
     }
 
