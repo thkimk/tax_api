@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.slf4j.MDC;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -47,7 +48,8 @@ public class AuthInfo {
     public AuthInfo(SignupVo signupVo, String custId) {
         this.custId = custId;
         this.pin = signupVo.getPin();
-        this.ci = signupVo.getCi();
+        this.ci = MDC.get("ci");
+//        this.ci = signupVo.getCi();
 
         this.createDt = LocalDateTime.now();
 

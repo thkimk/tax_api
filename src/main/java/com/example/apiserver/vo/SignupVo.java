@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class SignupVo {
     String pin;
-    String ci;
+//    String ci;
     String name;
     String email;
     String birth;
