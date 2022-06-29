@@ -1,6 +1,8 @@
 package com.example.apiserver;
 
+import com.example.apiserver.batch.TaxBatch;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +17,8 @@ public class ApiServerApplication {
 		SpringApplication.run(ApiServerApplication.class, args);
 		log.info("## ApiServerApplication(): app starts....");
 	}
+
+
 
 /*
 	@Bean

@@ -5,7 +5,6 @@ import lombok.Data;
 
 @Data
 public class SaveAuthVo {
-    String custId;
     String pin;
     String ci;
     String name;

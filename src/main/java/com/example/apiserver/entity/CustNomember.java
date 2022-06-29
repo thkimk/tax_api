@@ -1,11 +1,13 @@
 package com.example.apiserver.entity;
 
+import com.example.apiserver.Utils;
 import com.example.apiserver.vo.NomemberVo;
 import com.example.apiserver.vo.SignupVo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.slf4j.MDC;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -35,10 +37,10 @@ public class CustNomember {
     private String osType;
 
     public CustNomember(NomemberVo nomemberVo) {
-        this.devUid = nomemberVo.getDevUid();
+        this.devUid = MDC.get("uid");
         this.pushToken = nomemberVo.getPushToken();
         this.isAgree = nomemberVo.getIsAgree();
-        this.osType = nomemberVo.getOsType();
+        this.osType = Utils.osType();
 
     }
 

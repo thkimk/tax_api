@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.slf4j.MDC;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -38,9 +39,6 @@ public class CustInfo {
     @Column()
     private char gender;
 
-    @Column(name="is_marriage")
-    private char isMarriage;
-
     @Column(name="create_dt")
     private LocalDateTime createDt;
 
@@ -56,19 +54,17 @@ public class CustInfo {
         this.birth = signupVo.getBirth();
         this.mobile = signupVo.getMobile();
         this.gender = signupVo.getGender();
-        this.isMarriage = signupVo.getIsMarriage();
         this.createDt = LocalDateTime.now();
 
     }
 
     public CustInfo(SaveAuthVo saveAuthVo) {
-        this.custId = saveAuthVo.getCustId();
+        this.custId = MDC.get("custId");
         this.name = saveAuthVo.getName();
         this.email = saveAuthVo.getEmail();
         this.birth = saveAuthVo.getBirth();
         this.mobile = saveAuthVo.getMobile();
         this.gender = saveAuthVo.getGender();
-        this.isMarriage = saveAuthVo.getIsMarriage();
         this.updateDt = LocalDateTime.now();
 
         this.createDt = LocalDateTime.now();

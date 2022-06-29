@@ -3,6 +3,7 @@ package com.example.apiserver.entity;
 import com.example.apiserver.Constants;
 import com.example.apiserver.Utils;
 import com.example.apiserver.vo.SaveAuthVo;
+import com.example.apiserver.vo.SignupRegVo;
 import com.example.apiserver.vo.SignupVo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -54,6 +55,15 @@ public class Cust {
         this.custStatus = Constants.CUST_ST_NORMAL;
         this.custGrade = Constants.CUST_GR_ASOC;
         
+        this.createDt = LocalDateTime.now();
+
+    }
+
+    public Cust(SignupRegVo signupVo) {
+        this.custId = custId;
+        this.custStatus = Constants.CUST_ST_NORMAL;
+        this.custGrade = Constants.CUST_GR_ASOC;
+
         this.createDt = LocalDateTime.now();
 
     }

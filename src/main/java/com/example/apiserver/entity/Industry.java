@@ -1,6 +1,7 @@
 package com.example.apiserver.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,27 +26,35 @@ public class Industry {
     @Column(length = 200)
     private String name;
 
+    @JsonIgnore
     @Column()
     private BigDecimal simpleExrt;
 
+    @JsonIgnore
     @Column()
     private BigDecimal simpleExrtExc;
 
+    @JsonIgnore
     @Column()
     private BigDecimal standardExrt;
 
+    @JsonIgnore
     @Column(length = 200)
     private String searchTerms;
 
+    @JsonIgnore
     @Column()
     private LocalDateTime createDt;
 
+    @JsonIgnore
     @Column()
     private LocalDateTime updateDt;
 
+    @JsonIgnore
     @Column(length = 50)
     private String creater;
 
+    @JsonIgnore
     @Column(length = 50)
     private String updater;
 

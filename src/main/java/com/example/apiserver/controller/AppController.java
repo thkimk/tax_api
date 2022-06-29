@@ -33,10 +33,10 @@ public class AppController {
 
     @ApiOperation(value = "App 기동시 셋업데이터", notes = "App 기동시 필요한 데이터를 제공한다.")
     @GetMapping(value = "/inits")
-    public ApiDataResult inits(@ApiParam(value = "디바이스 식별키", required = true) @RequestParam String devUid) throws Exception {
-        Utils.logCalled("inits", devUid);
+    public ApiDataResult inits() throws Exception {
+        Utils.logCalled("inits", "");
 
-        AppInitsDto appInitsDto = appService.inits(devUid);
+        AppInitsDto appInitsDto = appService.inits();
         return responseService.result(appInitsDto);
     }
 

@@ -15,6 +15,9 @@ public interface CustRepository extends JpaRepository<Cust, Long> {
     @Query(value="select a.cust_id from cust a order by a.cust_id desc limit 1" , nativeQuery=true)
     String getLastCustId();
 
+    boolean existsByCustId(String custId);
+
+
 }
 
 

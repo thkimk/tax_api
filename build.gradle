@@ -69,6 +69,10 @@ dependencies {
 //	implementation 'it.ozimov:embedded-redis:0.7.2'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+
+	// httpClient
+	implementation 'org.apache.httpcomponents:httpclient:4.5.13'
+
 }
 
 tasks.named('test') {

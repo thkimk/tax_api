@@ -8,17 +8,15 @@ import java.time.LocalDateTime;
 
 @Data
 public class AppInfoDto {
-    private long id;
     private String osName;
-    private String rctVer;
-    private char uptYn;
-    private LocalDateTime applDt;
+    private String recentVersion;
+    private char updateYn;
+    private LocalDateTime applyDt;
 
     public void fill(AppInfo appInfo) {
-        id = appInfo.getId();
         osName = appInfo.getOsName();
-        rctVer = appInfo.getRctVer();
-        uptYn = appInfo.getUptYn();
-        applDt = appInfo.getApplDt();
+        recentVersion = appInfo.getRctVer();
+        updateYn = appInfo.getUptYn();
+        applyDt = appInfo.getApplDt();
     }
 }

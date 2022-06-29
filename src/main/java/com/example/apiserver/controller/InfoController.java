@@ -3,6 +3,7 @@ package com.example.apiserver.controller;
 import com.example.apiserver.Constants;
 import com.example.apiserver.Utils;
 import com.example.apiserver.advice.exception.UserNotFoundException;
+import com.example.apiserver.dto.IndustryDto;
 import com.example.apiserver.dto.JobsDto;
 import com.example.apiserver.dto.TermsDto;
 import com.example.apiserver.entity.Industry;
@@ -20,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Api(tags = {"Info 정보"})
@@ -50,6 +52,7 @@ public class InfoController {
                               @ApiParam(value = "업종명", required = false) @RequestParam(required = false) String name) throws Exception {
         Utils.logCalled("jobs", code+", "+name);
         List<Industry> industries = infoService.jobs(code, name);
+
         return responseService.result(industries);
     }
 

@@ -4,19 +4,22 @@ import lombok.Data;
 
 @Data
 public class SignupVo {
-    String pin;
-//    String ci;
     String name;
-    String email;
     String birth;
-    String mobile;
     char gender;
+    String mobile;
+    String email;
+
     char isMarriage;
-    char isAgreeTerms;
+    char isNewBusin;
+    char isHshld;
+    char isDisorder;
+    char isSinParent;
+    String jobCode;
+
+    String ci;
+    String pin;
     String pushToken;
-    String devUid;
-    String devName;
-    String devOstype;
-    String devOsversion;
+    String agreeTerms;
 
 }

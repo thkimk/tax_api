@@ -56,7 +56,7 @@ public class AuthController {
         return responseService.result(loginDto);
     }
 
-    @ApiOperation(value = "회원 가입", notes = "회원가입 처리를 한다.")
+    @ApiOperation(value = "회원 가입(준회원)", notes = "준회원 회원가입 처리를 한다.")
     @PostMapping(value = "/signup")
     public ApiDataResult signup(@ApiParam(value = "회원가입에 필요한 정보를 전달하고, 회원가입 처리", required = true) @RequestBody SignupVo signupVo) {
         Utils.logCalled("signup", signupVo);
@@ -73,6 +73,16 @@ public class AuthController {
                 .build());
         return responseService.successResult();
 */
+    }
+
+
+    @ApiOperation(value = "회원 가입(정회원)", notes = "정회원 회원가입 처리를 한다.(Regular)")
+    @PostMapping(value = "/signupReg")
+    public ApiDataResult signupReg(@ApiParam(value = "회원가입에 필요한 정보를 전달하고, 회원가입 처리", required = true) @RequestBody SignupRegVo signupRegVo) {
+        Utils.logCalled("signupReg", signupRegVo);
+
+        authService.signupReg(signupRegVo);
+        return responseService.successResult();
     }
 
 

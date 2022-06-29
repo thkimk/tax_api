@@ -11,6 +11,7 @@ import com.example.apiserver.repository.NotiMsgRepository;
 import com.example.apiserver.vo.NomemberVo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,16 +31,23 @@ public class AppService {
     @Autowired
     CustNomemberRepository custNomemberRepository;
 
-    public AppInitsDto inits(String devUid) {
+    public AppInitsDto inits() {
         AppInitsDto appInitsDto = new AppInitsDto();
 
+        // UA 파싱
+        String ua = MDC.get("ua");
+        String[] uas = ua.split(";");
+        String osName = uas[2].equals("Android") ? "AOS" : "IOS";
+
         // app_info 테이블
-        List<AppInfo> appInfos = appInfoRepository.findAll();
-        appInitsDto.fillAppInfos(appInfos);
+        AppInfo appInfo = appInfoRepository.findByOsName(osName);
+        if (appInitsDto != null) {
+            appInitsDto.fillAppInfos(appInfo);
+        }
 
         // noti_msg 테이블
-        List<NotiMsg> notiMsgs = notiMsgRepository.findAll();
-        appInitsDto.fillNotiMsgs(notiMsgs);
+//        List<NotiMsg> notiMsgs = notiMsgRepository.findAll();
+//        appInitsDto.fillNotiMsgs(notiMsgs);
 
         return appInitsDto;
     }

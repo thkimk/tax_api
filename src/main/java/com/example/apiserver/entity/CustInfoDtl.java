@@ -1,8 +1,10 @@
 package com.example.apiserver.entity;
 
+import com.example.apiserver.Utils;
 import com.example.apiserver.vo.SaveJobVo;
 import com.example.apiserver.vo.SignupVo;
 import lombok.*;
+import org.slf4j.MDC;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,7 +25,7 @@ public class CustInfoDtl {
     private String custId;
 
     @Column(name="indst_code", length = 6)
-    private String indstCode;;
+    private String jobCode;;
 
     @Column(name="is_disorder")
     private char isDisorder;
@@ -31,14 +33,17 @@ public class CustInfoDtl {
     @Column(name="is_hshld")
     private char isHshld;
 
-    @Column(name="is_ag_mydata")
-    private char isAgMydata;
+    @Column(name="is_new_busin")
+    private char isNewBusin;
 
-    @Column(name="is_ag_mkrecv")
-    private char isAgMkrecv;
+    @Column(name="is_marriage")
+    private char isMarriage;
 
-    @Column(name="is_new_bsns")
-    private char isNewBsns;
+    @Column(name="is_sin_parent")
+    private char isSinParent;
+
+    @Column(length = 100)
+    private String pushToken;;
 
     @Column(length = 36)
     private String devUid;;
@@ -62,10 +67,24 @@ public class CustInfoDtl {
     public CustInfoDtl(SignupVo signupVo, String custId) {
         this.custId = custId;
 
-        this.devUid = signupVo.getDevUid();
-        this.devName = signupVo.getDevName();
-        this.devOstype = signupVo.getDevOstype();
-        this.devOsversion = signupVo.getDevOsversion();
+        this.jobCode = signupVo.getJobCode();
+
+        this.isDisorder = signupVo.getIsDisorder();
+        this.isHshld = signupVo.getIsHshld();
+        this.isNewBusin = signupVo.getIsNewBusin();
+        this.isMarriage = signupVo.getIsMarriage();
+        this.isSinParent = signupVo.getIsSinParent();
+
+        this.pushToken = signupVo.getPushToken();
+
+
+        String[] devs = Utils.devs();
+        this.devUid = MDC.get("uid");
+        if (devs != null && devs.length == 4) {
+            this.devName = devs[1];
+            this.devOstype = devs[2];
+            this.devOsversion = devs[3];
+        }
 
         this.createDt = LocalDateTime.now();
 
@@ -73,7 +92,7 @@ public class CustInfoDtl {
 
     public void fill(SaveJobVo saveJobVo) {
 
-        indstCode = saveJobVo.getJobCode();
+        jobCode = saveJobVo.getJobCode();
     }
 
 }

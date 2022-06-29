@@ -28,10 +28,12 @@ public class TaxApiInterceptor implements HandlerInterceptor {
         log.info("## TaxApiInterceptor: preHandle(): {}", request.getRequestURI());
         log.info("## TaxApiInterceptor: preHandle(): User-Agent : {}", request.getHeader("User-Agent"));
         log.info("## TaxApiInterceptor: preHandle(): CI : {}", request.getHeader("ci"));
+        log.info("## TaxApiInterceptor: preHandle(): custId : {}", request.getHeader("custId"));
         log.info("## TaxApiInterceptor: preHandle(): DevUid : {}", request.getHeader("uid"));
-        log.info("## TaxApiInterceptor: preHandle(): jwtToken : {}", request.getHeader("jwt"));
+        log.info("## TaxApiInterceptor: preHandle(): jwt : {}", request.getHeader("jwt"));
 
-        MDC.put("ci", request.getHeader("ci"));
+        MDC.put("ua", request.getHeader("User-Agent"));
+        MDC.put("ci", request.getHeader("custId"));
         MDC.put("uid", request.getHeader("uid"));
 
         return true;

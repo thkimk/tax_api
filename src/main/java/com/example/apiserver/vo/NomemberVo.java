@@ -5,9 +5,7 @@ import lombok.Data;
 
 @Data
 public class NomemberVo {
-    String devUid;
     String pushToken;
     char isAgree;
-    String osType;      // AOS, IOS
 
 }

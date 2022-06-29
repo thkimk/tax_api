@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 public class LoginDto {
-    String jwtToken;
+    String jwt;
     String custId;
     String custGrade;
     String custStatus;

@@ -1,5 +1,6 @@
 package com.example.apiserver.service;
 
+import com.example.apiserver.dto.IndustryDto;
 import com.example.apiserver.dto.JobsDto;
 import com.example.apiserver.dto.TermsDto;
 import com.example.apiserver.entity.Industry;

@@ -48,8 +48,8 @@ public class AuthInfo {
     public AuthInfo(SignupVo signupVo, String custId) {
         this.custId = custId;
         this.pin = signupVo.getPin();
-        this.ci = MDC.get("ci");
-//        this.ci = signupVo.getCi();
+//        this.ci = MDC.get("ci");
+        this.ci = signupVo.getCi();
 
         this.createDt = LocalDateTime.now();
 
@@ -57,7 +57,7 @@ public class AuthInfo {
 
 
     public AuthInfo(SaveAuthVo saveAuthVo) {
-        this.custId = saveAuthVo.getCustId();
+        this.custId = MDC.get("custId");
         this.pin = saveAuthVo.getPin();
         this.ci = saveAuthVo.getCi();
 

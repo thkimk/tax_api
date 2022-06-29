@@ -15,6 +15,7 @@ import kcb.module.v3.exception.OkCertException;
 import kcb.org.json.JSONObject;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -67,28 +68,40 @@ public class AuthService {
         SignupDto signupDto = new SignupDto();
 
         // cust 저장
-        Cust cust = new Cust(signupVo, genCustId());
-        custRepository.save(cust);
+        String custId = authInfoRepository.getCustIdByCi(signupVo.getCi());
+        if (custId == null) {
+            custId = genCustId();
+            Cust cust = new Cust(signupVo, custId);
+            custRepository.save(cust);
 
-        // cust_info 저장
-        CustInfo custInfo = new CustInfo(signupVo, cust.getCustId());
-        custInfoRepository.save(custInfo);
+            // cust_info 저장
+            CustInfo custInfo = new CustInfo(signupVo, custId);
+            custInfoRepository.save(custInfo);
 
-        // cust_info_dtl
-        CustInfoDtl custInfoDtl = new CustInfoDtl(signupVo, cust.getCustId());
-        custInfoDtlRepository.save(custInfoDtl);
+            // cust_info_dtl
+            CustInfoDtl custInfoDtl = new CustInfoDtl(signupVo, custId);
+            custInfoDtlRepository.save(custInfoDtl);
 
-        // CustTermsAgmt 저장?? 필요한가~
+            // CustTermsAgmt 저장?? 필요한가~
 //        CustTermsAgmt custTermsAgmt = new CustTermsAgmt(signupVo);
 
-        // auth_info 저장
-        AuthInfo authInfo = new AuthInfo(signupVo, cust.getCustId());
-        authInfoRepository.save(authInfo);
+            // auth_info 저장
+            AuthInfo authInfo = new AuthInfo(signupVo, custId);
+            authInfoRepository.save(authInfo);
+        } else {
+            CustInfoDtl custInfoDtl = custInfoDtlRepository.findByCustId(custId);
+            SignupDto.Additional additional = new SignupDto.Additional(custInfoDtl);
+            signupDto.setAdditional(additional);
+        }
+
+        // JWT 토큰 생성 및 저장
+        String jwt = jwtTokenProvider.createToken(custId);
 
         // return
-        signupDto.setCustId(cust.getCustId());
-        signupDto.setIsSucc('Y');
-        signupDto.setFailMsg("success");
+        signupDto.setJwt(jwt);
+        SignupDto.User user = new SignupDto.User(signupVo);
+        signupDto.setUser(user);
+
         return signupDto;
 /*
 
@@ -103,6 +116,16 @@ public class AuthService {
     }
 
 
+    public void signupReg(SignupRegVo signupRegVo) {
+        SignupDto signupDto = new SignupDto();
+
+        // cust 업데이트 (cust_grade: 준회원 --> 정회원)
+        Cust cust = new Cust(signupRegVo);
+        custRepository.save(cust);
+
+    }
+
+
     public LoginDto login(LoginVo loginVo) {
         // auth_info에서 pin번호 비교 (cust_id가 아이디, pin번호가 패스워드 역할)
         AuthInfo authInfo = authInfoRepository.findByCustId(loginVo.getCustId());
@@ -114,10 +137,10 @@ public class AuthService {
 
         // JWT 토큰 생성 및 저장
         Cust cust = custRepository.findByCustId(loginVo.getCustId());
-        String jwtToken = jwtTokenProvider.createToken(authInfo.getCustId());
+        String jwt = jwtTokenProvider.createToken(authInfo.getCustId());
         LoginDto loginDto = new LoginDto();
         loginDto.fillCust(cust);
-        loginDto.setJwtToken(jwtToken);
+        loginDto.setJwt(jwt);
 
         // login_hst에 이력 저장
 
@@ -126,7 +149,8 @@ public class AuthService {
 
 
     public SaveAuthDto saveAuth(SaveAuthVo saveAuthVo) {
-        AuthInfo authInfo = authInfoRepository.findByCustId(saveAuthVo.getCustId());
+        String custId = MDC.get("custId");
+        AuthInfo authInfo = authInfoRepository.findByCustId(custId);
         if (authInfo == null) {
             throw new UserNotFoundException();
         } else if (!authInfo.getPin().equals(saveAuthVo.getPin())) {
@@ -144,7 +168,7 @@ public class AuthService {
         // return
         SaveAuthDto saveAuthDto = new SaveAuthDto();
 
-        saveAuthDto.setCustId(saveAuthVo.getCustId());
+        saveAuthDto.setCustId(custId);
         saveAuthDto.setIsSucc('Y');
         saveAuthDto.setFailMsg("success");
         return saveAuthDto;
@@ -236,8 +260,6 @@ public class AuthService {
             }
         } catch (OkCertException e) {}
 
-        System.out.println("## "+ reqJson.toString());
-        System.out.println("## "+ resJson.toString());
         return idenOtpConfirmDto;
     }
 

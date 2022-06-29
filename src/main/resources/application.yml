@@ -29,3 +29,8 @@ tax:
   instance: 0
   jwt:
     secret: testtesttesttesttesttesttesttest
+  readTimeout: 5000
+  coocon:
+    client_id: qnM81eEtpIEtR8acDxKLcXNZI4OrVnJM
+    secret: bfUcJjV81k2Ttd56bQSDxpmGuA8PyRmZ
+    url: https://plugin-uat.coocon.co.kr:8443
