@@ -26,12 +26,13 @@ public class Utils {
         else log.info("## [RETURN] {}() : {}", op, object.toString());
     }
 
+    public static String custId() {
+        return MDC.get("custId");
+    }
 
     public static String osType() {
-        String ua = MDC.get("ua");
-        String[] uas = ua.split(";");
-
-        return uas[2].equals("Android") ? "AOS" : "IOS";
+        String[] uas = devs();
+        return uas[2];
     }
 
     /**

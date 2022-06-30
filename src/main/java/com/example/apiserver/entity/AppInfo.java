@@ -24,7 +24,7 @@ public class AppInfo {
     private String rctVer;
 
     @Column(name="upt_yn")
-    private char uptYn;
+    private Character uptYn;
 
     @Column(name="apply_dt")
     private LocalDateTime applDt;

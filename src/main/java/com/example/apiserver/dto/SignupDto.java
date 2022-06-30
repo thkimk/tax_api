@@ -13,7 +13,7 @@ public class SignupDto {
         public String custId;
         public String name;
         public String birth;
-        public char gender;
+        public Character gender;
         public String mobile;
         public String email;
 
@@ -29,11 +29,11 @@ public class SignupDto {
 
     @Data
     public static class Additional {
-        public char isMarriage;
-        public char isNewBusin;
-        public char isHshld;
-        public char isDisorder;
-        public char isSinParent;
+        public Character isMarriage;
+        public Character isNewBusin;
+        public Character isHshld;
+        public Character isDisorder;
+        public Character isSinParent;
         public String jobCode;
 
         public Additional(CustInfoDtl custInfoDtl) {

@@ -1,9 +1,12 @@
 package com.example.apiserver.entity;
 
+import com.example.apiserver.Utils;
+import com.example.apiserver.vo.SignupVo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.slf4j.MDC;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,10 +23,17 @@ import java.time.LocalDateTime;
 @AllArgsConstructor // 인자를 모두 갖춘 생성자를 자동으로 생성한다.
 @Table(name = "dev_info") // 'user' 테이블과 매핑됨을 명시한다.
 public class DevInfo {
-
     @Id
+    @Column(name="cust_id", length = 10)
+    private String custId;
+
+//    @Id
     @Column(length = 36)
-    private String devId;
+    private String devUid;
+
+    @Column(length = 100)
+    private String pushToken;;
+
 
     @Column(length = 50)
     private String devName;
@@ -37,5 +47,18 @@ public class DevInfo {
     @Column()
     private LocalDateTime createDt;
 
+    // 회원가입시 생성
+    public DevInfo(SignupVo signupVo, String custId) {
+        this.custId = custId;
 
+        String[] devs = Utils.devs();
+        this.devName = devs[1];
+        this.osType = devs[2];
+        this.osVer = devs[3];
+        this.devUid = MDC.get("uid");
+        this.pushToken = signupVo.getPushToken();
+
+        this.createDt = LocalDateTime.now();
+
+    }
 }

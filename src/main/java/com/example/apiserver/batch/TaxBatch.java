@@ -22,7 +22,7 @@ public class TaxBatch {
     public TaxBatch(MydataService mydataService) {
         this.mydataService = mydataService;
 
-        callCooconApiToken();
+//kkk        callCooconApiToken();
     }
 
 

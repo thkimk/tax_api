@@ -2,7 +2,9 @@ package com.example.apiserver.controller;
 
 import com.example.apiserver.Constants;
 import com.example.apiserver.Utils;
+import com.example.apiserver.advice.exception.AuthenticationEntryPointException;
 import com.example.apiserver.advice.exception.EmailSigninFailedException;
+import com.example.apiserver.advice.exception.UserNotFoundException;
 import com.example.apiserver.config.security.JwtTokenProvider;
 import com.example.apiserver.dto.*;
 //import com.example.apiserver.entity.User;
@@ -17,6 +19,7 @@ import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,6 +37,9 @@ public class AuthController {
 
     @Autowired
     AuthService authService;
+
+    @Value("tax.token")
+    private String taxToken;
 
 //    private final UserJpaRepository userJpaRepo; // jpa 쿼리 활용
     private final JwtTokenProvider jwtTokenProvider; // jwt 토큰 생성
@@ -80,6 +86,9 @@ public class AuthController {
     @PostMapping(value = "/signupReg")
     public ApiDataResult signupReg(@ApiParam(value = "회원가입에 필요한 정보를 전달하고, 회원가입 처리", required = true) @RequestBody SignupRegVo signupRegVo) {
         Utils.logCalled("signupReg", signupRegVo);
+        if (!signupRegVo.getTaxToken().equals(taxToken)) {
+            throw new AuthenticationEntryPointException();
+        }
 
         authService.signupReg(signupRegVo);
         return responseService.successResult();

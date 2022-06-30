@@ -1,5 +1,6 @@
 package com.example.apiserver.service;
 
+import com.example.apiserver.Utils;
 import com.example.apiserver.dto.AppInitsDto;
 import com.example.apiserver.entity.AppInfo;
 import com.example.apiserver.entity.CustInfo;
@@ -35,9 +36,7 @@ public class AppService {
         AppInitsDto appInitsDto = new AppInitsDto();
 
         // UA 파싱
-        String ua = MDC.get("ua");
-        String[] uas = ua.split(";");
-        String osName = uas[2].equals("Android") ? "AOS" : "IOS";
+        String osName = Utils.osType();
 
         // app_info 테이블
         AppInfo appInfo = appInfoRepository.findByOsName(osName);

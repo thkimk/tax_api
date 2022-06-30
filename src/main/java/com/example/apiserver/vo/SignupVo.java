@@ -16,6 +16,7 @@ public class SignupVo {
     char isDisorder;
     char isSinParent;
     String jobCode;
+    String income;
 
     String ci;
     String pin;

@@ -40,6 +40,7 @@ public class ExceptionAdvice {
 
     /* 예외처리 핸들러 종류별 구현 */
 
+/*
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     protected ApiDataResult defaultException(HttpServletRequest request, Exception e) {
@@ -49,6 +50,7 @@ public class ExceptionAdvice {
         // 예외 처리 메시지를 MessageSource에서 가져오도록 수정, exception_ko.yml 파일에서 가져온 것임
         // getFailResult : setSuccess, setCode, setMsg
     }
+*/
 
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

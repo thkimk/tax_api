@@ -3,6 +3,7 @@ package com.example.apiserver.entity;
 import com.example.apiserver.Utils;
 import com.example.apiserver.vo.SaveJobVo;
 import com.example.apiserver.vo.SignupVo;
+import io.micrometer.core.lang.Nullable;
 import lombok.*;
 import org.slf4j.MDC;
 
@@ -21,27 +22,31 @@ import java.time.LocalDateTime;
 public class CustInfoDtl {
 
     @Id
-    @Column(name="cust_id", length = 9)
+    @Column(name="cust_id", length = 10)
     private String custId;
 
     @Column(name="indst_code", length = 6)
-    private String jobCode;;
+    private String jobCode;
+
+    @Column(length = 20)
+    private String income;
 
     @Column(name="is_disorder")
-    private char isDisorder;
+    private Character isDisorder;
 
     @Column(name="is_hshld")
-    private char isHshld;
+    private Character isHshld;
 
     @Column(name="is_new_busin")
-    private char isNewBusin;
+    private Character isNewBusin;
 
     @Column(name="is_marriage")
-    private char isMarriage;
+    private Character isMarriage;
 
     @Column(name="is_sin_parent")
-    private char isSinParent;
+    private Character isSinParent;
 
+/*
     @Column(length = 100)
     private String pushToken;;
 
@@ -56,6 +61,7 @@ public class CustInfoDtl {
 
     @Column(length = 20)
     private String devOsversion;;
+*/
 
     @Column(name="create_dt")
     private LocalDateTime createDt;
@@ -68,6 +74,7 @@ public class CustInfoDtl {
         this.custId = custId;
 
         this.jobCode = signupVo.getJobCode();
+        this.income = signupVo.getIncome();
 
         this.isDisorder = signupVo.getIsDisorder();
         this.isHshld = signupVo.getIsHshld();
@@ -75,6 +82,7 @@ public class CustInfoDtl {
         this.isMarriage = signupVo.getIsMarriage();
         this.isSinParent = signupVo.getIsSinParent();
 
+/*
         this.pushToken = signupVo.getPushToken();
 
 
@@ -85,6 +93,7 @@ public class CustInfoDtl {
             this.devOstype = devs[2];
             this.devOsversion = devs[3];
         }
+*/
 
         this.createDt = LocalDateTime.now();
 
@@ -93,6 +102,7 @@ public class CustInfoDtl {
     public void fill(SaveJobVo saveJobVo) {
 
         jobCode = saveJobVo.getJobCode();
+        income = saveJobVo.getIncome();
     }
 
 }

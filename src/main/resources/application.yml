@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: local
+    active: home
   messages:
     basename: i18n/exception
     encoding: UTF-8
@@ -34,3 +34,4 @@ tax:
     client_id: qnM81eEtpIEtR8acDxKLcXNZI4OrVnJM
     secret: bfUcJjV81k2Ttd56bQSDxpmGuA8PyRmZ
     url: https://plugin-uat.coocon.co.kr:8443
+  tax_token: "taxtoken0001"

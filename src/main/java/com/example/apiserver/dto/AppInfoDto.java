@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 public class AppInfoDto {
     private String osName;
     private String recentVersion;
-    private char updateYn;
+    private Character updateYn;
     private LocalDateTime applyDt;
 
     public void fill(AppInfo appInfo) {

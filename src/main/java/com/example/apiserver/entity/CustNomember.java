@@ -31,7 +31,7 @@ public class CustNomember {
     private String pushToken;
 
     @Column()
-    private char isAgree;
+    private Character isAgree;
 
     @Column()
     private String osType;

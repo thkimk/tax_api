@@ -29,7 +29,7 @@ public class InfoService {
 
 
     public List<Terms> terms() {
-        return termsRepository.findAll();
+        return termsRepository.findAllByViewYn('Y');
     }
 
 

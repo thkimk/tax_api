@@ -12,7 +12,7 @@ import java.util.List;
 public class AppInitsDto {
     private String osName;
     private String recentVersion;
-    private char updateYn;
+    private Character updateYn;
     private LocalDateTime applyDt;
 
 

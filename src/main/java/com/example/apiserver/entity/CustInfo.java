@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 public class CustInfo {
 
     @Id
-    @Column(name="cust_id", length = 9)
+    @Column(name="cust_id", length = 10)
     private String custId;
 
     @Column(length = 50)
@@ -37,7 +37,7 @@ public class CustInfo {
     private String mobile;
 
     @Column()
-    private char gender;
+    private Character gender;
 
     @Column(name="create_dt")
     private LocalDateTime createDt;

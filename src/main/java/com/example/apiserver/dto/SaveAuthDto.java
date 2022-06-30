@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 public class SaveAuthDto {
     String custId;
-    char isSucc;
+    Character isSucc;
     String failMsg;
 
 }

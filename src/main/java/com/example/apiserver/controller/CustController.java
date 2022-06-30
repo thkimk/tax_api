@@ -89,6 +89,8 @@ public class CustController {
     @PostMapping(value = "/saveJob")
     public ApiDataResult saveJob(@ApiParam(value = "회원ID : 이메일", required = true) @RequestBody SaveJobVo saveJobVo) {
         Utils.logCalled("saveJob", saveJobVo);
+        saveJobVo.setCustId(Utils.custId());
+
         // cust_info_dtl 업데이트 필요
         custService.saveJob(saveJobVo);
 
@@ -100,6 +102,8 @@ public class CustController {
     @PostMapping(value = "/saveFamily")
     public ApiDataResult saveFamily(@ApiParam(value = "회원ID : 이메일", required = true) @RequestBody SaveFamilyVo saveFamilyVo) {
         Utils.logCalled("saveFamily", saveFamilyVo);
+        saveFamilyVo.setCustId(Utils.custId());
+
         // cust_info_dtl 업데이트 필요
         custService.saveFamily(saveFamilyVo);
 

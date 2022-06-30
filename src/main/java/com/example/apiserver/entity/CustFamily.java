@@ -25,7 +25,7 @@ public class CustFamily {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long familySeq;
 
-    @Column(name="cust_id", length = 9)
+    @Column(name="cust_id", length = 10)
     private String custId;
 
     @Column(name="family", length = 2)
@@ -35,7 +35,7 @@ public class CustFamily {
     private LocalDate birth;
 
     @Column(name="is_disorder")
-    private char isDisorder;
+    private Character isDisorder;
 
     @Column(name="create_dt")
     private LocalDateTime createDt;

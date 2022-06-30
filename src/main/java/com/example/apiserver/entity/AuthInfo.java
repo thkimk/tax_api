@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 @Table(name = "auth_info") // 'user' 테이블과 매핑됨을 명시한다.
 public class AuthInfo {
     @Id
-    @Column(name="cust_id", length = 9)
+    @Column(name="cust_id", length = 10)
     private String custId;
 
     @Column(length = 256)

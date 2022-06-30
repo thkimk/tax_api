@@ -1,6 +1,7 @@
 package com.example.apiserver.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,21 +26,29 @@ public class Terms {
     private String termsName;
 
     @Column(length = 5)
+    @JsonIgnore
     private String termsVersion;
 
     @Column(length = 2)
     private String termsType;
 
     @Column()
+    @JsonIgnore
     private char viewYn;
 
     @Column(length = 2000)
+    @JsonIgnore
     private String termsStmt;
 
+    @Column(length = 200)
+    private String url;
+
     @Column()
+    @JsonIgnore
     private LocalDateTime createDt;
 
     @Column(length = 50)
+    @JsonIgnore
     private String creater;
 
 }

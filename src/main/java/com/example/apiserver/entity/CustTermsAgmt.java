@@ -22,14 +22,14 @@ import java.time.LocalDateTime;
 public class CustTermsAgmt {
 
     @Id
-    @Column(name="cust_id", length = 9)
+    @Column(name="cust_id", length = 10)
     private String custId;
 
     @Column()
     private long termsId;
 
     @Column()
-    private char isAgree;
+    private Character isAgree;
 
     @Column()
     private LocalDateTime agmtDt;

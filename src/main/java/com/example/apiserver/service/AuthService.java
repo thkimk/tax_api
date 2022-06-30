@@ -6,10 +6,7 @@ import com.example.apiserver.advice.exception.UserNotFoundException;
 import com.example.apiserver.config.security.JwtTokenProvider;
 import com.example.apiserver.dto.*;
 import com.example.apiserver.entity.*;
-import com.example.apiserver.repository.AuthInfoRepository;
-import com.example.apiserver.repository.CustInfoDtlRepository;
-import com.example.apiserver.repository.CustInfoRepository;
-import com.example.apiserver.repository.CustRepository;
+import com.example.apiserver.repository.*;
 import com.example.apiserver.vo.*;
 import kcb.module.v3.exception.OkCertException;
 import kcb.org.json.JSONObject;
@@ -50,6 +47,9 @@ public class AuthService {
     @Autowired
     CustInfoDtlRepository custInfoDtlRepository;
 
+    @Autowired
+    DevInfoRepository devInfoRepository;
+
 
     public String genCustId() {
         String custId = custRepository.getLastCustId();
@@ -81,6 +81,10 @@ public class AuthService {
             // cust_info_dtl
             CustInfoDtl custInfoDtl = new CustInfoDtl(signupVo, custId);
             custInfoDtlRepository.save(custInfoDtl);
+
+            // dev_info
+            DevInfo devInfo = new DevInfo(signupVo, custId);
+            devInfoRepository.save(devInfo);
 
             // CustTermsAgmt 저장?? 필요한가~
 //        CustTermsAgmt custTermsAgmt = new CustTermsAgmt(signupVo);

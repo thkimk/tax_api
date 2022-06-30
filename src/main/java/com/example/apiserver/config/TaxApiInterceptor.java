@@ -27,13 +27,12 @@ public class TaxApiInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         log.info("## TaxApiInterceptor: preHandle(): {}", request.getRequestURI());
         log.info("## TaxApiInterceptor: preHandle(): User-Agent : {}", request.getHeader("User-Agent"));
-        log.info("## TaxApiInterceptor: preHandle(): CI : {}", request.getHeader("ci"));
         log.info("## TaxApiInterceptor: preHandle(): custId : {}", request.getHeader("custId"));
         log.info("## TaxApiInterceptor: preHandle(): DevUid : {}", request.getHeader("uid"));
         log.info("## TaxApiInterceptor: preHandle(): jwt : {}", request.getHeader("jwt"));
 
         MDC.put("ua", request.getHeader("User-Agent"));
-        MDC.put("ci", request.getHeader("custId"));
+        MDC.put("custId", request.getHeader("custId"));
         MDC.put("uid", request.getHeader("uid"));
 
         return true;
