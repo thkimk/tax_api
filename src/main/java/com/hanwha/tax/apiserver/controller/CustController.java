@@ -94,7 +94,7 @@ public class CustController {
         // cust_info_dtl 업데이트 필요
         custService.saveJob(saveJobVo);
 
-        return responseService.result(new String("saveJob result"));
+        return responseService.successResult();
     }
 
 
