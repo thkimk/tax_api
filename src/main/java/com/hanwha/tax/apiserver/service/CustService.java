@@ -45,7 +45,7 @@ public class CustService {
     }
 
 
-    public String saveFamily(SaveFamilyVo saveFamilyVo) {
+    public void saveFamily(SaveFamilyVo saveFamilyVo) {
         List<CustFamily> custFamilies = new ArrayList<>();
         for (SaveFamilyVo.Family family : saveFamilyVo.getFamilies()) {
             CustFamily custFamily = new CustFamily(saveFamilyVo.getCustId(), family);
@@ -56,7 +56,7 @@ public class CustService {
         if (custFamilies.size() > 0) {
             custFamilyRepository.saveAll(custFamilies);
         }
-        return Constants.CODE_RET_OK;
+//        return Constants.CODE_RET_OK;
     }
 
 }

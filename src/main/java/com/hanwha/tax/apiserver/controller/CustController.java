@@ -107,7 +107,7 @@ public class CustController {
         // cust_info_dtl 업데이트 필요
         custService.saveFamily(saveFamilyVo);
 
-        return responseService.result(new String("saveJob result"));
+        return responseService.successResult();
     }
 
 }

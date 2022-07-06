@@ -43,6 +43,10 @@ public class CustInfoDtl {
     @Column(name="is_sin_parent")
     private Character isSinParent;
 
+    public Character getIsDisorder() {
+        return isDisorder == null? Character.valueOf(' ') : isDisorder;
+    }
+
 /*
     @Column(length = 100)
     private String pushToken;;

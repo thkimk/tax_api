@@ -50,17 +50,22 @@ public class AuthService {
     @Autowired
     LoginHstRepository loginHstRepository;
 
+    @Autowired
+    CustTermsAgmtRepository custTermsAgmtRepository;
+
 
     public String genCustId() {
         String custId = custRepository.getLastCustId();
-        int currentId = 0;
+
         String yymm = LocalDate.now().format(DateTimeFormatter.ofPattern("YYMM"));
-        if (custId.startsWith(yymm)) {
-            currentId = Integer.parseInt(custId.substring(4));
+        if (custId == null) {
+            return yymm.concat("000001");
         }
 
-        String rand = String.format("%06d", currentId+1);
-        return yymm.concat(rand);
+        int lastId = Integer.parseInt(custId.substring(4));
+        String tmp = String.format("%06d", lastId+1);
+
+        return yymm.concat(tmp);
     }
 
 
@@ -70,6 +75,7 @@ public class AuthService {
         // cust 저장
         String custId = authInfoRepository.getCustIdByCi(signupVo.getCi());
         if (custId == null) {
+            // cust 저장
             custId = genCustId();
             Cust cust = new Cust(signupVo, custId);
             custRepository.save(cust);
@@ -86,17 +92,23 @@ public class AuthService {
             DevInfo devInfo = new DevInfo(signupVo, custId);
             devInfoRepository.save(devInfo);
 
-            // CustTermsAgmt 저장?? 필요한가~
-//        CustTermsAgmt custTermsAgmt = new CustTermsAgmt(signupVo);
+            // CustTermsAgmt 저장 (약관동의에서, 서비스/필수/선택 약관에 대한 동의사항)
+            CustTermsAgmt custTermsAgmt = new CustTermsAgmt(signupVo);
+            custTermsAgmtRepository.save(custTermsAgmt);
+
+            // NotiSetting 저장 (약관동의에서, 푸시/SMS/이메일/알림톡 수신에 대한 동의사항)
+
 
             // auth_info 저장
             AuthInfo authInfo = new AuthInfo(signupVo, custId);
             authInfoRepository.save(authInfo);
+
         } else {
             CustInfoDtl custInfoDtl = custInfoDtlRepository.findByCustId(custId);
             SignupDto.Additional additional = new SignupDto.Additional(custInfoDtl);
             signupDto.setAdditional(additional);
         }
+        MDC.put("custId", custId);
 
         // JWT 토큰 생성 및 저장
         String jwt = jwtTokenProvider.createToken(custId);
@@ -155,30 +167,25 @@ public class AuthService {
     }
 
 
-    public SaveAuthDto saveAuth(SaveAuthVo saveAuthVo) {
+    public void saveAuth(SaveAuthVo saveAuthVo) {
         String custId = MDC.get("custId");
         AuthInfo authInfo = authInfoRepository.findByCustId(custId);
         if (authInfo == null) {
             throw new UserNotFoundException();
-        } else if (!authInfo.getPin().equals(saveAuthVo.getPin())) {
-            throw new UserNotFoundException();
         }
 
-        // cust_info 저장
-        CustInfo custInfo = new CustInfo(saveAuthVo);
-        custInfoRepository.save(custInfo);
-
         // auth_info 저장
-        authInfo = new AuthInfo(saveAuthVo);
+        authInfo.fill(saveAuthVo);
         authInfoRepository.save(authInfo);
 
+/*
         // return
         SaveAuthDto saveAuthDto = new SaveAuthDto();
 
         saveAuthDto.setCustId(custId);
         saveAuthDto.setIsSucc('Y');
         saveAuthDto.setFailMsg("success");
-        return saveAuthDto;
+*/
     }
 
 

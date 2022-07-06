@@ -56,13 +56,13 @@ public class AuthInfo {
     }
 
 
-    public AuthInfo(SaveAuthVo saveAuthVo) {
-        this.custId = MDC.get("custId");
+    public void fill(SaveAuthVo saveAuthVo) {
+//        this.custId = MDC.get("custId");
         this.pin = saveAuthVo.getPin();
-        this.ci = saveAuthVo.getCi();
+//        this.ci = saveAuthVo.getCi();
 
         this.updateDt = LocalDateTime.now();
-        this.createDt = LocalDateTime.now();
+//        this.createDt = LocalDateTime.now();
 
     }
 

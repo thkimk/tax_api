@@ -2,6 +2,7 @@ package com.hanwha.tax.apiserver.service;
 
 import com.hanwha.tax.apiserver.Utils;
 import com.hanwha.tax.apiserver.dto.AppInitsDto;
+import com.hanwha.tax.apiserver.dto.MainMenuDto;
 import com.hanwha.tax.apiserver.entity.AppInfo;
 import com.hanwha.tax.apiserver.entity.CustNomember;
 import com.hanwha.tax.apiserver.repository.AppInfoRepository;
@@ -35,7 +36,7 @@ public class AppService {
 
         // app_info 테이블
         AppInfo appInfo = appInfoRepository.findByOsName(osName);
-        if (appInitsDto != null) {
+        if (appInfo != null) {
             appInitsDto.fillAppInfos(appInfo);
         }
 
@@ -52,6 +53,12 @@ public class AppService {
             CustNomember custNomember = new CustNomember(nomemberVo);
             custNomemberRepository.save(custNomember);
         }
+    }
+
+
+    public MainMenuDto mainMenu(String custGrade) {
+        MainMenuDto mainMenuDto = new MainMenuDto();
+        return mainMenuDto;
     }
 
 }

@@ -60,6 +60,18 @@ public class JwtTokenProvider { // JWT토큰을 생성 및 검증 모듈
                 .compact();
     }
 
+    public String createTokenCoocon() {
+        Claims claims = Jwts.claims().setSubject("Coocon");
+//        claims.put("role", grade);
+        Date now = new Date();
+        return Jwts.builder()
+                .setClaims(claims) // 데이터
+                .setIssuedAt(now) // 토큰 발행일자
+                .setExpiration(new Date(now.getTime() + 1000L * 60 * 60 * 24 * 365 * 10)) // 토큰 유효시간 설정
+                .signWith(SignatureAlgorithm.HS256, secretKey) // 암호화 알고리즘, 암호키
+                .compact();
+    }
+
     // Jwt 토큰으로 인증 정보 조회
     public Authentication getAuthentication(String token) {
         UserDetails userDetails = customUserDetailService.loadUserByUsername(this.getCustId(token));

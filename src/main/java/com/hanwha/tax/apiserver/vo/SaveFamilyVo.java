@@ -14,7 +14,7 @@ public class SaveFamilyVo {
     public static class Family {
         String family;
         String birth;
-        char isDisorder;
+        Character isDisorder;
 
     }
 }

@@ -4,7 +4,7 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://10.254.1.18:3306/tax_db?autoReconnection=true&useSSL=false&allowMultiQueries=true
+    url: jdbc:mysql://10.254.1.18:3306/tax_db2?autoReconnection=true&useSSL=false&allowMultiQueries=true
 #    url: jdbc:mysql://172.30.1.15:3306/tax_db?autoReconnection=true&useSSL=false&allowMultiQueries=true
     username: root
     password: welcome

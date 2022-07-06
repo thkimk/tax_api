@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class CooconIncome {
+public class AuthorizeDto {
     String ci;
 }

@@ -2,31 +2,29 @@ package com.hanwha.tax.apiserver.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-import lombok.Value;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Data
-public class IncomeDto {
+public class ExpenseDto {
     @JsonProperty("rsp_code")
     private String rspCode;
 
     @JsonProperty("rsp_message")
     private String rspMessage;
 
-    @JsonProperty("incomes_list_cnt")
-    private Integer incomesListCnt;
+    @JsonProperty("expense_list_cnt")
+    private Integer expenseListCnt;
 
-    @JsonProperty("incomes_list")
-    private List<Income> incomesList;
+    @JsonProperty("expense_list")
+    private List<Expense> expenseList;
 
     @Data
-    public static class Income {
+    public static class Expense {
         String year;
         String month;
         Long total;
-        Character tyle;
+        String category;
         Integer count;
     }
 

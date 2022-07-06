@@ -33,7 +33,7 @@ public class CustTermsAgmt {
     @Column()
     private LocalDateTime agmtDt;
 
-    CustTermsAgmt(SignupVo signupVo) {
+    public CustTermsAgmt(SignupVo signupVo) {
         this.custId = "0000";
         this.isAgree = 'Y';
         this.agmtDt = LocalDateTime.now();

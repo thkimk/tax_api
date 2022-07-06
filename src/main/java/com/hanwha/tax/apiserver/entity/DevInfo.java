@@ -30,7 +30,7 @@ public class DevInfo {
     @Column(length = 36)
     private String devUid;
 
-    @Column(length = 100)
+    @Column(length = 200)
     private String pushToken;;
 
 

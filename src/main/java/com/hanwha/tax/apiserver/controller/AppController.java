@@ -3,6 +3,7 @@ package com.hanwha.tax.apiserver.controller;
 import com.hanwha.tax.apiserver.Constants;
 import com.hanwha.tax.apiserver.Utils;
 import com.hanwha.tax.apiserver.dto.AppInitsDto;
+import com.hanwha.tax.apiserver.dto.MainMenuDto;
 import com.hanwha.tax.apiserver.model.response.ApiDataResult;
 import com.hanwha.tax.apiserver.service.AppService;
 import com.hanwha.tax.apiserver.service.ResponseService;
@@ -45,6 +46,16 @@ public class AppController {
         appService.nomember(nomemberVo);
 
         return responseService.successResult();
+    }
+
+
+    @ApiOperation(value = "메인메뉴 정보", notes = "App 기동시, 고객 등급에 따른 메인메뉴 정보를 제공한다.")
+    @GetMapping(value = "/mainMenu")
+    public ApiDataResult mainMenu(@RequestParam String custGrade) throws Exception {
+        Utils.logCalled("mainMenu", custGrade);
+        MainMenuDto mainMenuDto = appService.mainMenu(custGrade);
+
+        return responseService.result(mainMenuDto);
     }
 
 }

@@ -50,6 +50,7 @@ dependencies {
 
 	// added
 	implementation files('libs/OkCert3-java1.5-2.3.1.jar')
+	implementation files('libs/pluginCrypt_v1.0.jar')
 //	implementation fileTree(dir: 'libs', include: ['*.jar'])
 
 	// gson: JsonObject/Array

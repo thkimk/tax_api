@@ -106,9 +106,9 @@ public class AuthController {
     public ApiDataResult saveAuth(@RequestBody SaveAuthVo saveAuthVo) {
         Utils.logCalled("saveAuth", saveAuthVo);
 
-        SaveAuthDto saveAuthDto = authService.saveAuth(saveAuthVo);
+        authService.saveAuth(saveAuthVo);
 
-        return responseService.result(new String("saveAuth result"));
+        return responseService.successResult();
     }
 
 

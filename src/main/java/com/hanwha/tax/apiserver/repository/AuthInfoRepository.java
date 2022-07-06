@@ -12,4 +12,8 @@ public interface AuthInfoRepository extends JpaRepository<AuthInfo, Long> {
     @Query(value="select a.cust_id from auth_info a where a.ci=:ci" , nativeQuery=true)
     String getCustIdByCi(@Param("ci") String ci);
     String findCustIdByCi(String ci);
+
+    @Query(value="select a.ci from auth_info a where a.cust_id=:custId" , nativeQuery=true)
+    String getCiByCustId(@Param("custId") String custId);
+
 }
