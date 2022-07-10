@@ -1,12 +1,12 @@
 package com.hanwha.tax.apiserver.entity;
 
+import com.hanwha.tax.apiserver.Utils;
 import com.hanwha.tax.apiserver.vo.SaveAuthVo;
 import com.hanwha.tax.apiserver.vo.SignupVo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.slf4j.MDC;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -21,7 +21,7 @@ public class CustInfo {
 
     @Id
     @Column(name="cust_id", length = 10)
-    private String custId;
+    private String cid;
 
     @Column(length = 50)
     private String name;
@@ -47,7 +47,7 @@ public class CustInfo {
 
     // 회원가입시 생성
     public CustInfo(SignupVo signupVo, String custId) {
-        this.custId = custId;
+        this.cid = custId;
         this.name = signupVo.getName();
         this.email = signupVo.getEmail();
         this.birth = signupVo.getBirth();
@@ -58,7 +58,7 @@ public class CustInfo {
     }
 
     public CustInfo(SaveAuthVo saveAuthVo) {
-        this.custId = MDC.get("custId");
+        this.cid = Utils.cid();
         this.name = saveAuthVo.getName();
         this.email = saveAuthVo.getEmail();
         this.birth = saveAuthVo.getBirth();

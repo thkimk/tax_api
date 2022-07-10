@@ -21,7 +21,7 @@ public class Cust {
 
     @Id
     @Column(name="cust_id", length = 10)
-    private String custId;
+    private String cid;
 
     @Column(name="cust_status", length = 2)
     private String custStatus;
@@ -49,7 +49,7 @@ public class Cust {
 
     // 회원가입시 생성
     public Cust(SignupVo signupVo, String custId) {
-        this.custId = custId;
+        this.cid = custId;
         this.custStatus = Constants.CUST_ST_NORMAL;
         this.custGrade = Constants.CUST_GR_ASOC;
         
@@ -58,7 +58,7 @@ public class Cust {
     }
 
     public Cust(SignupRegVo signupVo) {
-        this.custId = custId;
+//        this.custId = custId;
         this.custStatus = Constants.CUST_ST_NORMAL;
         this.custGrade = Constants.CUST_GR_ASOC;
 

@@ -1,15 +1,15 @@
 package com.hanwha.tax.apiserver.dto;
 
+import com.hanwha.tax.apiserver.Utils;
 import com.hanwha.tax.apiserver.entity.CustInfoDtl;
 import com.hanwha.tax.apiserver.vo.SignupVo;
 import lombok.Data;
-import org.slf4j.MDC;
 
 @Data
 public class SignupDto {
     @Data
     public static class User {
-        public String custId;
+        public String cid;
         public String name;
         public String birth;
         public Character gender;
@@ -17,7 +17,7 @@ public class SignupDto {
         public String email;
 
         public User(SignupVo signupVo) {
-            custId = MDC.get("custId");
+            cid = Utils.cid();
             name = signupVo.getName();
             birth = signupVo.getBirth();
             gender = signupVo.getGender();

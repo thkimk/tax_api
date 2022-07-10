@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: local
+    active: home
   messages:
     basename: i18n/exception
     encoding: UTF-8

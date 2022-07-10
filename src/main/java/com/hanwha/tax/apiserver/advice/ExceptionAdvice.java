@@ -1,5 +1,6 @@
 package com.hanwha.tax.apiserver.advice;
 
+import com.hanwha.tax.apiserver.advice.exception.InvalidInputValueException;
 import com.hanwha.tax.apiserver.model.response.ApiDataResult;
 import com.hanwha.tax.apiserver.advice.exception.AuthenticationEntryPointException;
 import com.hanwha.tax.apiserver.advice.exception.EmailSigninFailedException;
@@ -49,6 +50,12 @@ public class ExceptionAdvice {
         // getFailResult : setSuccess, setCode, setMsg
     }
 */
+    @ExceptionHandler(InvalidInputValueException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    protected ApiDataResult invalidInputValueException(HttpServletRequest request, InvalidInputValueException e) {
+        // CommonResult : 응답 결과에 대한 정보
+        return responseService.failResult(Integer.valueOf(getMessage("invalidInputValue.code")), getMessage("invalidInputValue.msg"));
+    }
 
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

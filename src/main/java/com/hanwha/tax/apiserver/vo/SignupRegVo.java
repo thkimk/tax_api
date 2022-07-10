@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class SignupRegVo {
-    String custId;
+    String cid;
     String taxToken;
     String ci;
     String name;

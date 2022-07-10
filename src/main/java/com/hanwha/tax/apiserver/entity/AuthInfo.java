@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.slf4j.MDC;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -21,7 +20,7 @@ import java.time.LocalDateTime;
 public class AuthInfo {
     @Id
     @Column(name="cust_id", length = 10)
-    private String custId;
+    private String cid;
 
     @Column(length = 256)
     private String pin;
@@ -30,7 +29,7 @@ public class AuthInfo {
     private String ci;
 
     @Column(name="is_main")
-    private char isMain;
+    private Character isMain;
 
     @Column(name="auth_status", length = 2)
     private String authStatus;
@@ -46,7 +45,7 @@ public class AuthInfo {
 
 
     public AuthInfo(SignupVo signupVo, String custId) {
-        this.custId = custId;
+        this.cid = custId;
         this.pin = signupVo.getPin();
 //        this.ci = MDC.get("ci");
         this.ci = signupVo.getCi();

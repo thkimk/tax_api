@@ -10,6 +10,8 @@ import net.bytebuddy.utility.RandomString;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Random;
 
 
@@ -51,12 +53,14 @@ public class Utils {
         }
     }
 
-    public static String custId() {
-        return MDC.get("custId");
+    public static String cid() {
+        return MDC.get("cid");
     }
 
     public static String osType() {
         String[] uas = devs();
+        if (uas == null || uas.length < 3) return "NONE";
+
         return uas[2];
     }
 
@@ -99,5 +103,9 @@ public class Utils {
         return authInfoRepository.getCiByCustId(custId());
     }*/
 
+
+    public static String yyyymmdd() {
+        return LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+    }
 
 }

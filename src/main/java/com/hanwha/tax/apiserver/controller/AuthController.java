@@ -45,7 +45,7 @@ public class AuthController {
     @PostMapping(value = "/login")
     public ApiDataResult login(@ApiParam(value = "회원ID : 이메일", required = true) @RequestBody LoginVo loginVo) {
         Utils.logCalled("login", loginVo);
-        loginVo.setCustId(Utils.custId());
+        loginVo.setCid(Utils.cid());
 /*
         User user = userJpaRepo.findByUid(id).orElseThrow(EmailSigninFailedException::new);
         if (!passwordEncoder.matches(password, user.getPassword()))

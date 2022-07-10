@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class LoginVo {
-    String custId;
+    String cid;
     String pin;
     String pushToken;
 

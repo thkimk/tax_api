@@ -1,6 +1,7 @@
 package com.hanwha.tax.apiserver.service;
 
 import com.hanwha.tax.apiserver.Utils;
+import com.hanwha.tax.apiserver.advice.exception.InvalidInputValueException;
 import com.hanwha.tax.apiserver.dto.AppInitsDto;
 import com.hanwha.tax.apiserver.dto.MainMenuDto;
 import com.hanwha.tax.apiserver.entity.AppInfo;
@@ -33,6 +34,9 @@ public class AppService {
 
         // UA 파싱
         String osName = Utils.osType();
+        if (osName.equals("NONE")) {
+            throw new InvalidInputValueException("Invalid OS");
+        }
 
         // app_info 테이블
         AppInfo appInfo = appInfoRepository.findByOsName(osName);

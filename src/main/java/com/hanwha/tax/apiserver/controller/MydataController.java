@@ -3,13 +3,16 @@ package com.hanwha.tax.apiserver.controller;
 
 import com.hanwha.tax.apiserver.Constants;
 import com.hanwha.tax.apiserver.Utils;
-import com.hanwha.tax.apiserver.dto.CCAuthorizeDto;
-import com.hanwha.tax.apiserver.dto.ExpenseDto;
-import com.hanwha.tax.apiserver.dto.IncomeDto;
+import com.hanwha.tax.apiserver.dto.CcAuthorizeDto;
+import com.hanwha.tax.apiserver.dto.CcExpenseDto;
+import com.hanwha.tax.apiserver.dto.CcIncomeDto;
+import com.hanwha.tax.apiserver.entity.TotalIncome;
+import com.hanwha.tax.apiserver.entity.TotalOutgoing;
 import com.hanwha.tax.apiserver.model.response.ApiDataResult;
 import com.hanwha.tax.apiserver.service.MydataService;
 import com.hanwha.tax.apiserver.service.ResponseService;
-import com.hanwha.tax.apiserver.vo.ExpenseVo;
+import com.hanwha.tax.apiserver.vo.IncomeVo;
+import com.hanwha.tax.apiserver.vo.OutgoingVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +21,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @Api(tags = {"Mydata 정보"})
 @RequiredArgsConstructor
@@ -32,36 +37,67 @@ public class MydataController {
 
 
     @ApiOperation(value = "Income 요청", notes = "마이데이터(수입정보)를 실시간 조회한다.")
-    @PostMapping(value = "/income")
-    public ApiDataResult income() {
-        Utils.logCalled("income", "");
+    @PostMapping(value = "/ccIncome")
+    public ApiDataResult ccIncome() {
+        Utils.logCalled("ccIncome", "");
 
-        IncomeDto incomeDto = mydataService.mydataIncome();
+        CcIncomeDto ccIncomeDto = mydataService.ccIncome();
 
-        return responseService.result(incomeDto);
+        return responseService.result(ccIncomeDto);
     }
 
 
     @ApiOperation(value = "Exponse 요청", notes = "마이데이터(지출정보)를 실시간 조회한다.")
-    @PostMapping(value = "/expense")
-    public ApiDataResult expense() {
-        Utils.logCalled("expense", "");
+    @PostMapping(value = "/ccExpense")
+    public ApiDataResult ccExpense() {
+        Utils.logCalled("ccExpense", "");
 
-        ExpenseDto expenseDto = mydataService.mydataExpense();
+        CcExpenseDto ccExpenseDto = mydataService.ccExpense();
 
-        return responseService.result(expenseDto);
+        return responseService.result(ccExpenseDto);
     }
 
 
     @ApiOperation(value = "쿠콘 인증번호 요청", notes = "쿠콘의 인증번호를 요청한다.")
-    @PostMapping(value = "/authorize")
-    public ApiDataResult authorize() {
-        Utils.logCalled("authorize", "");
+    @PostMapping(value = "/ccAuthorize")
+    public ApiDataResult ccAuthorize() {
+        Utils.logCalled("ccAuthorize", "");
 
-        CCAuthorizeDto ccAuthorizeDto = mydataService.authorize();
+        CcAuthorizeDto ccAuthorizeDto = mydataService.ccAuthorize();
 
         return responseService.result(ccAuthorizeDto);
     }
 
+    @ApiOperation(value = "전체 수입 조회", notes = "전체 수입을 월별로 조회한다.")
+    @PostMapping(value = "/totalIncome")
+    public ApiDataResult totalIncome(@RequestBody IncomeVo incomeVo) {
+        Utils.logCalled("totalIncome", incomeVo);
+
+        List<TotalIncome> totalIncomes = mydataService.totalIncome(incomeVo);
+
+        return responseService.result(totalIncomes);
+    }
+
+    @ApiOperation(value = "전체 지출 조회", notes = "전체 지출을 월별로 조회한다.")
+    @PostMapping(value = "/totalOutgoing")
+    public ApiDataResult totalOutgoing(@RequestBody OutgoingVo outgoingVo) {
+        Utils.logCalled("totalOutgoing", outgoingVo);
+
+        List<TotalOutgoing> totalOutgoings = mydataService.totalOutgoing(outgoingVo);
+
+        return responseService.result(totalOutgoings);
+    }
+
+
+
+    @ApiOperation(value = "마이데이터 수입데이터 수집", notes = "마이데이터 수입데이터를 수집한다.")
+    @PostMapping(value = "/batchDataJob")
+    public ApiDataResult batchDataJob() {
+        Utils.logCalled("batchIncomeJob", "");
+
+        mydataService.batchDataJob();
+
+        return responseService.successResult();
+    }
 
 }

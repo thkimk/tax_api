@@ -48,8 +48,8 @@ public class JwtTokenProvider { // JWT토큰을 생성 및 검증 모듈
                 .signWith(SignatureAlgorithm.HS256, secretKey) // 암호화 알고리즘, 암호키
                 .compact();
     }
-    public String createToken(String custId) {
-        Claims claims = Jwts.claims().setSubject(custId);
+    public String createToken(String cid) {
+        Claims claims = Jwts.claims().setSubject(cid);
 //        claims.put("role", grade);
         Date now = new Date();
         return Jwts.builder()
@@ -74,12 +74,12 @@ public class JwtTokenProvider { // JWT토큰을 생성 및 검증 모듈
 
     // Jwt 토큰으로 인증 정보 조회
     public Authentication getAuthentication(String token) {
-        UserDetails userDetails = customUserDetailService.loadUserByUsername(this.getCustId(token));
+        UserDetails userDetails = customUserDetailService.loadUserByUsername(this.getCid(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
     // Jwt 토큰에서 회원 구별 정보 추출
-    public String getCustId(String token) {
+    public String getCid(String token) {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
 

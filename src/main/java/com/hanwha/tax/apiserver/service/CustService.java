@@ -33,7 +33,7 @@ public class CustService {
         }
     */
     public String saveJob(SaveJobVo saveJobVo) {
-        CustInfoDtl custInfoDtl = custInfoDtlRepository.findByCustId(saveJobVo.getCustId());
+        CustInfoDtl custInfoDtl = custInfoDtlRepository.findByCid(saveJobVo.getCid());
         if (custInfoDtl == null) {
             return Constants.CODE_RET_OK;
         }
@@ -48,7 +48,7 @@ public class CustService {
     public void saveFamily(SaveFamilyVo saveFamilyVo) {
         List<CustFamily> custFamilies = new ArrayList<>();
         for (SaveFamilyVo.Family family : saveFamilyVo.getFamilies()) {
-            CustFamily custFamily = new CustFamily(saveFamilyVo.getCustId(), family);
+            CustFamily custFamily = new CustFamily(saveFamilyVo.getCid(), family);
 
             custFamilies.add(custFamily);
         }

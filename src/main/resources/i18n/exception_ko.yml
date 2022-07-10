@@ -20,3 +20,6 @@ notFound:
 notImplemented:
   code: "501"
   msg: "해당 Http method가 구현되지 않았습니다."
+invalidInputValue:
+  code: "-1004"
+  msg: "입력값이 유효하지 않습니다."

@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 public class SaveFamilyVo {
-    String custId;
+    String cid;
     List<Family> families = new ArrayList<>();
 
     @Data

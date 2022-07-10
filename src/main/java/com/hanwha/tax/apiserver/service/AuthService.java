@@ -54,8 +54,8 @@ public class AuthService {
     CustTermsAgmtRepository custTermsAgmtRepository;
 
 
-    public String genCustId() {
-        String custId = custRepository.getLastCustId();
+    public String genCid() {
+        String custId = custRepository.selectLastCid();
 
         String yymm = LocalDate.now().format(DateTimeFormatter.ofPattern("YYMM"));
         if (custId == null) {
@@ -73,23 +73,23 @@ public class AuthService {
         SignupDto signupDto = new SignupDto();
 
         // cust 저장
-        String custId = authInfoRepository.getCustIdByCi(signupVo.getCi());
-        if (custId == null) {
+        String cid = authInfoRepository.selectCidByCi(signupVo.getCi());
+        if (cid == null) {
             // cust 저장
-            custId = genCustId();
-            Cust cust = new Cust(signupVo, custId);
+            cid = genCid();
+            Cust cust = new Cust(signupVo, cid);
             custRepository.save(cust);
 
             // cust_info 저장
-            CustInfo custInfo = new CustInfo(signupVo, custId);
+            CustInfo custInfo = new CustInfo(signupVo, cid);
             custInfoRepository.save(custInfo);
 
             // cust_info_dtl
-            CustInfoDtl custInfoDtl = new CustInfoDtl(signupVo, custId);
+            CustInfoDtl custInfoDtl = new CustInfoDtl(signupVo, cid);
             custInfoDtlRepository.save(custInfoDtl);
 
             // dev_info
-            DevInfo devInfo = new DevInfo(signupVo, custId);
+            DevInfo devInfo = new DevInfo(signupVo, cid);
             devInfoRepository.save(devInfo);
 
             // CustTermsAgmt 저장 (약관동의에서, 서비스/필수/선택 약관에 대한 동의사항)
@@ -100,18 +100,18 @@ public class AuthService {
 
 
             // auth_info 저장
-            AuthInfo authInfo = new AuthInfo(signupVo, custId);
+            AuthInfo authInfo = new AuthInfo(signupVo, cid);
             authInfoRepository.save(authInfo);
 
         } else {
-            CustInfoDtl custInfoDtl = custInfoDtlRepository.findByCustId(custId);
+            CustInfoDtl custInfoDtl = custInfoDtlRepository.findByCid(cid);
             SignupDto.Additional additional = new SignupDto.Additional(custInfoDtl);
             signupDto.setAdditional(additional);
         }
-        MDC.put("custId", custId);
+        MDC.put("cid", cid);
 
         // JWT 토큰 생성 및 저장
-        String jwt = jwtTokenProvider.createToken(custId);
+        String jwt = jwtTokenProvider.createToken(cid);
 
         // return
         signupDto.setJwt(jwt);
@@ -133,8 +133,8 @@ public class AuthService {
 
 
     public void signupReg(SignupRegVo signupRegVo) {
-        String custId = authInfoRepository.getCustIdByCi(signupRegVo.getCi())    ;
-        signupRegVo.setCustId(custId);
+        String custId = authInfoRepository.selectCidByCi(signupRegVo.getCi())    ;
+        signupRegVo.setCid(custId);
 
         // cust 업데이트 (cust_grade: 준회원 --> 정회원)
         Cust cust = new Cust(signupRegVo);
@@ -145,7 +145,7 @@ public class AuthService {
 
     public LoginDto login(LoginVo loginVo) {
         // auth_info에서 pin번호 비교 (cust_id가 아이디, pin번호가 패스워드 역할)
-        AuthInfo authInfo = authInfoRepository.findByCustId(loginVo.getCustId());
+        AuthInfo authInfo = authInfoRepository.findByCid(loginVo.getCid());
         if (authInfo == null) {
             throw new UserNotFoundException();
         } else if (!authInfo.getPin().equals(loginVo.getPin())) {
@@ -153,8 +153,8 @@ public class AuthService {
         }
 
         // JWT 토큰 생성 및 저장
-        Cust cust = custRepository.findByCustId(loginVo.getCustId());
-        String jwt = jwtTokenProvider.createToken(loginVo.getCustId());
+        Cust cust = custRepository.findByCid(loginVo.getCid());
+        String jwt = jwtTokenProvider.createToken(loginVo.getCid());
         LoginDto loginDto = new LoginDto();
         loginDto.fillCust(cust);
         loginDto.setJwt(jwt);
@@ -168,8 +168,8 @@ public class AuthService {
 
 
     public void saveAuth(SaveAuthVo saveAuthVo) {
-        String custId = MDC.get("custId");
-        AuthInfo authInfo = authInfoRepository.findByCustId(custId);
+        String cid = MDC.get("cid");
+        AuthInfo authInfo = authInfoRepository.findByCid(cid);
         if (authInfo == null) {
             throw new UserNotFoundException();
         }
@@ -182,7 +182,7 @@ public class AuthService {
         // return
         SaveAuthDto saveAuthDto = new SaveAuthDto();
 
-        saveAuthDto.setCustId(custId);
+        saveAuthDto.setCid(custId);
         saveAuthDto.setIsSucc('Y');
         saveAuthDto.setFailMsg("success");
 */

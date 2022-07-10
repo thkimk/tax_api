@@ -1,14 +1,18 @@
 package com.hanwha.tax.apiserver.service;
 
 import com.hanwha.tax.apiserver.Utils;
-import com.hanwha.tax.apiserver.dto.AuthorizeDto;
-import com.hanwha.tax.apiserver.dto.CCAuthorizeDto;
+import com.hanwha.tax.apiserver.dto.CcAuthorizeDto;
+import com.hanwha.tax.apiserver.entity.TotalIncome;
+import com.hanwha.tax.apiserver.entity.TotalOutgoing;
 import com.hanwha.tax.apiserver.repository.AuthInfoRepository;
-import com.hanwha.tax.apiserver.vo.CCAuthorizeVo;
-import com.hanwha.tax.apiserver.vo.IncomeVo;
-import com.hanwha.tax.apiserver.dto.ExpenseDto;
-import com.hanwha.tax.apiserver.dto.IncomeDto;
-import com.hanwha.tax.apiserver.vo.ExpenseVo;
+import com.hanwha.tax.apiserver.repository.TotalIncomeRepository;
+import com.hanwha.tax.apiserver.repository.TotalOutgoingRepository;
+import com.hanwha.tax.apiserver.vo.*;
+import com.hanwha.tax.apiserver.dto.CcExpenseDto;
+import com.hanwha.tax.apiserver.dto.CcIncomeDto;
+import com.jcraft.jsch.ChannelSftp;
+import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.Session;
 import kcb.org.json.JSONObject;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +24,17 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.*;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.Properties;
+import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 @Service
 @RequiredArgsConstructor
@@ -40,6 +54,12 @@ public class MydataService {
 
     @Autowired
     AuthInfoRepository authInfoRepository;
+
+    @Autowired
+    TotalIncomeRepository totalIncomeRepository;
+
+    @Autowired
+    TotalOutgoingRepository totalOutgoingRepository;
 
 
     public static String COOCON_AUTH = "";
@@ -82,14 +102,14 @@ public class MydataService {
     }
 
 
-    public IncomeDto mydataIncome() {
+    public CcIncomeDto ccIncome() {
         // 쿠콘 API 호출
-        String ci = authInfoRepository.getCiByCustId(Utils.custId());
-        IncomeVo incomeVo = new IncomeVo(ci);
+        String ci = authInfoRepository.selectCiByCid(Utils.cid());
+        CcIncomeVo ccIncomeVo = new CcIncomeVo(ci);
 
-        IncomeDto incomeDto = (IncomeDto)callCooconApi("/apis/user/hw/bank/income", incomeVo, IncomeDto.class);
+        CcIncomeDto ccIncomeDto = (CcIncomeDto)callCooconApi("/apis/user/hw/bank/income", ccIncomeVo, CcIncomeDto.class);
 
-        return incomeDto;
+        return ccIncomeDto;
     }
 
 /*
@@ -118,25 +138,220 @@ public class MydataService {
 */
 
 
-    public ExpenseDto mydataExpense() {
-        String ci = authInfoRepository.getCiByCustId(Utils.custId());
-        ExpenseVo expenseVo = new ExpenseVo(ci);
+    public CcExpenseDto ccExpense() {
+        String ci = authInfoRepository.selectCiByCid(Utils.cid());
+        CcExpenseVo ccExpenseVo = new CcExpenseVo(ci);
 
         // 쿠콘 API 호출
-        ExpenseDto expenseDto = callCooconApi("/apis/user/hw/card/expense", expenseVo, ExpenseDto.class);
+        CcExpenseDto ccExpenseDto = callCooconApi("/apis/user/hw/card/expense", ccExpenseVo, CcExpenseDto.class);
 
-        return expenseDto;
+        return ccExpenseDto;
     }
 
 
-    public CCAuthorizeDto authorize() {
-        String ci = authInfoRepository.getCiByCustId(Utils.custId());
-        CCAuthorizeVo ccAuthorizeVo = new CCAuthorizeVo(ci);
+    public CcAuthorizeDto ccAuthorize() {
+        String ci = authInfoRepository.selectCiByCid(Utils.cid());
+        CcAuthorizeVo ccAuthorizeVo = new CcAuthorizeVo(ci);
 
         // 쿠콘 API 호출
-        CCAuthorizeDto ccAuthorizeDto = callCooconApi("/apis/user/authorize", ccAuthorizeVo, CCAuthorizeDto.class);
+        CcAuthorizeDto ccAuthorizeDto = callCooconApi("/apis/user/authorize", ccAuthorizeVo, CcAuthorizeDto.class);
 
         return ccAuthorizeDto;
+    }
+
+
+    public List<TotalIncome> totalIncome(IncomeVo incomeVo) {
+        List<TotalIncome> totalIncomes = null;
+
+        if (incomeVo.getYear() != null) {
+            if (incomeVo.getMonth() != null) {
+                totalIncomes = totalIncomeRepository.findByYearAndMonth(incomeVo.getYear(), incomeVo.getMonth());
+            } else {
+                totalIncomes = totalIncomeRepository.findByYear(incomeVo.getYear());
+            }
+        } else {
+            totalIncomes = totalIncomeRepository.findAll();
+        }
+
+/*
+        String cid = Utils.cid();
+        if (incomeVo.getYear() != null) {
+            if (incomeVo.getMonth() != null) {
+                totalIncomes = totalIncomeRepository.findByCustIdAndYearAndMonth(cid, incomeVo.getYear(), incomeVo.getMonth());
+            } else {
+                totalIncomes = totalIncomeRepository.findByCustIdAndYear(cid, incomeVo.getYear());
+            }
+        } else {
+            totalIncomes = totalIncomeRepository.findByCustId(cid);
+        }
+*/
+
+        return totalIncomes;
+    }
+
+
+    public List<TotalOutgoing> totalOutgoing(OutgoingVo outgoingVo) {
+        List<TotalOutgoing> totalOutgoings = null;
+
+        if (outgoingVo.getYear() != null) {
+            if (outgoingVo.getMonth() != null) {
+                totalOutgoings = totalOutgoingRepository.findByYearAndMonth(outgoingVo.getYear(), outgoingVo.getMonth());
+            } else {
+                totalOutgoings = totalOutgoingRepository.findByYear(outgoingVo.getYear());
+            }
+        } else {
+            totalOutgoings = totalOutgoingRepository.findAll();
+        }
+
+/*
+        String cid = Utils.cid();
+        if (outgoingVo.getYear() != null) {
+            if (outgoingVo.getMonth() != null) {
+                totalOutgoings = totalOutgoingRepository.findByCustIdAndYearAndMonth(cid, outgoingVo.getYear(), outgoingVo.getMonth());
+            } else {
+                totalOutgoings = totalOutgoingRepository.findByCustIdAndYear(cid, outgoingVo.getYear());
+            }
+        } else {
+            totalOutgoings = totalOutgoingRepository.findByCustId(cid);
+        }
+*/
+
+        return totalOutgoings;
+    }
+
+
+    // Job
+    public void batchDataJob() {
+        String down_path = "D:/devs/hanwha/nas/tax/down/";
+        String mydata_path = "D:/devs/hanwha/nas/tax/mydata/";
+        String yyyymmdd = Utils.yyyymmdd(); yyyymmdd = "20220705";
+
+        // SFTP Get 수행 (/nas/tax/down)
+        mydataSftpGet(down_path);
+        
+        // zip 압축 해제 (/nas/tax/mydata/yyyymmdd/*)
+        mydata_path = mydata_path.concat("/".concat(yyyymmdd))+ "/";
+        mydataUnzip(down_path.concat(yyyymmdd.concat("_IS000001_01_BANK_TRANS.zip")), mydata_path);
+        mydataUnzip(down_path.concat(yyyymmdd.concat("_IS000001_01_CARD_APPR.zip")), mydata_path);
+
+        // File load (parsing)
+        // DB Upsert (mydata_income)
+        mydataIncomeLoad(mydata_path.concat(yyyymmdd+ "_IS000001_01_BANK_TRANS"));
+        mydataOutgoingLoad(mydata_path.concat(yyyymmdd+ "_IS000001_01_CARD_APPR"));
+
+    }
+
+
+    private void mydataSftpGet(String downPath) {
+        String user = "";
+        String pwd = "";
+        String host = "";
+        int port = 9000;
+        String sourceFile = "";
+        Properties config = new Properties();
+        config.put("StrictHostKeyChecking", "no");
+
+        // sftp 세션 생성
+        Session session = null;
+        ChannelSftp channelSftp = null;
+        try {
+            JSch jsch = new JSch();
+            session = jsch.getSession(user, host, port);
+            session.setPassword(pwd);
+            session.setConfig(config);
+            session.connect(3000);
+            channelSftp = (ChannelSftp) session.openChannel("sftp");
+            channelSftp.connect();
+
+            // down bank
+            FileOutputStream fo1 = new FileOutputStream(new File(""));
+            channelSftp.get(sourceFile, fo1);
+
+            // down card
+            FileOutputStream fo2 = new FileOutputStream(new File(""));
+            channelSftp.get(sourceFile, fo2);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            channelSftp.disconnect();
+            session.disconnect();
+        }
+    }
+
+    private void mydataIncomeLoad(String source_file) {
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(source_file));
+
+            String str;
+            while ((str = reader.readLine()) != null) {
+                String[] vals = str.split("|");
+                if (vals == null) break;
+                if (vals[0].equals("ST")) {
+                } else if (vals[0].equals("ED")) {
+                    break;
+                } else {
+                }
+            }
+
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void mydataOutgoingLoad(String source_file) {
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(source_file));
+
+            String str;
+            while ((str = reader.readLine()) != null) {
+                String[] vals = str.split("|");
+                if (vals == null) break;
+                if (vals[0].equals("ST")) {
+                } else if (vals[0].equals("ED")) {
+                    break;
+                } else {
+                }
+            }
+
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void checkPath(String path) {
+        File file = new File(path);
+        if (!file.exists()) {
+            try {
+                file.mkdir();
+            } catch (Exception e) {
+                e.getStackTrace();
+            }
+        }
+    }
+
+    private void mydataUnzip(String source_file, String target_path) {
+        File zipFile = new File(source_file);
+        checkPath(target_path);
+
+        try (BufferedInputStream in = new BufferedInputStream(new FileInputStream(zipFile))) {
+            try (ZipInputStream zipInputStream = new ZipInputStream(in)) {
+                ZipEntry zipEntry = null;
+                while ((zipEntry = zipInputStream.getNextEntry()) != null) {
+                    int len = 0;
+                    try (BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(target_path+ zipEntry.getName()))) {
+                        while ((len = zipInputStream.read()) != -1) {
+                            out.write(len);
+                        }
+
+                        zipInputStream.closeEntry();
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

@@ -20,7 +20,7 @@ public class CustInfoDtl {
 
     @Id
     @Column(name="cust_id", length = 10)
-    private String custId;
+    private String cid;
 
     @Column(name="indst_code", length = 6)
     private String jobCode;
@@ -72,7 +72,7 @@ public class CustInfoDtl {
 
 
     public CustInfoDtl(SignupVo signupVo, String custId) {
-        this.custId = custId;
+        this.cid = custId;
 
         this.jobCode = signupVo.getJobCode();
         this.income = signupVo.getIncome();

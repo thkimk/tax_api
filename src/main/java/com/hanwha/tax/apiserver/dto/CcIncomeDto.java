@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Data
-public class IncomeDto {
+public class CcIncomeDto {
     @JsonProperty("rsp_code")
     private String rspCode;
 

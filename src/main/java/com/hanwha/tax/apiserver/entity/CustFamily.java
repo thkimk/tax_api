@@ -23,7 +23,7 @@ public class CustFamily {
     private long familySeq;
 
     @Column(name="cust_id", length = 10)
-    private String custId;
+    private String cid;
 
     @Column(name="family", length = 2)
     private String family;
@@ -42,7 +42,7 @@ public class CustFamily {
 
 
     public CustFamily(String custId, SaveFamilyVo.Family family) {
-        this.custId = custId;
+        this.cid = custId;
         this.family = family.getFamily();
         this.birth = LocalDate.parse(family.getBirth());
         this.isDisorder = family.getIsDisorder();

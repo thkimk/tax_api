@@ -24,7 +24,7 @@ import java.time.LocalDateTime;
 public class DevInfo {
     @Id
     @Column(name="cust_id", length = 10)
-    private String custId;
+    private String cid;
 
 //    @Id
     @Column(length = 36)
@@ -48,7 +48,7 @@ public class DevInfo {
 
     // 회원가입시 생성
     public DevInfo(SignupVo signupVo, String custId) {
-        this.custId = custId;
+        this.cid = custId;
 
         String[] devs = Utils.devs();
         this.devName = devs[1];

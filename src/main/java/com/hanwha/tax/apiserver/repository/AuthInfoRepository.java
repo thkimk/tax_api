@@ -6,14 +6,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface AuthInfoRepository extends JpaRepository<AuthInfo, Long> {
-    AuthInfo findByCustId(String custId);
+    AuthInfo findByCid(String cid);
 
 
     @Query(value="select a.cust_id from auth_info a where a.ci=:ci" , nativeQuery=true)
-    String getCustIdByCi(@Param("ci") String ci);
-    String findCustIdByCi(String ci);
+    String selectCidByCi(@Param("ci") String ci);
+    String findCidByCi(String ci);
 
-    @Query(value="select a.ci from auth_info a where a.cust_id=:custId" , nativeQuery=true)
-    String getCiByCustId(@Param("custId") String custId);
+    @Query(value="select a.ci from auth_info a where a.cust_id=:cid" , nativeQuery=true)
+    String selectCiByCid(@Param("cid") String cid);
 
 }

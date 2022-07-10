@@ -6,6 +6,6 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class ExpenseVo {
+public class CcExpenseVo {
     String ci;
 }
