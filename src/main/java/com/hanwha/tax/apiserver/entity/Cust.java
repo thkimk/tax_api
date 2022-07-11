@@ -48,8 +48,8 @@ public class Cust {
     private LocalDateTime updateDt;
 
     // 회원가입시 생성
-    public Cust(SignupVo signupVo, String custId) {
-        this.cid = custId;
+    public Cust(SignupVo signupVo) {
+        this.cid = signupVo.getCid();
         this.custStatus = Constants.CUST_ST_NORMAL;
         this.custGrade = Constants.CUST_GR_ASOC;
         

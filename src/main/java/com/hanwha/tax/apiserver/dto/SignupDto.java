@@ -17,7 +17,8 @@ public class SignupDto {
         public String email;
 
         public User(SignupVo signupVo) {
-            cid = Utils.cid();
+            cid = signupVo.getCid();
+
             name = signupVo.getName();
             birth = signupVo.getBirth();
             gender = signupVo.getGender();

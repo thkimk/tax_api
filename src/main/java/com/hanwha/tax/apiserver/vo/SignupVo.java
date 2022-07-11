@@ -1,9 +1,13 @@
 package com.hanwha.tax.apiserver.vo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 @Data
 public class SignupVo {
+    @JsonIgnore
+    String cid;
+
     String name;
     String birth;
     char gender;

@@ -97,6 +97,7 @@ public class MydataService {
 
         HttpEntity entity = new HttpEntity(obj, httpHeaders);
         Object res = restTemplate.postForObject(cooconUrl.concat(url), entity, resType);
+        Utils.logExtCallReturned("callCooconApi", res);
 
         return (T)res;
     }
@@ -107,6 +108,7 @@ public class MydataService {
         String ci = authInfoRepository.selectCiByCid(Utils.cid());
         CcIncomeVo ccIncomeVo = new CcIncomeVo(ci);
 
+        Utils.logExtCall("ccIncome", ccIncomeVo);
         CcIncomeDto ccIncomeDto = (CcIncomeDto)callCooconApi("/apis/user/hw/bank/income", ccIncomeVo, CcIncomeDto.class);
 
         return ccIncomeDto;
@@ -143,6 +145,7 @@ public class MydataService {
         CcExpenseVo ccExpenseVo = new CcExpenseVo(ci);
 
         // 쿠콘 API 호출
+        Utils.logExtCall("ccExpense", ccExpenseVo);
         CcExpenseDto ccExpenseDto = callCooconApi("/apis/user/hw/card/expense", ccExpenseVo, CcExpenseDto.class);
 
         return ccExpenseDto;
@@ -150,24 +153,26 @@ public class MydataService {
 
 
     public CcAuthorizeDto ccAuthorize() {
+        String cid = Utils.cid();
         String ci = authInfoRepository.selectCiByCid(Utils.cid());
         CcAuthorizeVo ccAuthorizeVo = new CcAuthorizeVo(ci);
 
         // 쿠콘 API 호출
+        Utils.logExtCall("ccAuthorize", ccAuthorizeVo);
         CcAuthorizeDto ccAuthorizeDto = callCooconApi("/apis/user/authorize", ccAuthorizeVo, CcAuthorizeDto.class);
 
         return ccAuthorizeDto;
     }
 
 
-    public List<TotalIncome> totalIncome(IncomeVo incomeVo) {
+    public List<TotalIncome> totalIncome(String year, String month) {
         List<TotalIncome> totalIncomes = null;
 
-        if (incomeVo.getYear() != null) {
-            if (incomeVo.getMonth() != null) {
-                totalIncomes = totalIncomeRepository.findByYearAndMonth(incomeVo.getYear(), incomeVo.getMonth());
+        if (year != null) {
+            if (month != null) {
+                totalIncomes = totalIncomeRepository.findByYearAndMonth(year, month);
             } else {
-                totalIncomes = totalIncomeRepository.findByYear(incomeVo.getYear());
+                totalIncomes = totalIncomeRepository.findByYear(year);
             }
         } else {
             totalIncomes = totalIncomeRepository.findAll();
@@ -190,14 +195,14 @@ public class MydataService {
     }
 
 
-    public List<TotalOutgoing> totalOutgoing(OutgoingVo outgoingVo) {
+    public List<TotalOutgoing> totalOutgoing(String year, String month) {
         List<TotalOutgoing> totalOutgoings = null;
 
-        if (outgoingVo.getYear() != null) {
-            if (outgoingVo.getMonth() != null) {
-                totalOutgoings = totalOutgoingRepository.findByYearAndMonth(outgoingVo.getYear(), outgoingVo.getMonth());
+        if (year != null) {
+            if (month != null) {
+                totalOutgoings = totalOutgoingRepository.findByYearAndMonth(year, month);
             } else {
-                totalOutgoings = totalOutgoingRepository.findByYear(outgoingVo.getYear());
+                totalOutgoings = totalOutgoingRepository.findByYear(year);
             }
         } else {
             totalOutgoings = totalOutgoingRepository.findAll();
@@ -222,9 +227,9 @@ public class MydataService {
 
     // Job
     public void batchDataJob() {
-        String down_path = "D:/devs/hanwha/nas/tax/down/";
-        String mydata_path = "D:/devs/hanwha/nas/tax/mydata/";
-        String yyyymmdd = Utils.yyyymmdd(); yyyymmdd = "20220705";
+        String down_path = "D:/dev/hanwha/nas/tax/down/";
+        String mydata_path = "D:/dev/hanwha/nas/tax/mydata/";
+        String yyyymmdd = Utils.yyyymmddYester(); //yyyymmdd = "20220705";//kkk
 
         // SFTP Get 수행 (/nas/tax/down)
         mydataSftpGet(down_path);
@@ -243,11 +248,13 @@ public class MydataService {
 
 
     private void mydataSftpGet(String downPath) {
-        String user = "";
-        String pwd = "";
-        String host = "";
-        int port = 9000;
-        String sourceFile = "";
+        String user = "IS000001";
+        String pwd = "d1OryUJJr3";
+        String host = "183.111.160.204";
+        int port = 3300;
+        String yyyymmdd = Utils.yyyymmddYester(); //yyyymmdd = "20220705";//kkk
+        String sourceFile1 = "/data/".concat(yyyymmdd)+ "/"+ yyyymmdd+ "_IS000001_01_BANK_TRANS.zip";
+        String sourceFile2 = "/data/".concat(yyyymmdd)+ "/"+ yyyymmdd+ "_IS000001_01_CARD_APPR.zip";
         Properties config = new Properties();
         config.put("StrictHostKeyChecking", "no");
 
@@ -264,12 +271,12 @@ public class MydataService {
             channelSftp.connect();
 
             // down bank
-            FileOutputStream fo1 = new FileOutputStream(new File(""));
-            channelSftp.get(sourceFile, fo1);
+            FileOutputStream fo1 = new FileOutputStream(new File(downPath.concat(yyyymmdd.concat("_IS000001_01_BANK_TRANS.zip"))));
+            channelSftp.get(sourceFile1, fo1);
 
             // down card
-            FileOutputStream fo2 = new FileOutputStream(new File(""));
-            channelSftp.get(sourceFile, fo2);
+            FileOutputStream fo2 = new FileOutputStream(new File(downPath.concat(yyyymmdd.concat("_IS000001_01_CARD_APPR.zip"))));
+            channelSftp.get(sourceFile2, fo2);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -283,13 +290,22 @@ public class MydataService {
             BufferedReader reader = new BufferedReader(new FileReader(source_file));
 
             String str;
+            boolean isIng = false;
             while ((str = reader.readLine()) != null) {
                 String[] vals = str.split("|");
                 if (vals == null) break;
                 if (vals[0].equals("ST")) {
+                    isIng = true;
                 } else if (vals[0].equals("ED")) {
                     break;
                 } else {
+                    // 본처리
+                    if (isIng) {
+                        String[] data = str.split("|");
+                        if (data == null) break;
+
+                        System.out.println("## mydataIncomeLoad : "+ str);
+                    }
                 }
             }
 
@@ -304,13 +320,22 @@ public class MydataService {
             BufferedReader reader = new BufferedReader(new FileReader(source_file));
 
             String str;
+            boolean isIng = false;
             while ((str = reader.readLine()) != null) {
                 String[] vals = str.split("|");
                 if (vals == null) break;
                 if (vals[0].equals("ST")) {
+                    isIng = true;
                 } else if (vals[0].equals("ED")) {
                     break;
                 } else {
+                    // 본처리
+                    if (isIng) {
+                        String[] data = str.split("|");
+                        if (data == null) break;
+
+                        System.out.println("## mydataOutgoingLoad : "+ str);
+                    }
                 }
             }
 

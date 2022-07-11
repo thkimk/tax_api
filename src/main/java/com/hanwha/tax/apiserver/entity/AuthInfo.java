@@ -44,8 +44,8 @@ public class AuthInfo {
     private LocalDateTime updateDt;
 
 
-    public AuthInfo(SignupVo signupVo, String custId) {
-        this.cid = custId;
+    public AuthInfo(SignupVo signupVo) {
+        this.cid = signupVo.getCid();
         this.pin = signupVo.getPin();
 //        this.ci = MDC.get("ci");
         this.ci = signupVo.getCi();

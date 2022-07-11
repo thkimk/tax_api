@@ -47,8 +47,8 @@ public class DevInfo {
     private LocalDateTime createDt;
 
     // 회원가입시 생성
-    public DevInfo(SignupVo signupVo, String custId) {
-        this.cid = custId;
+    public DevInfo(SignupVo signupVo) {
+        this.cid = signupVo.getCid();
 
         String[] devs = Utils.devs();
         this.devName = devs[1];

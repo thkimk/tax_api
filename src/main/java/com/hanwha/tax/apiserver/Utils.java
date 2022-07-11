@@ -53,6 +53,32 @@ public class Utils {
         }
     }
 
+    public static void logExtCall(String op, Object object) {
+        if (object == null) log.info("## [EXT_CALL] {}() : null", op);
+        else {
+            try {
+                ObjectMapper mapper = new ObjectMapper();
+                log.info("## [EXT_CALL] {}() : {}", op, mapper.writeValueAsString(object));
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+                log.info("## [EXT_CALL] {}() : {}", op, object.toString());
+            }
+        }
+    }
+
+    public static void logExtCallReturned(String op, Object object) {
+        if (object == null) log.info("## [EXT_RETURN] {}() : null", op);
+        else {
+            try {
+                ObjectMapper mapper = new ObjectMapper();
+                log.info("## [EXT_RETURN] {}() : {}", op, mapper.writeValueAsString(object));
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+                log.info("## [EXT_RETURN] {}() : {}", op, object.toString());
+            }
+        }
+    }
+
     public static String cid() {
         return MDC.get("cid");
     }
@@ -103,6 +129,10 @@ public class Utils {
         return authInfoRepository.getCiByCustId(custId());
     }*/
 
+
+    public static String yyyymmddYester() {
+        return LocalDate.now().minusDays(1).format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+    }
 
     public static String yyyymmdd() {
         return LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));

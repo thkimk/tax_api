@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -53,6 +54,9 @@ public class AuthService {
     @Autowired
     CustTermsAgmtRepository custTermsAgmtRepository;
 
+    @Autowired
+    NotiSettingRepository notiSettingRepository;
+
 
     public String genCid() {
         String custId = custRepository.selectLastCid();
@@ -77,33 +81,38 @@ public class AuthService {
         if (cid == null) {
             // cust 저장
             cid = genCid();
-            Cust cust = new Cust(signupVo, cid);
+            signupVo.setCid(cid);
+
+            Cust cust = new Cust(signupVo);
             custRepository.save(cust);
 
             // cust_info 저장
-            CustInfo custInfo = new CustInfo(signupVo, cid);
+            CustInfo custInfo = new CustInfo(signupVo);
             custInfoRepository.save(custInfo);
 
             // cust_info_dtl
-            CustInfoDtl custInfoDtl = new CustInfoDtl(signupVo, cid);
+            CustInfoDtl custInfoDtl = new CustInfoDtl(signupVo);
             custInfoDtlRepository.save(custInfoDtl);
 
             // dev_info
-            DevInfo devInfo = new DevInfo(signupVo, cid);
+            DevInfo devInfo = new DevInfo(signupVo);
             devInfoRepository.save(devInfo);
 
             // CustTermsAgmt 저장 (약관동의에서, 서비스/필수/선택 약관에 대한 동의사항)
-            CustTermsAgmt custTermsAgmt = new CustTermsAgmt(signupVo);
-            custTermsAgmtRepository.save(custTermsAgmt);
+            List<CustTermsAgmt> custTermsAgmts = CustTermsAgmt.custTermsAgmts(signupVo);
+            custTermsAgmtRepository.saveAll(custTermsAgmts);
 
             // NotiSetting 저장 (약관동의에서, 푸시/SMS/이메일/알림톡 수신에 대한 동의사항)
-
+            NotiSetting notiSetting = new NotiSetting(signupVo);
+            notiSettingRepository.save(notiSetting);
 
             // auth_info 저장
-            AuthInfo authInfo = new AuthInfo(signupVo, cid);
+            AuthInfo authInfo = new AuthInfo(signupVo);
             authInfoRepository.save(authInfo);
 
         } else {
+            signupVo.setCid(cid);
+
             CustInfoDtl custInfoDtl = custInfoDtlRepository.findByCid(cid);
             SignupDto.Additional additional = new SignupDto.Additional(custInfoDtl);
             signupDto.setAdditional(additional);

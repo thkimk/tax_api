@@ -71,8 +71,8 @@ public class CustInfoDtl {
     private LocalDateTime updateDt;
 
 
-    public CustInfoDtl(SignupVo signupVo, String custId) {
-        this.cid = custId;
+    public CustInfoDtl(SignupVo signupVo) {
+        this.cid = signupVo.getCid();
 
         this.jobCode = signupVo.getJobCode();
         this.income = signupVo.getIncome();

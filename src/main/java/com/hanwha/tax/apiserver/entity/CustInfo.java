@@ -46,8 +46,8 @@ public class CustInfo {
 
 
     // 회원가입시 생성
-    public CustInfo(SignupVo signupVo, String custId) {
-        this.cid = custId;
+    public CustInfo(SignupVo signupVo) {
+        this.cid = signupVo.getCid();
         this.name = signupVo.getName();
         this.email = signupVo.getEmail();
         this.birth = signupVo.getBirth();
