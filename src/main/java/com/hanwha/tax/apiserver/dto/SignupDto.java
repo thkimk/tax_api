@@ -47,6 +47,10 @@ public class SignupDto {
     }
 
     String jwt;
+    String custGrade;
+    String custStatus;
+
     User user;
     Additional additional;
+
 }

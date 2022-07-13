@@ -38,8 +38,11 @@ public class CustService {
             return Constants.CODE_RET_OK;
         }
 
+        // 사업 유형 처리
         custInfoDtl.fill(saveJobVo);
         custInfoDtlRepository.save(custInfoDtl);
+
+        // 직전년도 수입 처리 (cust_deduct)
 
         return Constants.CODE_RET_OK;
     }

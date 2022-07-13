@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class OutgoingVo {
-    String year;
-    String month;
+    Integer year;
+    Integer month;
 }

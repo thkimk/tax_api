@@ -6,14 +6,15 @@ import com.hanwha.tax.apiserver.dto.AppInitsDto;
 import com.hanwha.tax.apiserver.dto.MainMenuDto;
 import com.hanwha.tax.apiserver.entity.AppInfo;
 import com.hanwha.tax.apiserver.entity.CustNomember;
-import com.hanwha.tax.apiserver.repository.AppInfoRepository;
-import com.hanwha.tax.apiserver.repository.CustNomemberRepository;
-import com.hanwha.tax.apiserver.repository.NotiMsgRepository;
+import com.hanwha.tax.apiserver.repository.*;
+import com.hanwha.tax.apiserver.vo.MainMenuVo;
 import com.hanwha.tax.apiserver.vo.NomemberVo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +29,13 @@ public class AppService {
 
     @Autowired
     CustNomemberRepository custNomemberRepository;
+
+    @Autowired
+    MainMenuRepository mainMenuRepository;
+
+    @Autowired
+    CustRepository custRepository;
+
 
     public AppInitsDto inits() {
         AppInitsDto appInitsDto = new AppInitsDto();
@@ -60,8 +68,17 @@ public class AppService {
     }
 
 
-    public MainMenuDto mainMenu(String custGrade) {
-        MainMenuDto mainMenuDto = new MainMenuDto();
+    public MainMenuDto mainMenu() {
+        String custGrade = custRepository.selectCustGrade(Utils.cid());
+
+        List<MainMenuVo> mainMenuVos = mainMenuRepository.selectMainMenu(custGrade);
+        MainMenuDto mainMenuDto = new MainMenuDto(mainMenuVos);
+
+        // 개인화배너 처리
+
+        // 다이나믹 배너 처리
+        mainMenuDto.procDynamicBanner();
+
         return mainMenuDto;
     }
 

@@ -15,10 +15,10 @@ public interface TotalIncomeRepository extends JpaRepository<TotalIncome, Long> 
 
     List<TotalIncome> findByCustId(String custId);
 
-    List<TotalIncome> findByYear(String year);
-    List<TotalIncome> findByCustIdAndYear(String custId, String year);
+    List<TotalIncome> findByYearOrderByMonthAsc(Integer year);
+    List<TotalIncome> findByCustIdAndYear(String custId, Integer year);
 
-    List<TotalIncome> findByYearAndMonth(String year, String month);
-    List<TotalIncome> findByCustIdAndYearAndMonth(String custId, String year, String month);
+    List<TotalIncome> findByYearAndMonth(Integer year, Integer month);
+    List<TotalIncome> findByCustIdAndYearAndMonth(String custId, Integer year, Integer month);
 
 }

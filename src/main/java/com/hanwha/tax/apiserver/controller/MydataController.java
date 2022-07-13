@@ -67,7 +67,7 @@ public class MydataController {
 
     @ApiOperation(value = "전체 수입 조회", notes = "전체 수입을 월별로 조회한다.")
     @GetMapping(value = "/totalIncome")
-    public ApiDataResult totalIncome(@RequestParam(required = false) String year, @RequestParam(required = false) String month) {
+    public ApiDataResult totalIncome(@RequestParam(required = false) Integer year, @RequestParam(required = false) Integer month) {
         Utils.logCalled("totalIncome", year+", "+ month);
 
         List<TotalIncome> totalIncomes = mydataService.totalIncome(year, month);
@@ -77,7 +77,7 @@ public class MydataController {
 
     @ApiOperation(value = "전체 지출 조회", notes = "전체 지출을 월별로 조회한다.")
     @GetMapping(value = "/totalOutgoing")
-    public ApiDataResult totalOutgoing(@RequestParam(required = false) String year, @RequestParam(required = false) String month) {
+    public ApiDataResult totalOutgoing(@RequestParam(required = false) Integer year, @RequestParam(required = false) Integer month) {
         Utils.logCalled("totalOutgoing", year+", "+ month);
 
         List<TotalOutgoing> totalOutgoings = mydataService.totalOutgoing(year, month);

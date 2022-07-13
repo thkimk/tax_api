@@ -165,14 +165,31 @@ public class MydataService {
     }
 
 
-    public List<TotalIncome> totalIncome(String year, String month) {
+    public List<TotalIncome> totalIncome(Integer year, Integer month) {
         List<TotalIncome> totalIncomes = null;
 
         if (year != null) {
             if (month != null) {
                 totalIncomes = totalIncomeRepository.findByYearAndMonth(year, month);
             } else {
-                totalIncomes = totalIncomeRepository.findByYear(year);
+                totalIncomes = totalIncomeRepository.findByYearOrderByMonthAsc(year);
+
+                int size = totalIncomes.size();
+                if (size < 12) {
+                    for (int i=1; i<=12; i++) {
+                        boolean exists = false;
+                        for (TotalIncome tmp : totalIncomes) {
+                            if (tmp.getMonth() == i) {
+                                exists = true;
+                                break;
+                            }
+                        }
+                        if (!exists) {
+                            TotalIncome tmp = new TotalIncome(year, i, Long.valueOf(0));
+                            totalIncomes.add(tmp);
+                        }
+                    }
+                }
             }
         } else {
             totalIncomes = totalIncomeRepository.findAll();
@@ -195,14 +212,31 @@ public class MydataService {
     }
 
 
-    public List<TotalOutgoing> totalOutgoing(String year, String month) {
+    public List<TotalOutgoing> totalOutgoing(Integer year, Integer month) {
         List<TotalOutgoing> totalOutgoings = null;
 
         if (year != null) {
             if (month != null) {
                 totalOutgoings = totalOutgoingRepository.findByYearAndMonth(year, month);
             } else {
-                totalOutgoings = totalOutgoingRepository.findByYear(year);
+                totalOutgoings = totalOutgoingRepository.findByYearOrderByMonthAsc(year);
+
+                int size = totalOutgoings.size();
+                if (size < 12) {
+                    for (int i=1; i<=12; i++) {
+                        boolean exists = false;
+                        for (TotalOutgoing tmp : totalOutgoings) {
+                            if (tmp.getMonth() == i) {
+                                exists = true;
+                                break;
+                            }
+                        }
+                        if (!exists) {
+                            TotalOutgoing tmp = new TotalOutgoing(year, i, Long.valueOf(0));
+                            totalOutgoings.add(tmp);
+                        }
+                    }
+                }
             }
         } else {
             totalOutgoings = totalOutgoingRepository.findAll();

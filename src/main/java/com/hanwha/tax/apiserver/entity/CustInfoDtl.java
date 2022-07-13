@@ -25,9 +25,6 @@ public class CustInfoDtl {
     @Column(name="indst_code", length = 6)
     private String jobCode;
 
-    @Column(length = 20)
-    private String income;
-
     @Column(name="is_disorder")
     private Character isDisorder;
 
@@ -42,6 +39,9 @@ public class CustInfoDtl {
 
     @Column(name="is_sin_parent")
     private Character isSinParent;
+
+    @Column()
+    private String taxFlag = "00";
 
     public Character getIsDisorder() {
         return isDisorder == null? Character.valueOf(' ') : isDisorder;
@@ -75,7 +75,6 @@ public class CustInfoDtl {
         this.cid = signupVo.getCid();
 
         this.jobCode = signupVo.getJobCode();
-        this.income = signupVo.getIncome();
 
         this.isDisorder = signupVo.getIsDisorder();
         this.isHshld = signupVo.getIsHshld();
@@ -103,7 +102,6 @@ public class CustInfoDtl {
     public void fill(SaveJobVo saveJobVo) {
 
         jobCode = saveJobVo.getJobCode();
-        income = saveJobVo.getIncome();
     }
 
 }

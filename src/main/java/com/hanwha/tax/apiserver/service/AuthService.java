@@ -75,6 +75,7 @@ public class AuthService {
 
     public SignupDto signup(SignupVo signupVo) {
         SignupDto signupDto = new SignupDto();
+        Cust cust = null;
 
         // cust 저장
         String cid = authInfoRepository.selectCidByCi(signupVo.getCi());
@@ -83,7 +84,7 @@ public class AuthService {
             cid = genCid();
             signupVo.setCid(cid);
 
-            Cust cust = new Cust(signupVo);
+            cust = new Cust(signupVo);
             custRepository.save(cust);
 
             // cust_info 저장
@@ -112,6 +113,7 @@ public class AuthService {
 
         } else {
             signupVo.setCid(cid);
+            cust = custRepository.findByCid(cid);
 
             CustInfoDtl custInfoDtl = custInfoDtlRepository.findByCid(cid);
             SignupDto.Additional additional = new SignupDto.Additional(custInfoDtl);
@@ -124,6 +126,8 @@ public class AuthService {
 
         // return
         signupDto.setJwt(jwt);
+        signupDto.setCustGrade(cust.getCustGrade());
+        signupDto.setCustStatus(cust.getCustStatus());
         SignupDto.User user = new SignupDto.User(signupVo);
         signupDto.setUser(user);
 
@@ -167,6 +171,9 @@ public class AuthService {
         LoginDto loginDto = new LoginDto();
         loginDto.fillCust(cust);
         loginDto.setJwt(jwt);
+
+        // taxFlag 계산
+        loginDto.fillTaxFlag(null, null);
 
         // login_hst에 이력 저장
         LoginHst loginHst = new LoginHst(loginVo);

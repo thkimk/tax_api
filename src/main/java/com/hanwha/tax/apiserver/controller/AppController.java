@@ -51,9 +51,9 @@ public class AppController {
 
     @ApiOperation(value = "메인메뉴 정보", notes = "App 기동시, 고객 등급에 따른 메인메뉴 정보를 제공한다.")
     @GetMapping(value = "/mainMenu")
-    public ApiDataResult mainMenu(@RequestParam String custGrade) throws Exception {
-        Utils.logCalled("mainMenu", custGrade);
-        MainMenuDto mainMenuDto = appService.mainMenu(custGrade);
+    public ApiDataResult mainMenu() throws Exception {
+        Utils.logCalled("mainMenu", "");
+        MainMenuDto mainMenuDto = appService.mainMenu();
 
         return responseService.result(mainMenuDto);
     }
