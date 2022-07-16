@@ -1,7 +1,10 @@
 package com.hanwha.tax.apiserver.dto;
 
 import com.hanwha.tax.apiserver.entity.Cust;
+import com.hanwha.tax.apiserver.model.Tax;
 import lombok.Data;
+
+import static com.hanwha.tax.apiserver.model.Tax.taxFlag;
 
 @Data
 public class LoginDto {
@@ -26,27 +29,9 @@ public class LoginDto {
      * 소득세 산출 flag 추출
      * @param preIncome : 직전년도 수입 (입력과 마이데이터 존재시, 입력을 우선적으로)
      * @param income : 당해년도 수입
+     * @param businType : 신규 여부 (0, 1)
      */
-    public void fillTaxFlag(Long preIncome, Long income) {
-        if (preIncome == null) {
-            taxFlag = "00";             // No data!!
-            return;
-        }
-
-        // 2400만원 미만
-        if (preIncome < 24000000) {
-            taxFlag = "11";             // 간편, 단순경비
-            if (income != null && income >= 75000000) {
-                taxFlag = "12";         // 간편, 기준경비
-            }
-        }
-        // 7500만원 미만
-        else if (preIncome < 75000000) {
-            taxFlag = "12";             // 간편, 기준경비
-        }
-        // 7500만원 이상
-        else {
-            taxFlag = "22";             // 복식, 기준경비
-        }
+    public void fillTaxFlag(Long preIncome, Long income, Character businType) {
+        taxFlag = Tax.taxFlag(preIncome, income, businType);
     }
 }

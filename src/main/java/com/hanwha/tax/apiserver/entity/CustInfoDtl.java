@@ -47,22 +47,6 @@ public class CustInfoDtl {
         return isDisorder == null? Character.valueOf(' ') : isDisorder;
     }
 
-/*
-    @Column(length = 100)
-    private String pushToken;;
-
-    @Column(length = 36)
-    private String devUid;;
-
-    @Column(length = 50)
-    private String devName;;
-
-    @Column(length = 10)
-    private String devOstype;;
-
-    @Column(length = 20)
-    private String devOsversion;;
-*/
 
     @Column(name="create_dt")
     private LocalDateTime createDt;

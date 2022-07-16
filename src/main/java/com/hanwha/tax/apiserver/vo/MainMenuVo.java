@@ -8,6 +8,7 @@ public interface MainMenuVo {
     public String getId();
     public Integer getOrder();
 
+    public String getTitle();
     public String getType();
     public String getSubType();
     public String getUrl();

@@ -173,7 +173,7 @@ public class AuthService {
         loginDto.setJwt(jwt);
 
         // taxFlag 계산
-        loginDto.fillTaxFlag(null, null);
+        loginDto.fillTaxFlag(null, null, '0');
 
         // login_hst에 이력 저장
         LoginHst loginHst = new LoginHst(loginVo);

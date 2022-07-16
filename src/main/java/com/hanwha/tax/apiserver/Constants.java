@@ -29,10 +29,15 @@ public class Constants {
     // KCB 본인인증 응답코드
     public final static String KCB_RES_B000 = "B000";   // 정상 처리
 
-    public final static int TAX_FLAG_NONE = 0;
-    public final static int TAX_FLAG_SIMBOOK = 1;   // 간편장부
-    public final static int TAX_FLAG_COMBOOK = 2;   // 복식부기
-    public final static int TAX_FLAG_SIMRATE = 3;   // 단순경비
-    public final static int TAX_FLAG_STARATE = 4;   // 기준경비
+    // 소득세 flag
+    public final static String TAX_FLAG_NONE = "00";
+    public final static String TAX_FLAG_SIMBOOK = "10";   // 간편장부
+    public final static String TAX_FLAG_COMBOOK = "20";   // 복식부기
+    public final static String TAX_FLAG_SIMRATE = "01";   // 단순경비
+    public final static String TAX_FLAG_STARATE = "02";   // 기준경비
+    public final static String TAX_FLAG_SBSIR = "11";   // 간편장부, 단순경비
+    public final static String TAX_FLAG_SBSTR = "12";   // 간편장부, 기준경비
+    public final static String TAX_FLAG_CBSIR = "21";   // 복식부기, 단순경비
+    public final static String TAX_FLAG_CBSTR = "22";   // 복식부기, 기준경비
 
 }

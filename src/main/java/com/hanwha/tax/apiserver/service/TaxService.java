@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class TaxService {
     public Long predTax(Integer year) {
-        Long tax = calTax();
+        Long tax = calTax("cid", 2022, 11);
         return tax;
     }
 

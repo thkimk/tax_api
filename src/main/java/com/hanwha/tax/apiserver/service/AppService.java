@@ -74,11 +74,6 @@ public class AppService {
         List<MainMenuVo> mainMenuVos = mainMenuRepository.selectMainMenu(custGrade);
         MainMenuDto mainMenuDto = new MainMenuDto(mainMenuVos);
 
-        // 개인화배너 처리
-
-        // 다이나믹 배너 처리
-        mainMenuDto.procDynamicBanner();
-
         return mainMenuDto;
     }
 
