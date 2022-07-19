@@ -1,6 +1,8 @@
 package com.hanwha.tax.apiserver.vo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.hanwha.tax.apiserver.model.User;
+import com.hanwha.tax.apiserver.model.YesOrNo;
 import lombok.Data;
 
 @Data
@@ -10,15 +12,15 @@ public class SignupVo {
 
     String name;
     String birth;
-    char gender;
+    User.Gender gender;
     String mobile;
     String email;
 
-    char isMarriage;
-    char isNewBusin;
-    char isHshld;
-    char isDisorder;
-    char isSinParent;
+    YesOrNo isMarriage;
+    YesOrNo isNewBusin;
+    YesOrNo isHshld;
+    YesOrNo isDisorder;
+    YesOrNo isSinParent;
     String jobCode;
     String income;
 

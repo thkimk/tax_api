@@ -40,8 +40,8 @@ public class InfoController {
     @GetMapping(value = "/jobs")
     public ApiDataResult jobs(@ApiParam(value = "업종 코드", required = false) @RequestParam(required = false) String code,
                               @ApiParam(value = "업종명", required = false) @RequestParam(required = false) String name) throws Exception {
-        Utils.logCalled("jobs", code+", "+name);
-        List<Industry> industries = infoService.jobs(code, name);
+        Utils.logCalled("jobs", code + ", " + name);
+        final List<Industry> industries = infoService.jobs(code, name);
 
         return responseService.result(industries);
     }

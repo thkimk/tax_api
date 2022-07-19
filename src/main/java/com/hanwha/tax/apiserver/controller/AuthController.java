@@ -54,9 +54,8 @@ public class AuthController {
 
         return responseService.result(jwtTokenProvider.createToken(String.valueOf(user.getMsrl()), user.getRoles()));
 */
-        LoginDto loginDto = authService.login(loginVo);
-
-        return responseService.result(loginDto);
+        final MemberDto memberDto = authService.login(loginVo);
+        return responseService.result(memberDto);
     }
 
     @ApiOperation(value = "회원 가입(준회원)", notes = "준회원 회원가입 처리를 한다.")
@@ -64,8 +63,8 @@ public class AuthController {
     public ApiDataResult signup(@ApiParam(value = "회원가입에 필요한 정보를 전달하고, 회원가입 처리", required = true) @RequestBody SignupVo signupVo) {
         Utils.logCalled("signup", signupVo);
 
-        SignupDto signupDto = authService.signup(signupVo);
-        return responseService.result(signupDto);
+        final MemberDto memberDto = authService.signup(signupVo);
+        return responseService.result(memberDto);
 /*
 
         userJpaRepo.save(User.builder()

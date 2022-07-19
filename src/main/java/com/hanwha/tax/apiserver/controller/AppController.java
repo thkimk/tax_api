@@ -34,7 +34,7 @@ public class AppController {
     public ApiDataResult inits() throws Exception {
         Utils.logCalled("inits", "");
 
-        AppInitsDto appInitsDto = appService.inits();
+        final AppInitsDto appInitsDto = appService.inits();
         return responseService.result(appInitsDto);
     }
 
@@ -53,7 +53,7 @@ public class AppController {
     @GetMapping(value = "/mainMenu")
     public ApiDataResult mainMenu() throws Exception {
         Utils.logCalled("mainMenu", "");
-        MainMenuDto mainMenuDto = appService.mainMenu();
+        final MainMenuDto mainMenuDto = appService.mainMenu();
 
         return responseService.result(mainMenuDto);
     }

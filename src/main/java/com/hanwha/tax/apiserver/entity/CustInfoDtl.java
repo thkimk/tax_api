@@ -60,11 +60,11 @@ public class CustInfoDtl {
 
         this.jobCode = signupVo.getJobCode();
 
-        this.isDisorder = signupVo.getIsDisorder();
-        this.isHshld = signupVo.getIsHshld();
-        this.isNewBusin = signupVo.getIsNewBusin();
-        this.isMarriage = signupVo.getIsMarriage();
-        this.isSinParent = signupVo.getIsSinParent();
+        this.isDisorder = signupVo.getIsDisorder().toCharacter();
+        this.isHshld = signupVo.getIsHshld().toCharacter();
+        this.isNewBusin = signupVo.getIsNewBusin().toCharacter();
+        this.isMarriage = signupVo.getIsMarriage().toCharacter();
+        this.isSinParent = signupVo.getIsSinParent().toCharacter();
 
 /*
         this.pushToken = signupVo.getPushToken();

@@ -7,5 +7,4 @@ public class LoginVo {
     String cid;
     String pin;
     String pushToken;
-
 }

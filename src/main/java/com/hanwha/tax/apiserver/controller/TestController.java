@@ -1,8 +1,10 @@
 package com.hanwha.tax.apiserver.controller;
 
 import com.hanwha.tax.apiserver.model.Info;
+import com.hanwha.tax.apiserver.model.UserProperty;
 import com.hanwha.tax.apiserver.model.response.ApiDataResult;
 import com.hanwha.tax.apiserver.service.ResponseService;
+import com.hanwha.tax.apiserver.vo.TestVo;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -54,6 +56,12 @@ public class TestController {
             infoList.add(info);
         }
         return responseService.result(infoList);
+    }
+
+    @PostMapping(value = "/test")
+    public ApiDataResult testModel(@RequestBody TestVo testVo) {
+        System.out.println("testVo : " + testVo.getIsTest().isYes());
+        return responseService.result(testVo);
     }
 
 }

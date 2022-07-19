@@ -4,6 +4,7 @@ package com.hanwha.tax.apiserver.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.hanwha.tax.apiserver.advice.exception.InvalidInputValueException;
 import com.hanwha.tax.apiserver.entity.Terms;
+import com.hanwha.tax.apiserver.model.YesOrNo;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ public class TermsDto {
         private String name;
         private String version;
         private String type;
-        private Character viewYn;
+        private YesOrNo viewYn;
         private String url;
 
         private List<TermsDto.TermsVo> child = null;

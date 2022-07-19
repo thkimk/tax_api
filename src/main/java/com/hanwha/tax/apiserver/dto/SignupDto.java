@@ -1,31 +1,13 @@
 package com.hanwha.tax.apiserver.dto;
 
-import com.hanwha.tax.apiserver.Utils;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.hanwha.tax.apiserver.entity.CustInfoDtl;
+import com.hanwha.tax.apiserver.model.User;
 import com.hanwha.tax.apiserver.vo.SignupVo;
 import lombok.Data;
 
 @Data
 public class SignupDto {
-    @Data
-    public static class User {
-        public String cid;
-        public String name;
-        public String birth;
-        public Character gender;
-        public String mobile;
-        public String email;
-
-        public User(SignupVo signupVo) {
-            cid = signupVo.getCid();
-
-            name = signupVo.getName();
-            birth = signupVo.getBirth();
-            gender = signupVo.getGender();
-            mobile = signupVo.getMobile();
-            email = signupVo.getEmail();
-        }
-    }
 
     @Data
     public static class Additional {
@@ -46,11 +28,13 @@ public class SignupDto {
         }
     }
 
+    @JsonProperty("jwt")
     String jwt;
     String custGrade;
     String custStatus;
 
-    User user;
+    @JsonProperty("user")
+    MemberDto member;
     Additional additional;
 
 }

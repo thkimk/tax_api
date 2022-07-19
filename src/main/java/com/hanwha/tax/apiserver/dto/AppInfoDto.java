@@ -1,6 +1,7 @@
 package com.hanwha.tax.apiserver.dto;
 
 import com.hanwha.tax.apiserver.entity.AppInfo;
+import com.hanwha.tax.apiserver.model.YesOrNo;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -9,13 +10,13 @@ import java.time.LocalDateTime;
 public class AppInfoDto {
     private String osName;
     private String recentVersion;
-    private Character updateYn;
+    private YesOrNo updateYn;
     private LocalDateTime applyDt;
 
     public void fill(AppInfo appInfo) {
         osName = appInfo.getOsName();
         recentVersion = appInfo.getRctVer();
-        updateYn = appInfo.getUptYn();
+        updateYn = YesOrNo.parse(appInfo.getUptYn());
         applyDt = appInfo.getApplDt();
     }
 }

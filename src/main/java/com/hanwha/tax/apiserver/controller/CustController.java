@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @Api(tags = {"User 사용자"}) // UserController를 대표하는 최상단 타이틀 영역에 표시될 값 세팅
 @RequiredArgsConstructor // class 내부의 final 객체는 Constructor Injection 수행, @Autowired도 가능
 @RestController // 결과를 JSON으로 도출
-@RequestMapping(value = Constants.API +"/v1"+ "/cust") // api resource를 버전별로 관리, /v1 을 모든 리소스 주소에 적용
+@RequestMapping(value = Constants.API + "/v1" + "/cust") // api resource를 버전별로 관리, /v1 을 모든 리소스 주소에 적용
 public class CustController {
 
     @Autowired
