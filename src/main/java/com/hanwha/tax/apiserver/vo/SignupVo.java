@@ -1,8 +1,8 @@
 package com.hanwha.tax.apiserver.vo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.hanwha.tax.apiserver.model.User;
-import com.hanwha.tax.apiserver.model.YesOrNo;
+import com.hanwha.tax.apiserver.model.type.User;
+import com.hanwha.tax.apiserver.model.type.YesOrNo;
 import lombok.Data;
 
 @Data

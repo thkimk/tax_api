@@ -1,6 +1,5 @@
 package com.hanwha.tax.apiserver.entity;
 
-import com.hanwha.tax.apiserver.model.YesOrNo;
 import lombok.*;
 
 import javax.persistence.*;

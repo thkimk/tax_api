@@ -2,8 +2,6 @@ package com.hanwha.tax.apiserver.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.hanwha.tax.apiserver.entity.CustInfoDtl;
-import com.hanwha.tax.apiserver.model.User;
-import com.hanwha.tax.apiserver.vo.SignupVo;
 import lombok.Data;
 
 @Data
