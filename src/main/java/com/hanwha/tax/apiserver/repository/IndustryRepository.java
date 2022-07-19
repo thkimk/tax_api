@@ -10,4 +10,6 @@ public interface IndustryRepository extends JpaRepository<Industry, Long> {
 
     List<Industry> findAllByName(String name);
 
+    Industry findOneByCode(String code);
+
 }

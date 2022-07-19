@@ -1,18 +1,25 @@
 package com.hanwha.tax.apiserver.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hanwha.tax.apiserver.Constants;
 import com.hanwha.tax.apiserver.Utils;
-import com.hanwha.tax.apiserver.repository.TotalIncomeRepository;
+import com.hanwha.tax.apiserver.entity.CustInfoDtl;
+import com.hanwha.tax.apiserver.entity.Industry;
+import com.hanwha.tax.apiserver.repository.*;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 @Data
+@Component
+@Slf4j
 public class Tax {
     // 기준정보
     String cid;
     Character businType;
-    String taxFlag;
+    String taxFlag = Constants.TAX_FLAG_SBSTR;
 
     // 01.소득(earning) = 수입 - 지출
     Long earning = 0L;
@@ -25,7 +32,7 @@ public class Tax {
 
     // 03.산출세액(calTax) = 02.과표 * 세율(6%~45%)
     Long calTax = 0L;
-    int taxRate = 0;
+    Float taxRate = 0f;
 
     // 04.결정세액(decTax)
     Long decTax = 0L;
@@ -36,21 +43,50 @@ public class Tax {
     Long addTax = 0L;
     Long paidTax = 0L;
 
-    @Autowired
-    TotalIncomeRepository totalIncomeRepository;
+    CustInfoDtl custInfoDtl = null;
+
+    private final TotalIncomeRepository totalIncomeRepository;
+    private final CustDeductRepository custDeductRepository;
+    private final CustInfoDtlRepository custInfoDtlRepository;
+    private final IndustryRepository industryRepository;
 
 
-    public Tax(String cid) {
-        this.cid = cid;
+    public void saveTaxFlag(String cid, int year) {
+        Long[] income = custDeductRepository.selectIncomes("2206000001", year);
+        custInfoDtl = custInfoDtlRepository.findByCid("2206000001");
+
+        taxFlag = taxFlag(income[0], income[1], custInfoDtl.getIsNewBusin());
     }
 
-    public Long calRateTax() {
-//        income =
 
+    public Long calRateTax(String cid) {
+        this.cid = cid;
+        log.info("## 소득세 계산(calRateTax) : {}, taxFlag {}", cid, taxFlag);
+
+        income = totalIncomeRepository.selectRtIncome(cid);
+
+        Industry industry = industryRepository.findOneByCode(custInfoDtl.getJobCode());
+        if ((Integer.parseInt(taxFlag)%10) == 1) {    // 단순경비율
+            outgoing = Math.round((Math.min(income, 40000000) * industry.getSimpleExrt().doubleValue() + Math.max(income-40000000, 0) * industry.getSimpleExrtExc().doubleValue())/100);
+        } else {    // 기준경비율
+            outgoing = Math.round((income * industry.getStandardExrt().doubleValue())/100);
+        }
+
+        earning = income - outgoing;
+
+        log.info("## [1] 소득 : {} = {} - {}", earning, income, outgoing);
         return calTax(earning);
     }
 
     public Long calBookTax() {
+        log.info("## 소득세 계산(calRateTax) : {}, taxFlag {}", cid, taxFlag);
+
+        this.cid = cid;
+        income = totalIncomeRepository.selectRtIncome(cid);
+        outgoing = totalIncomeRepository.selectRtOutgoing(cid);
+        earning = income - outgoing;
+
+        log.info("## [1] 소득 : {} = {} - {}", earning, income, outgoing);
         return calTax(earning);
     }
 
@@ -69,20 +105,33 @@ public class Tax {
 
         // 02.과세표준 계산
         // deduct(소득공제) 계산 : 본인, 부양가족, 기타
-//        deduct = ;
+        deduct();
         taxBase = earning - deduct;
+        log.info("## [2] 과표 : {} = {} - {}", taxBase, earning, deduct);
 
         // 03.산출세액 계산
         taxRate = taxRate(taxBase);
-        calTax = taxBase * taxRate;
+        calTax = Math.round((double)(taxBase * taxRate));
+        log.info("## [3] 산출 : {} = {} * {}", calTax, taxBase, taxRate);
 
         // 04.결정세액 계산
         decTax = calTax - taxDeduct;
+        log.info("## [4] 결정 : {} = {} - {}", decTax, calTax, taxDeduct);
 
         // 05.최종세액 계산
         finTax = decTax + addTax - paidTax;
+        log.info("## [5] 최종 : {} = {} + {} = {}", finTax, decTax, addTax, paidTax);
 
         return finTax;
+    }
+
+    /**
+     * 공제금액 계산 (소득공제)
+     * 본인 및 부양가족
+     * 공제항목
+     */
+    void deduct() {
+
     }
 
 
@@ -91,15 +140,18 @@ public class Tax {
      * @param taxBase : 과세표준
      * @return : %
      */
-    public static int taxRate(Long taxBase) {
-        if (taxBase <= 12000000) return 6;
-        else if (taxBase <=  46000000) return 15;
-        else if (taxBase <=  88000000) return 24;
-        else if (taxBase <= 150000000) return 35;
-        else if (taxBase <= 120000000) return 38;
-        else if (taxBase <= 300000000) return 40;
-        else if (taxBase <= 500000000) return 42;
-        else return 45;
+    public static float taxRate(Long taxBase) {
+        float res = 0f;
+        if (taxBase <= 12000000) res = 6;
+        else if (taxBase <=  46000000) res = 15;
+        else if (taxBase <=  88000000) res = 24;
+        else if (taxBase <= 150000000) res = 35;
+        else if (taxBase <= 120000000) res = 38;
+        else if (taxBase <= 300000000) res = 40;
+        else if (taxBase <= 500000000) res = 42;
+        else res = 45;
+
+        return (res / 100);
     }
 
 

@@ -21,4 +21,14 @@ public interface TotalIncomeRepository extends JpaRepository<TotalIncome, Long> 
     List<TotalIncome> findByYearAndMonth(Integer year, Integer month);
     List<TotalIncome> findByCustIdAndYearAndMonth(String custId, Integer year, Integer month);
 
+    @Query(value="select sum(b.amount) from (" +
+            "select a.trans_amt as amount from mydata_income a where a.cust_id = :cid and a.is_income = 'Y' union " +
+            "select a.trans_amt as amount from book_income a where a.cust_id = :cid and a.is_income = 'Y') b", nativeQuery=true)
+    Long selectRtIncome(@Param("cid") String cid);
+
+    @Query(value="select sum(b.amount) from (" +
+            "select a.appr_amt as amount from mydata_outgoing a where a.cust_id = :cid union " +
+            "select a.appr_amt as amount from book_outgoing a where a.cust_id = :cid) b", nativeQuery=true)
+    Long selectRtOutgoing(@Param("cid") String cid);
+
 }
