@@ -43,7 +43,7 @@ public class InfoService {
     }
 */
     public List<Industry> jobs(String code, String name) {
-        List<Industry> industries = null;
+        final List<Industry> industries;
 
         if (code != null) {
             industries = industryRepository.findAllByCode(code);

@@ -73,65 +73,67 @@ public class AuthService {
     }
 
 
-    public SignupDto signup(SignupVo signupVo) {
-        SignupDto signupDto = new SignupDto();
-        Cust cust = null;
+    public MemberDto signup(SignupVo signupVo) {
+        final MemberDto memberDto = new MemberDto();
+        final UserVo user;
+        final Cust cust;
+        final CustInfo custInfo;
+        final CustInfoDtl custInfoDtl;
 
         // cust 저장
         String cid = authInfoRepository.selectCidByCi(signupVo.getCi());
-        if (cid == null) {
+        if (cid == null) { //준회원 생성
             // cust 저장
             cid = genCid();
-            signupVo.setCid(cid);
+            user = new UserVo(signupVo);
+            user.setCid(cid);
 
             cust = new Cust(signupVo);
             custRepository.save(cust);
 
             // cust_info 저장
-            CustInfo custInfo = new CustInfo(signupVo);
+            custInfo = new CustInfo(signupVo);
             custInfoRepository.save(custInfo);
 
             // cust_info_dtl
-            CustInfoDtl custInfoDtl = new CustInfoDtl(signupVo);
+            custInfoDtl = new CustInfoDtl(signupVo);
             custInfoDtlRepository.save(custInfoDtl);
 
             // dev_info
-            DevInfo devInfo = new DevInfo(signupVo);
+            final DevInfo devInfo = new DevInfo(signupVo);
             devInfoRepository.save(devInfo);
 
             // CustTermsAgmt 저장 (약관동의에서, 서비스/필수/선택 약관에 대한 동의사항)
-            List<CustTermsAgmt> custTermsAgmts = CustTermsAgmt.custTermsAgmts(signupVo);
+            final List<CustTermsAgmt> custTermsAgmts = CustTermsAgmt.custTermsAgmts(signupVo);
             custTermsAgmtRepository.saveAll(custTermsAgmts);
 
             // NotiSetting 저장 (약관동의에서, 푸시/SMS/이메일/알림톡 수신에 대한 동의사항)
-            NotiSetting notiSetting = new NotiSetting(signupVo);
+            final NotiSetting notiSetting = new NotiSetting(signupVo);
             notiSettingRepository.save(notiSetting);
 
             // auth_info 저장
-            AuthInfo authInfo = new AuthInfo(signupVo);
+            final AuthInfo authInfo = new AuthInfo(signupVo);
             authInfoRepository.save(authInfo);
 
-        } else {
-            signupVo.setCid(cid);
+        } else { //준회원 이상 조회
             cust = custRepository.findByCid(cid);
-
-            CustInfoDtl custInfoDtl = custInfoDtlRepository.findByCid(cid);
-            SignupDto.Additional additional = new SignupDto.Additional(custInfoDtl);
-            signupDto.setAdditional(additional);
+            custInfo = custInfoRepository.findByCid(cid);
+            user = new UserVo(custInfo);
+            custInfoDtl = custInfoDtlRepository.findByCid(cid);
+            user.setAdditional(custInfoDtl);
         }
         MDC.put("cid", cid);
 
         // JWT 토큰 생성 및 저장
-        String jwt = jwtTokenProvider.createToken(cid);
+        final String jwt = jwtTokenProvider.createToken(cid);
 
         // return
-        signupDto.setJwt(jwt);
-        signupDto.setCustGrade(cust.getCustGrade());
-        signupDto.setCustStatus(cust.getCustStatus());
-        SignupDto.User user = new SignupDto.User(signupVo);
-        signupDto.setUser(user);
+        memberDto.setJwt(jwt);
+        user.setGrade(cust.getCustGrade());
+        user.setStatus(cust.getCustStatus());
+        memberDto.setUser(user);
 
-        return signupDto;
+        return memberDto;
 /*
 
         userJpaRepo.save(User.builder()
@@ -156,30 +158,38 @@ public class AuthService {
     }
 
 
-    public LoginDto login(LoginVo loginVo) {
+    public MemberDto login(LoginVo loginVo) {
         // auth_info에서 pin번호 비교 (cust_id가 아이디, pin번호가 패스워드 역할)
-        AuthInfo authInfo = authInfoRepository.findByCid(loginVo.getCid());
+        final AuthInfo authInfo = authInfoRepository.findByCid(loginVo.getCid());
         if (authInfo == null) {
             throw new UserNotFoundException();
         } /*kkk else if (!authInfo.getPin().equals(loginVo.getPin())) {
             throw new UserNotFoundException();
         }*/
 
+        final String cid = loginVo.getCid();
         // JWT 토큰 생성 및 저장
-        Cust cust = custRepository.findByCid(loginVo.getCid());
-        String jwt = jwtTokenProvider.createToken(loginVo.getCid());
-        LoginDto loginDto = new LoginDto();
-        loginDto.fillCust(cust);
-        loginDto.setJwt(jwt);
+        final Cust cust = custRepository.findByCid(cid);
+        final CustInfo custInfo = custInfoRepository.findByCid(cid);
+        final String jwt = jwtTokenProvider.createToken(cid);
 
-        // taxFlag 계산
-        loginDto.fillTaxFlag(null, null, '0');
+        final MemberDto memberDto = new MemberDto();
+        memberDto.setJwt(jwt);
+
+        final UserVo user = new UserVo(custInfo);
+        user.setGrade(cust.getCustGrade());
+        user.setStatus(cust.getCustStatus());
+
+        memberDto.setUser(user);
+
+//        // taxFlag 계산
+//        loginDto.fillTaxFlag(null, null, '0');
 
         // login_hst에 이력 저장
         LoginHst loginHst = new LoginHst(loginVo);
         loginHstRepository.save(loginHst);
 
-        return loginDto;
+        return memberDto;
     }
 
 
@@ -232,11 +242,11 @@ public class AuthService {
             reqJson.put("TEL_COM_CD", idenOtpReqVo.getTelComCd());  // 통신사코드
             reqJson.put("TEL_NO", idenOtpReqVo.getTelNo());         // 휴대폰번호
             reqJson.put("USER_IP", "10.0.0.1");
-            reqJson.put("SITE_URL", "www.test.co.kr:normal");
-            reqJson.put("SITE_NAME", "test.co.kr:normal");
+            reqJson.put("SITE_URL", "www.taxsol.co.kr");
+            reqJson.put("SITE_NAME", "TaxSolution");
             reqJson.put("RQST_CAUS_CD", "00");                      // 인증요청사유코드 (00:회원가입, 01:성인인증, 02:회원정보수정, 03:비밀번호찾기, 04:상품구매, 99:기타)
             reqJson.put("CHNL_CD", "");                             // Optional
-            reqJson.put("APP_HASH_STR", "");                        // Optional
+            reqJson.put("APP_HASH_STR", "iEEEN/CqECx");                        // Optional
 
             if (idenOtpReqVo.getTxSeqNo() != null) {
                 reqJson.put("TX_SEQ_NO", idenOtpReqVo.getTxSeqNo());       // 거래고유번호. 동일문자열을 두번 사용할 수 없음.

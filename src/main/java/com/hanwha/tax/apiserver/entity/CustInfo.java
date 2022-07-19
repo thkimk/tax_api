@@ -52,7 +52,7 @@ public class CustInfo {
         this.email = signupVo.getEmail();
         this.birth = signupVo.getBirth();
         this.mobile = signupVo.getMobile();
-        this.gender = signupVo.getGender();
+        this.gender = signupVo.getGender().toCharacter();
         this.createDt = LocalDateTime.now();
 
     }
