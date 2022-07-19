@@ -17,8 +17,8 @@ import java.util.Random;
 
 @Slf4j
 public class Utils {
-    static String strKey = "12345678901234567890123456789012";
-    static String strIv = "1234567890123456";
+    static String strKey = "sPOuHDI6sA4K49uhA4Mi8eD2xkgoZRPR";
+    static String strIv = "c19fY3HUtIXeroka";
 
     static Crypto crypto = new Crypto();
 
@@ -107,17 +107,24 @@ public class Utils {
         return rs.nextString();
     }
 
-    public static String encCoocon(String plain) throws Exception {
+    public static String encCoocon(String plain) {
 //        String plain = "abcdefghijklmnopqrstuvwxyz123456";
 //        String strKey = "12345678901234567890123456789012";
 //        String strIv = "1234567890123456";
 
 //        Crypto crypto = new Crypto();
-        crypto.setKey(strKey);
-        crypto.setIv(strIv);
-        crypto.setAlg("AES/CBC/PKCS5Padding");
+        String enc = "";
+        try {
+            crypto.setKey(strKey);
+            crypto.setIv(strIv);
+            crypto.setAlg("AES/CBC/PKCS5Padding");
 
-        return crypto.encrypt(plain);
+            enc = crypto.encrypt(plain);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return enc;
 //        String aesDec = crypto.decrypt(aesEnc);
     }
 

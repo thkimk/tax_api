@@ -34,9 +34,6 @@ public class MydataOutgoing {
     private Integer seq;
 
     @Column()
-    private Long transAmt;
-
-    @Column()
     private String payType;
 
     @Column()
@@ -49,10 +46,16 @@ public class MydataOutgoing {
     private String category;
 
     @Column()
-    private Long appAmt;
+    private String apprNum;
+
+    @Column()
+    private Long apprAmt;
 
     @Column()
     private Long modAmt;
+
+    @Column()
+    private LocalDateTime apprDtime;
 
     @Column()
     private LocalDateTime transDtime;

@@ -161,9 +161,9 @@ public class AuthService {
         AuthInfo authInfo = authInfoRepository.findByCid(loginVo.getCid());
         if (authInfo == null) {
             throw new UserNotFoundException();
-        } else if (!authInfo.getPin().equals(loginVo.getPin())) {
+        } /*kkk else if (!authInfo.getPin().equals(loginVo.getPin())) {
             throw new UserNotFoundException();
-        }
+        }*/
 
         // JWT 토큰 생성 및 저장
         Cust cust = custRepository.findByCid(loginVo.getCid());

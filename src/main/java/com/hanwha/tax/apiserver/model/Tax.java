@@ -3,7 +3,9 @@ package com.hanwha.tax.apiserver.model;
 
 import com.hanwha.tax.apiserver.Constants;
 import com.hanwha.tax.apiserver.Utils;
+import com.hanwha.tax.apiserver.repository.TotalIncomeRepository;
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Data
 public class Tax {
@@ -34,20 +36,40 @@ public class Tax {
     Long addTax = 0L;
     Long paidTax = 0L;
 
+    @Autowired
+    TotalIncomeRepository totalIncomeRepository;
+
+
     public Tax(String cid) {
         this.cid = cid;
     }
 
+    public Long calRateTax() {
+//        income =
+
+        return calTax(earning);
+    }
+
+    public Long calBookTax() {
+        return calTax(earning);
+    }
+
     /**
      * 예상 소득세 계산기
-     * @param taxFlag : 간편장부(10), 기준경비율(02)
+     * @param taxFlag : 간편장부(10), 기준경비율(02), 단순경비율(01)
      * @return : 예상 소득세
      */
-    public Long calTax(int taxFlag) {
+    public Long calTax(Long taxFlag) {
         // 01.소득 계산
+        // income : totalIncome이 아니고, 계산시에는 실시간 수입 (배치처리 필요 : mydata와 book상의 income을 합산)
+        // outgoing : flag 선택값에 따라 다름
+//        income = ;
+//        outgoing = ;
         earning = income - outgoing;
 
         // 02.과세표준 계산
+        // deduct(소득공제) 계산 : 본인, 부양가족, 기타
+//        deduct = ;
         taxBase = earning - deduct;
 
         // 03.산출세액 계산

@@ -1,12 +1,13 @@
 package com.hanwha.tax.apiserver.service;
 
+import com.hanwha.tax.apiserver.Constants;
 import com.hanwha.tax.apiserver.Utils;
 import com.hanwha.tax.apiserver.dto.CcAuthorizeDto;
+import com.hanwha.tax.apiserver.entity.CustInfo;
+import com.hanwha.tax.apiserver.entity.CustInfoDtl;
 import com.hanwha.tax.apiserver.entity.TotalIncome;
 import com.hanwha.tax.apiserver.entity.TotalOutgoing;
-import com.hanwha.tax.apiserver.repository.AuthInfoRepository;
-import com.hanwha.tax.apiserver.repository.TotalIncomeRepository;
-import com.hanwha.tax.apiserver.repository.TotalOutgoingRepository;
+import com.hanwha.tax.apiserver.repository.*;
 import com.hanwha.tax.apiserver.vo.*;
 import com.hanwha.tax.apiserver.dto.CcExpenseDto;
 import com.hanwha.tax.apiserver.dto.CcIncomeDto;
@@ -60,6 +61,9 @@ public class MydataService {
 
     @Autowired
     TotalOutgoingRepository totalOutgoingRepository;
+
+    @Autowired
+    CustInfoRepository custInfoRepository;
 
 
     public static String COOCON_AUTH = "";
@@ -154,8 +158,13 @@ public class MydataService {
 
     public CcAuthorizeDto ccAuthorize() {
         String cid = Utils.cid();
-        String ci = authInfoRepository.selectCiByCid(Utils.cid());
-        CcAuthorizeVo ccAuthorizeVo = new CcAuthorizeVo(ci);
+        String ci = "Gg3GIzkmziVhqfx8IOSFItnLjUP49iIM";//kkkauthInfoRepository.selectCiByCid(cid);
+        CustInfo custInfo = custInfoRepository.findByCid(cid);
+        if (custInfo == null) {
+            return null;
+        }
+
+        CcAuthorizeVo ccAuthorizeVo = new CcAuthorizeVo(ci, custInfo);
 
         // 쿠콘 API 호출
         Utils.logExtCall("ccAuthorize", ccAuthorizeVo);
