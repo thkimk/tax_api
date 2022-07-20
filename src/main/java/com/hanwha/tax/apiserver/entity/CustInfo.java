@@ -36,6 +36,9 @@ public class CustInfo {
     private String mobile;
 
     @Column()
+    private String telecom;
+
+    @Column()
     private Character gender;
 
     @Column(name="create_dt")
@@ -52,6 +55,7 @@ public class CustInfo {
         this.email = signupVo.getEmail();
         this.birth = signupVo.getBirth();
         this.mobile = signupVo.getMobile();
+        this.telecom = signupVo.getTelecom();
         this.gender = signupVo.getGender().toCharacter();
         this.createDt = LocalDateTime.now();
 
@@ -63,6 +67,7 @@ public class CustInfo {
         this.email = saveAuthVo.getEmail();
         this.birth = saveAuthVo.getBirth();
         this.mobile = saveAuthVo.getMobile();
+        this.telecom = saveAuthVo.getTelecom();
         this.gender = saveAuthVo.getGender();
         this.updateDt = LocalDateTime.now();
 

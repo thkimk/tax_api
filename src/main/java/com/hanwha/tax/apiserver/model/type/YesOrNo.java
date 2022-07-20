@@ -1,6 +1,7 @@
 package com.hanwha.tax.apiserver.model.type;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.hanwha.tax.apiserver.vo.SaveFamilyVo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

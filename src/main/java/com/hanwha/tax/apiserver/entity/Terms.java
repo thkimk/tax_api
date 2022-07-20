@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.sql.Clob;
 import java.time.LocalDateTime;
 
 @Builder // builder를 사용할 수 있게 한다.
@@ -36,7 +37,7 @@ public class Terms {
     @JsonIgnore
     private char viewYn;
 
-    @Column(length = 2000)
+    @Column(columnDefinition = "TEXT")
     @JsonIgnore
     private String content;
 

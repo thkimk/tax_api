@@ -11,6 +11,7 @@ public class SaveAuthVo {
     String email;
     String birth;
     String mobile;
+    String telecom;
     char gender;
     char isMarriage;
     char isAgreeTerms;

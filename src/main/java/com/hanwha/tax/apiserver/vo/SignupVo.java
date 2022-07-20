@@ -14,6 +14,7 @@ public class SignupVo {
     String birth;
     User.Gender gender;
     String mobile;
+    String telecom;
     String email;
 
     YesOrNo isMarriage;

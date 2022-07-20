@@ -16,7 +16,7 @@ public class TaxService {
     private final Tax tax;
 
     public Long predTax(Integer year) {
-        tax.saveTaxFlag("2206000001", 2021);
+        tax.saveTaxFlag("2206000001", year);
 
         return tax.calRateTax("2206000001");
     }

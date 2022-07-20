@@ -171,6 +171,7 @@ public class AuthService {
         // JWT 토큰 생성 및 저장
         final Cust cust = custRepository.findByCid(cid);
         final CustInfo custInfo = custInfoRepository.findByCid(cid);
+        final CustInfoDtl custInfoDtl = custInfoDtlRepository.findByCid(cid);
         final String jwt = jwtTokenProvider.createToken(cid);
 
         final MemberDto memberDto = new MemberDto();
@@ -179,6 +180,7 @@ public class AuthService {
         final UserVo user = new UserVo(custInfo);
         user.setGrade(cust.getCustGrade());
         user.setStatus(cust.getCustStatus());
+        user.setAdditional(custInfoDtl);
 
         memberDto.setUser(user);
 

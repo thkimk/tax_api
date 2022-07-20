@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 import org.slf4j.MDC;
 
 import javax.persistence.*;
@@ -31,6 +32,18 @@ public class CustDeduct {
 
     @Column()
     private Long income;
+
+    @Column()
+    private Long npcAmt;
+
+    @Column()
+    private Long rspAmt;
+
+    @Column()
+    private Long medAmt;
+
+    @Column()
+    private Long sedAmt;
 
     @Column(name="create_dt")
     private LocalDateTime createDt;

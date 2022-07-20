@@ -29,7 +29,7 @@ public class CustFamily {
     private String family;
 
     @Column(name="birth")
-    private LocalDate birth;
+    private String birth;
 
     @Column(name="is_disorder")
     private Character isDisorder;
@@ -44,7 +44,7 @@ public class CustFamily {
     public CustFamily(String custId, SaveFamilyVo.Family family) {
         this.cid = custId;
         this.family = family.getFamily();
-        this.birth = LocalDate.parse(family.getBirth());
+        this.birth = family.getBirth();
         this.isDisorder = family.getIsDisorder();
 
         this.createDt = LocalDateTime.now();

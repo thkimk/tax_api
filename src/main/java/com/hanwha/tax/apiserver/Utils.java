@@ -145,4 +145,16 @@ public class Utils {
         return LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
     }
 
+    public static int realAge(String birth) {
+        LocalDate now = LocalDate.now();
+        LocalDate parsedBirthDate = LocalDate.parse(birth, DateTimeFormatter.ofPattern("yyyyMMdd"));
+
+        int realAge = now.minusYears(parsedBirthDate.getYear()).getYear();
+        if (parsedBirthDate.plusYears(realAge).isAfter(now)) {
+            realAge = realAge -1;
+        }
+
+        return realAge;
+    }
+
 }
