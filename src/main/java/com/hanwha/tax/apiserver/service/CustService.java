@@ -2,24 +2,34 @@ package com.hanwha.tax.apiserver.service;
 
 import com.hanwha.tax.apiserver.Constants;
 //import com.hanwha.tax.apiserver.repository.UserJpaRepository;
+import com.hanwha.tax.apiserver.entity.CustDeduct;
+import com.hanwha.tax.apiserver.entity.CustDeductIds;
 import com.hanwha.tax.apiserver.entity.CustFamily;
 import com.hanwha.tax.apiserver.entity.CustInfoDtl;
+import com.hanwha.tax.apiserver.repository.CustDeductRepository;
 import com.hanwha.tax.apiserver.repository.CustFamilyRepository;
 import com.hanwha.tax.apiserver.repository.CustInfoDtlRepository;
+import com.hanwha.tax.apiserver.util.DateUtil;
 import com.hanwha.tax.apiserver.vo.SaveFamilyVo;
 import com.hanwha.tax.apiserver.vo.SaveJobVo;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class CustService {
     @Autowired
     CustInfoDtlRepository custInfoDtlRepository;
+
+    @Autowired
+    CustDeductRepository custDeductRepository;
 
     @Autowired
     CustFamilyRepository custFamilyRepository;
@@ -35,14 +45,24 @@ public class CustService {
     public String saveJob(SaveJobVo saveJobVo) {
         CustInfoDtl custInfoDtl = custInfoDtlRepository.findByCid(saveJobVo.getCid());
         if (custInfoDtl == null) {
-            return Constants.CODE_RET_OK;
+            custInfoDtl = new CustInfoDtl(saveJobVo);
+        } else {
+            // 사업 유형 처리
+            custInfoDtl.fill(saveJobVo);
         }
-
-        // 사업 유형 처리
-        custInfoDtl.fill(saveJobVo);
         custInfoDtlRepository.save(custInfoDtl);
 
-        // 직전년도 수입 처리 (cust_deduct)
+        if (saveJobVo.getIsNewBusin() != null && saveJobVo.getIsNewBusin().isNo()) {
+            CustDeduct custDeduct = custDeductRepository.selectByIds(saveJobVo.getCid(), DateUtil.getThisYear());
+            if (custDeduct == null) {
+                // 직전년도 수입 처리 (cust_deduct)
+                custDeduct = new CustDeduct();
+                custDeduct.setCid(saveJobVo.getCid());
+                custDeduct.setYear(DateUtil.getThisYear());
+            }
+            custDeduct.setIncome(Long.parseLong(saveJobVo.getIncome()));
+            custDeductRepository.save(custDeduct);
+        }
 
         return Constants.CODE_RET_OK;
     }

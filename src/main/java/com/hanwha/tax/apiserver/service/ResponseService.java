@@ -1,6 +1,6 @@
 package com.hanwha.tax.apiserver.service;
 
-import com.hanwha.tax.apiserver.Utils;
+import com.hanwha.tax.apiserver.util.Utils;
 import com.hanwha.tax.apiserver.model.response.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

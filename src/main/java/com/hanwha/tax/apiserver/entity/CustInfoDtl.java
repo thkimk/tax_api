@@ -1,22 +1,17 @@
 package com.hanwha.tax.apiserver.entity;
 
 import com.hanwha.tax.apiserver.vo.SaveJobVo;
-import com.hanwha.tax.apiserver.vo.SignupVo;
-import lombok.*;
+import lombok.Getter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.time.LocalDateTime;
 
-@Builder // builder를 사용할 수 있게 한다.
-@Entity // jpa entity 임을 알린다.
-@Data //user 필드 값의 getter를 자동생성한다.
-@NoArgsConstructor // 인자 없는 생성자를 자동으로 생성한다.
-@AllArgsConstructor // 인자를 모두 갖춘 생성자를 자동으로 생성한다.
-@Table(name = "cust_info_dtl") // 'user' 테이블과 매핑됨을 명시한다.
-public class CustInfoDtl {
+@Getter
+@Entity
+@Table(name = "cust_info_dtl")
+public class CustInfoDtl extends TimeEntity {
 
     @Id
     @Column(name="cust_id", length = 10)
@@ -48,44 +43,21 @@ public class CustInfoDtl {
     }
 
 
-    @Column(name="create_dt")
-    private LocalDateTime createDt;
-
-    @Column(name="update_dt")
-    private LocalDateTime updateDt;
-
-
-    public CustInfoDtl(SignupVo signupVo) {
-        this.cid = signupVo.getCid();
-
-        this.jobCode = signupVo.getJobCode();
-
-        this.isDisorder = signupVo.getIsDisorder().toCharacter();
-        this.isHshld = signupVo.getIsHshld().toCharacter();
-        this.isNewBusin = signupVo.getIsNewBusin().toCharacter();
-        this.isMarriage = signupVo.getIsMarriage().toCharacter();
-        this.isSinParent = signupVo.getIsSinParent().toCharacter();
-
-/*
-        this.pushToken = signupVo.getPushToken();
-
-
-        String[] devs = Utils.devs();
-        this.devUid = MDC.get("uid");
-        if (devs != null && devs.length == 4) {
-            this.devName = devs[1];
-            this.devOstype = devs[2];
-            this.devOsversion = devs[3];
-        }
-*/
-
-        this.createDt = LocalDateTime.now();
-
+    public CustInfoDtl(SaveJobVo saveJobVo) {
+        this.cid = saveJobVo.getCid();
+        this.isNewBusin = saveJobVo.getIsNewBusin().toCharacter();
+        this.jobCode = saveJobVo.getJobCode();
+        this.isDisorder = 'N';
+        this.isHshld = 'N';
+        this.isMarriage = 'N';
+        this.isSinParent = 'N';
     }
 
     public void fill(SaveJobVo saveJobVo) {
-
-        jobCode = saveJobVo.getJobCode();
+        if (saveJobVo.getIsNewBusin() != null) {
+            this.isNewBusin = saveJobVo.getIsNewBusin().toCharacter();
+        }
+        this.jobCode = saveJobVo.getJobCode();
     }
 
 }

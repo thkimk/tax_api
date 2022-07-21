@@ -2,7 +2,7 @@ package com.hanwha.tax.apiserver.controller;
 
 import com.hanwha.tax.apiserver.Constants;
 //import com.hanwha.tax.apiserver.entity.User;
-import com.hanwha.tax.apiserver.Utils;
+import com.hanwha.tax.apiserver.util.Utils;
 import com.hanwha.tax.apiserver.model.response.ApiDataResult;
 
 //import com.hanwha.tax.apiserver.repository.UserJpaRepository;
@@ -89,7 +89,9 @@ public class CustController {
     @PostMapping(value = "/saveJob")
     public ApiDataResult saveJob(@ApiParam(value = "회원ID : 이메일", required = true) @RequestBody SaveJobVo saveJobVo) {
         Utils.logCalled("saveJob", saveJobVo);
-        saveJobVo.setCid(Utils.cid());
+        if (saveJobVo.getCid() == null) {
+            saveJobVo.setCid(Utils.cid());
+        }
 
         // cust_info_dtl 업데이트 필요
         custService.saveJob(saveJobVo);

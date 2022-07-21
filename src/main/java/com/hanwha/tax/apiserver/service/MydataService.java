@@ -1,10 +1,8 @@
 package com.hanwha.tax.apiserver.service;
 
-import com.hanwha.tax.apiserver.Constants;
-import com.hanwha.tax.apiserver.Utils;
+import com.hanwha.tax.apiserver.util.Utils;
 import com.hanwha.tax.apiserver.dto.CcAuthorizeDto;
 import com.hanwha.tax.apiserver.entity.CustInfo;
-import com.hanwha.tax.apiserver.entity.CustInfoDtl;
 import com.hanwha.tax.apiserver.entity.TotalIncome;
 import com.hanwha.tax.apiserver.entity.TotalOutgoing;
 import com.hanwha.tax.apiserver.repository.*;
@@ -27,13 +25,8 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.*;
 import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Properties;
-import java.util.UUID;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 

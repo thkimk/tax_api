@@ -1,7 +1,7 @@
 package com.hanwha.tax.apiserver.controller;
 
 import com.hanwha.tax.apiserver.Constants;
-import com.hanwha.tax.apiserver.Utils;
+import com.hanwha.tax.apiserver.util.Utils;
 import com.hanwha.tax.apiserver.dto.AppInitsDto;
 import com.hanwha.tax.apiserver.dto.MainMenuDto;
 import com.hanwha.tax.apiserver.model.response.ApiDataResult;

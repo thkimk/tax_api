@@ -1,7 +1,6 @@
 package com.hanwha.tax.apiserver.controller;
 
 import com.hanwha.tax.apiserver.model.Info;
-import com.hanwha.tax.apiserver.model.UserProperty;
 import com.hanwha.tax.apiserver.model.response.ApiDataResult;
 import com.hanwha.tax.apiserver.service.ResponseService;
 import com.hanwha.tax.apiserver.vo.TestVo;

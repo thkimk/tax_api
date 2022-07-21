@@ -1,15 +1,12 @@
 package com.hanwha.tax.apiserver.model;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hanwha.tax.apiserver.Constants;
-import com.hanwha.tax.apiserver.Utils;
 import com.hanwha.tax.apiserver.entity.CustInfoDtl;
 import com.hanwha.tax.apiserver.entity.Industry;
 import com.hanwha.tax.apiserver.repository.*;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Data

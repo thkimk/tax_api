@@ -4,17 +4,16 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://10.254.1.18:3306/tax_db4?autoReconnection=true&useSSL=false&allowMultiQueries=true
-#    url: jdbc:mysql://172.30.1.15:3306/tax_db?autoReconnection=true&useSSL=false&allowMultiQueries=true
-    username: root
-    password: welcome
+    url: jdbc:mysql://tax-database.c1ttexowmmks.ap-northeast-2.rds.amazonaws.com:3306/tax?autoReconnection=true&useSSL=false&allowMultiQueries=true
+    username: tax_admin
+    password: hli6363!
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     open-in-view: false
     show-sql: true
     hibernate:
       format_sql: true
-      ddl-auto: validate
+      ddl-auto: update
 
 logging:
   register-shutdown-hook: false

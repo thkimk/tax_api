@@ -11,15 +11,11 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Builder // builder를 사용할 수 있게 한다.
-@Entity // jpa entity 임을 알린다.
-@Getter //user 필드 값의 getter를 자동생성한다.
-@NoArgsConstructor // 인자 없는 생성자를 자동으로 생성한다.
-@AllArgsConstructor // 인자를 모두 갖춘 생성자를 자동으로 생성한다.
-@Table(name = "auth_info") // 'user' 테이블과 매핑됨을 명시한다.
-public class AuthInfo {
+@Entity
+@Table(name = "auth_info")
+public class AuthInfo extends TimeEntity {
     @Id
-    @Column(name="cust_id", length = 10)
+    @Column(name = "cust_id", length = 10)
     private String cid;
 
     @Column(length = 256)
@@ -28,41 +24,25 @@ public class AuthInfo {
     @Column(length = 100)
     private String ci;
 
-    @Column(name="is_main")
+    @Column(name = "is_main")
     private Character isMain;
 
-    @Column(name="auth_status", length = 2)
+    @Column(name = "auth_status", length = 2)
     private String authStatus;
 
-    @Column(name="fail_cnt")
+    @Column(name = "fail_cnt")
     private int failCnt;
-
-    @Column(name="create_dt")
-    private LocalDateTime createDt;
-
-    @Column(name="update_dt")
-    private LocalDateTime updateDt;
 
 
     public AuthInfo(SignupVo signupVo) {
         this.cid = signupVo.getCid();
         this.pin = signupVo.getPin();
-//        this.ci = MDC.get("ci");
         this.ci = signupVo.getCi();
-
-        this.createDt = LocalDateTime.now();
-
     }
 
 
     public void fill(SaveAuthVo saveAuthVo) {
-//        this.custId = MDC.get("custId");
         this.pin = saveAuthVo.getPin();
-//        this.ci = saveAuthVo.getCi();
-
-        this.updateDt = LocalDateTime.now();
-//        this.createDt = LocalDateTime.now();
-
     }
 
 }

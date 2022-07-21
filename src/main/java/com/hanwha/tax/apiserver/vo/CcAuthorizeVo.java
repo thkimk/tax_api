@@ -1,9 +1,8 @@
 package com.hanwha.tax.apiserver.vo;
 
 
-import com.hanwha.tax.apiserver.Utils;
+import com.hanwha.tax.apiserver.util.Utils;
 import com.hanwha.tax.apiserver.entity.CustInfo;
-import com.hanwha.tax.apiserver.entity.CustInfoDtl;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

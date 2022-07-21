@@ -1,41 +1,48 @@
 package com.hanwha.tax.apiserver.entity;
 
-import com.hanwha.tax.apiserver.Utils;
-import com.hanwha.tax.apiserver.vo.NomemberVo;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.slf4j.MDC;
+import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
-@Builder // builder를 사용할 수 있게 한다.
-@Entity // jpa entity 임을 알린다.
-@Getter //user 필드 값의 getter를 자동생성한다.
-@NoArgsConstructor // 인자 없는 생성자를 자동으로 생성한다.
-@AllArgsConstructor // 인자를 모두 갖춘 생성자를 자동으로 생성한다.
-@Table(name = "cust_deduct") // 'user' 테이블과 매핑됨을 명시한다.
-public class CustDeduct {
+@Getter
+@Setter
+@Entity
+@Table(name = "cust_deduct")
+@IdClass(CustDeductIds.class)
+public class CustDeduct extends TimeEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
-    @Column(name="cust_id", length = 10)
+    @Column(name = "cust_id", length = 10, columnDefinition = "varchar(10) comment '회원번호'")
     private String cid;
 
-    @Column()
-    private Integer year;
+    @Id
+    @Column(name = "year", columnDefinition = "int comment '연도'")
+    private int year;
 
-    @Column()
-    private Long income;
+    @ColumnDefault("0")
+    @Column(name = "income", nullable = false, columnDefinition = "bigint  default 0 comment '수입'")
+    private Long income = 0L;
 
-    @Column(name="create_dt")
-    private LocalDateTime createDt;
+    @ColumnDefault("0")
+    @Column(name = "npc_amt", nullable = false, columnDefinition = "bigint default 0 comment '국민연금보험료 납입액'")
+    private Long npcAmount = 0L;
 
-    @Column(name="update_dt")
-    private LocalDateTime updateDt;
+    @ColumnDefault("0")
+    @Column(name = "rsp_amt", nullable = false, columnDefinition = "bigint default 0 comment '연금저축 보유 납입액'")
+    private Long rspAmount = 0L;
+
+    @ColumnDefault("0")
+    @Column(name = "ira_amt", nullable = false, columnDefinition = "bigint default 0 comment '연금저축계좌보유 납입액'")
+    private Long iraAmount = 0L;
+
+    @ColumnDefault("0")
+    @Column(name = "med_amt", nullable = false, columnDefinition = "bigint default 0 comment '소상공인 공제부금 보유 납입액'")
+    private Long medAmount = 0L;
+
+    @ColumnDefault("0")
+    @Column(name = "sed_amt", nullable = false, columnDefinition = "bigint default 0 comment '중소기업창업투자 금액'")
+    private Long sedAmount = 0L;
 
 }

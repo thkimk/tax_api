@@ -1,8 +1,7 @@
 package com.hanwha.tax.apiserver.controller;
 
 import com.hanwha.tax.apiserver.Constants;
-import com.hanwha.tax.apiserver.Utils;
-import com.hanwha.tax.apiserver.dto.CcIncomeDto;
+import com.hanwha.tax.apiserver.util.Utils;
 import com.hanwha.tax.apiserver.model.response.ApiDataResult;
 import com.hanwha.tax.apiserver.service.ResponseService;
 import com.hanwha.tax.apiserver.service.TaxService;

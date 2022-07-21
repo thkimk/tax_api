@@ -1,6 +1,6 @@
 package com.hanwha.tax.apiserver.service;
 
-import com.hanwha.tax.apiserver.Utils;
+import com.hanwha.tax.apiserver.util.Utils;
 import com.hanwha.tax.apiserver.advice.exception.InvalidInputValueException;
 import com.hanwha.tax.apiserver.dto.AppInitsDto;
 import com.hanwha.tax.apiserver.dto.MainMenuDto;

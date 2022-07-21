@@ -1,4 +1,4 @@
-package com.hanwha.tax.apiserver;
+package com.hanwha.tax.apiserver.util;
 
 import com.coocon.plugin.crypt.Crypto;
 import com.fasterxml.jackson.core.JsonProcessingException;

@@ -15,6 +15,7 @@ import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -59,131 +60,111 @@ public class AuthService {
 
 
     public String genCid() {
-        String custId = custRepository.selectLastCid();
+        final String custId = custRepository.selectLastCid();
 
-        String yymm = LocalDate.now().format(DateTimeFormatter.ofPattern("YYMM"));
+        final String yymm = LocalDate.now().format(DateTimeFormatter.ofPattern("YYMM"));
         if (custId == null) {
             return yymm.concat("000001");
         }
 
-        int lastId = Integer.parseInt(custId.substring(4));
-        String tmp = String.format("%06d", lastId+1);
+        final int lastId = Integer.parseInt(custId.substring(4));
+        final String tmp = String.format("%06d", lastId + 1);
 
         return yymm.concat(tmp);
     }
 
 
+    @Transactional
     public MemberDto signup(SignupVo signupVo) {
         final MemberDto memberDto = new MemberDto();
-        final UserVo user;
-        final Cust cust;
-        final CustInfo custInfo;
-        final CustInfoDtl custInfoDtl;
+        final UserDto userDto;
 
-        // cust 저장
-        String cid = authInfoRepository.selectCidByCi(signupVo.getCi());
-        if (cid == null) { //준회원 생성
+        final UserInterface userInterface = authInfoRepository.selectUserByCi(signupVo.getCi());
+        if (userInterface == null) { //준회원 생성
             // cust 저장
-            cid = genCid();
-            user = new UserVo(signupVo);
-            user.setCid(cid);
+            final String cid = genCid();
+            signupVo.setCid(cid);
+            userDto = new UserDto(signupVo);
+            userDto.setCid(cid);
 
-            cust = new Cust(signupVo);
+            final Cust cust = new Cust(signupVo);
             custRepository.save(cust);
-
-            // cust_info 저장
-            custInfo = new CustInfo(signupVo);
-            custInfoRepository.save(custInfo);
-
-            // cust_info_dtl
-            custInfoDtl = new CustInfoDtl(signupVo);
-            custInfoDtlRepository.save(custInfoDtl);
-
-            // dev_info
-            final DevInfo devInfo = new DevInfo(signupVo);
-            devInfoRepository.save(devInfo);
-
-            // CustTermsAgmt 저장 (약관동의에서, 서비스/필수/선택 약관에 대한 동의사항)
-            final List<CustTermsAgmt> custTermsAgmts = CustTermsAgmt.custTermsAgmts(signupVo);
-            custTermsAgmtRepository.saveAll(custTermsAgmts);
-
-            // NotiSetting 저장 (약관동의에서, 푸시/SMS/이메일/알림톡 수신에 대한 동의사항)
-            final NotiSetting notiSetting = new NotiSetting(signupVo);
-            notiSettingRepository.save(notiSetting);
-
-            // auth_info 저장
-            final AuthInfo authInfo = new AuthInfo(signupVo);
-            authInfoRepository.save(authInfo);
-
         } else { //준회원 이상 조회
-            cust = custRepository.findByCid(cid);
-            custInfo = custInfoRepository.findByCid(cid);
-            user = new UserVo(custInfo);
-            custInfoDtl = custInfoDtlRepository.findByCid(cid);
-            user.setAdditional(custInfoDtl);
+            userDto = new UserDto(userInterface);
+            final CustInfoDtl custInfoDtl = custInfoDtlRepository.findByCid(userDto.getCid());
+            userDto.setAdditional(custInfoDtl);
+            signupVo.setCid(userDto.getCid());
         }
-        MDC.put("cid", cid);
+        MDC.put("cid", userDto.getCid());
+
+        saveCustInfos(signupVo);
 
         // JWT 토큰 생성 및 저장
-        final String jwt = jwtTokenProvider.createToken(cid);
+        final String jwt = jwtTokenProvider.createToken(userDto.getCid());
 
-        // return
         memberDto.setJwt(jwt);
-        user.setGrade(cust.getCustGrade());
-        user.setStatus(cust.getCustStatus());
-        memberDto.setUser(user);
-
+        memberDto.setUser(userDto);
         return memberDto;
-/*
+    }
 
-        userJpaRepo.save(User.builder()
-                .uid(id)
-                .password(passwordEncoder.encode(password))
-                .name(name)
-                .roles(Collections.singletonList("ROLE_USER"))
-                .build());
-        return responseService.successResult();
-*/
+    @Transactional
+    private void saveCustInfos(SignupVo signupVo) {
+        // cust_info 저장
+        final CustInfo custInfo = new CustInfo(signupVo);
+        custInfoRepository.save(custInfo);
+        // dev_info
+        final DevInfo devInfo = new DevInfo(signupVo);
+        devInfoRepository.save(devInfo);
+        // CustTermsAgmt 저장 (약관동의에서, 서비스/필수/선택 약관에 대한 동의사항)
+        final List<CustTermsAgmt> custTermsAgmts = CustTermsAgmt.custTermsAgmts(signupVo);
+        custTermsAgmtRepository.saveAll(custTermsAgmts);
+        // NotiSetting 저장 (약관동의에서, 푸시/SMS/이메일/알림톡 수신에 대한 동의사항)
+        final NotiSetting notiSetting = new NotiSetting(signupVo);
+        notiSettingRepository.save(notiSetting);
+        // auth_info 저장
+        final AuthInfo authInfo = new AuthInfo(signupVo);
+        authInfoRepository.save(authInfo);
     }
 
 
     public void signupReg(SignupRegVo signupRegVo) {
-        String custId = authInfoRepository.selectCidByCi(signupRegVo.getCi())    ;
+        String custId = authInfoRepository.selectCidByCi(signupRegVo.getCi());
         signupRegVo.setCid(custId);
 
         // cust 업데이트 (cust_grade: 준회원 --> 정회원)
         Cust cust = new Cust(signupRegVo);
         custRepository.save(cust);
-
     }
 
 
+    @Transactional
     public MemberDto login(LoginVo loginVo) {
+        final String cid = loginVo.getCid();
         // auth_info에서 pin번호 비교 (cust_id가 아이디, pin번호가 패스워드 역할)
-        final AuthInfo authInfo = authInfoRepository.findByCid(loginVo.getCid());
-        if (authInfo == null) {
+        final UserInterface userInterface = authInfoRepository.selectUserByCid(cid);
+        if (userInterface == null) {
             throw new UserNotFoundException();
         } /*kkk else if (!authInfo.getPin().equals(loginVo.getPin())) {
             throw new UserNotFoundException();
         }*/
 
-        final String cid = loginVo.getCid();
+
         // JWT 토큰 생성 및 저장
-        final Cust cust = custRepository.findByCid(cid);
-        final CustInfo custInfo = custInfoRepository.findByCid(cid);
+        final CustInfoDtl custInfoDtl = custInfoDtlRepository.findByCid(cid);
         final String jwt = jwtTokenProvider.createToken(cid);
+
+        final UserDto userDto = new UserDto(userInterface);
+        userDto.setAdditional(custInfoDtl);
 
         final MemberDto memberDto = new MemberDto();
         memberDto.setJwt(jwt);
-
-        final UserVo user = new UserVo(custInfo);
-        user.setGrade(cust.getCustGrade());
-        user.setStatus(cust.getCustStatus());
-
-        memberDto.setUser(user);
+        memberDto.setUser(userDto);
 
 //        // taxFlag 계산
 //        loginDto.fillTaxFlag(null, null, '0');
+
+        final DevInfo devInfo = new DevInfo(loginVo);
+        devInfoRepository.save(devInfo);
 
         // login_hst에 이력 저장
         LoginHst loginHst = new LoginHst(loginVo);
@@ -272,7 +253,8 @@ public class AuthService {
                 resJson = new JSONObject(resultStr);
                 idenOtpReqDto.fill(resJson);
             }
-        } catch (OkCertException e) {}
+        } catch (OkCertException e) {
+        }
 
         return idenOtpReqDto;
     }
@@ -298,7 +280,8 @@ public class AuthService {
                 resJson = new JSONObject(resultStr);
                 idenOtpConfirmDto.fill(resJson);
             }
-        } catch (OkCertException e) {}
+        } catch (OkCertException e) {
+        }
 
         return idenOtpConfirmDto;
     }
