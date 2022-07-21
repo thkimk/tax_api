@@ -2,7 +2,10 @@ package com.hanwha.tax.apiserver.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.hanwha.tax.apiserver.entity.ImageMng;
 import com.hanwha.tax.apiserver.entity.MainMenuNoti;
+import com.hanwha.tax.apiserver.model.type.Image;
+import com.hanwha.tax.apiserver.repository.ImageMngRepository;
 import com.hanwha.tax.apiserver.repository.MainMenuNotiRepository;
 import com.hanwha.tax.apiserver.vo.MainMenuVo;
 import lombok.Data;
@@ -16,7 +19,7 @@ import java.util.List;
 public class Banner<T extends Banner.BannerBase> {
     String id;
     int order;
-    String type;
+    String viewType;
 
     T data;
 
@@ -24,7 +27,7 @@ public class Banner<T extends Banner.BannerBase> {
     public Banner(MainMenuVo mainMenuVo, T data) {
         id = mainMenuVo.getId();
         order = mainMenuVo.getOrder();
-        type = mainMenuVo.getType();
+        viewType = mainMenuVo.getType();
 
         this.data = data;
 //        this.data.fillData(mainMenuVo);
@@ -45,8 +48,11 @@ public class Banner<T extends Banner.BannerBase> {
         String subCopy;
         String url;
         String urlType;
-        String imageUrl;
         String buttonName;
+
+        @JsonIgnore
+        Long imageId;
+        Image image;
 
         @Override
         public void fillData(MainMenuVo mainMenuVo) {
@@ -54,9 +60,11 @@ public class Banner<T extends Banner.BannerBase> {
             subCopy = mainMenuVo.getSubType();
             url = mainMenuVo.getUrl();
             urlType = mainMenuVo.getUrlType();
-            imageUrl = mainMenuVo.getImageUrl();
+            imageId = mainMenuVo.getImageId();
             buttonName = mainMenuVo.getButtonName();
 
+            // 이미지 정보
+//            ImageMng imageMng =
         }
     }
 
@@ -101,14 +109,17 @@ public class Banner<T extends Banner.BannerBase> {
         String title;
         String comment;
         String content;
-        String image;
+
+        @JsonIgnore
+        Long imageId;
+        Image image;
 
         @Override
         public void fillData(MainMenuVo mainMenuVo) {
             title = "6월 수입은 어땠을까요?";
             comment = "놓친 내역은 없는지 꼼꼼히 확인해 보세요";
             content = "6월 총 수입액 / 200,000,000 원";
-            image = "http://localhost";
+            imageId = mainMenuVo.getImageId();
         }
 
     }
@@ -138,14 +149,17 @@ public class Banner<T extends Banner.BannerBase> {
         String title;
         String comment;
         String content;
-        String image;
+
+        @JsonIgnore
+        Long imageId;
+        Image image;
 
         @Override
         public void fillData(MainMenuVo mainMenuVo) {
             title = "6월 필요경비는 어땠을까요?";
             comment = "놓친 내역은 없는지 꼼꼼히 확인해 보세요";
             content = "6월 총 지출액 / 90,000,000 원";
-            image = "http://localhost";
+            imageId = mainMenuVo.getImageId();
         }
     }
 
