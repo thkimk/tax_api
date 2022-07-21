@@ -4,7 +4,7 @@ package com.hanwha.tax.apiserver.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.hanwha.tax.apiserver.advice.exception.InvalidInputValueException;
 import com.hanwha.tax.apiserver.entity.Terms;
-import com.hanwha.tax.apiserver.model.YesOrNo;
+import com.hanwha.tax.apiserver.model.type.YesOrNo;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;

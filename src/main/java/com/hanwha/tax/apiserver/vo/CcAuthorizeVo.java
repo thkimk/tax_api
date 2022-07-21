@@ -22,7 +22,7 @@ public class CcAuthorizeVo {
         this.ci = ci;
         this.user_name = Utils.encCoocon(custInfo.getName());
         this.birth_date = Utils.encCoocon(custInfo.getBirth());
-        this.tele_corp = "02";
+        this.tele_corp = custInfo.getTelecom();
         this.ph_no = Utils.encCoocon(custInfo.getMobile());
         this.gender = String.valueOf(custInfo.getGender());
         this.national_yn = "Y";

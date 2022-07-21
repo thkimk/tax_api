@@ -14,7 +14,10 @@ import javax.persistence.*;
 public class CustDeduct extends TimeEntity {
 
     @Id
-    @Column(name = "cust_id", length = 10, columnDefinition = "varchar(10) comment '회원번호'")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    @Column(name="cust_id", length = 10)
     private String cid;
 
     @Id

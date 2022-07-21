@@ -1,4 +1,4 @@
-package com.hanwha.tax.apiserver.model;
+package com.hanwha.tax.apiserver.model.type;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

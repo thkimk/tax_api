@@ -1,29 +1,31 @@
 package com.hanwha.tax.apiserver.entity;
 
+import com.hanwha.tax.apiserver.entity.ids.CustDeductIds;
+import com.hanwha.tax.apiserver.entity.ids.CustTermsAgmtIds;
 import com.hanwha.tax.apiserver.vo.SignupVo;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Getter
 @Setter
-@NoArgsConstructor
 @Entity
 @Table(name = "cust_terms_agmt")
+@IdClass(CustTermsAgmtIds.class)
+@NoArgsConstructor
 public class CustTermsAgmt extends TimeEntity {
 
     @Id
     @Column(name = "cust_id", length = 10)
     private String cid;
 
+    @Id
     @Column()
     private Long termsId;
 

@@ -2,6 +2,8 @@ package com.hanwha.tax.apiserver.model;
 
 
 import com.hanwha.tax.apiserver.Constants;
+import com.hanwha.tax.apiserver.Utils;
+import com.hanwha.tax.apiserver.entity.*;
 import com.hanwha.tax.apiserver.entity.CustInfoDtl;
 import com.hanwha.tax.apiserver.entity.Industry;
 import com.hanwha.tax.apiserver.repository.*;
@@ -9,12 +11,15 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Data
 @Component
 @Slf4j
 public class Tax {
     // 기준정보
     String cid;
+    int year;
     Character businType;
     String taxFlag = Constants.TAX_FLAG_SBSTR;
 
@@ -41,18 +46,26 @@ public class Tax {
     Long paidTax = 0L;
 
     CustInfoDtl custInfoDtl = null;
+    CustInfo custInfo = null;
+    List<CustFamily> custFamilyList = null;
+    CustDeduct custDeduct = null;
+    Long[] incomes = null;
 
     private final TotalIncomeRepository totalIncomeRepository;
     private final CustDeductRepository custDeductRepository;
+    private final CustInfoRepository custInfoRepository;
+    private final CustFamilyRepository custFamilyRepository;
     private final CustInfoDtlRepository custInfoDtlRepository;
     private final IndustryRepository industryRepository;
 
 
     public void saveTaxFlag(String cid, int year) {
-        Long[] income = custDeductRepository.selectIncomes("2206000001", year);
+        this.year = year;
+
+        incomes = custDeductRepository.selectIncomes("2206000001", this.year);
         custInfoDtl = custInfoDtlRepository.findByCid("2206000001");
 
-        taxFlag = taxFlag(income[0], income[1], custInfoDtl.getIsNewBusin());
+        taxFlag = taxFlag(incomes[0], incomes[1], custInfoDtl.getIsNewBusin());
     }
 
 
@@ -60,7 +73,7 @@ public class Tax {
         this.cid = cid;
         log.info("## 소득세 계산(calRateTax) : {}, taxFlag {}", cid, taxFlag);
 
-        income = totalIncomeRepository.selectRtIncome(cid);
+        income = totalIncomeRepository.selectRtIncome(cid, year);
 
         Industry industry = industryRepository.findOneByCode(custInfoDtl.getJobCode());
         if ((Integer.parseInt(taxFlag)%10) == 1) {    // 단순경비율
@@ -79,8 +92,8 @@ public class Tax {
         log.info("## 소득세 계산(calRateTax) : {}, taxFlag {}", cid, taxFlag);
 
         this.cid = cid;
-        income = totalIncomeRepository.selectRtIncome(cid);
-        outgoing = totalIncomeRepository.selectRtOutgoing(cid);
+        income = totalIncomeRepository.selectRtIncome(cid, year);
+        outgoing = totalIncomeRepository.selectRtOutgoing(cid, year);
         earning = income - outgoing;
 
         log.info("## [1] 소득 : {} = {} - {}", earning, income, outgoing);
@@ -96,8 +109,6 @@ public class Tax {
         // 01.소득 계산
         // income : totalIncome이 아니고, 계산시에는 실시간 수입 (배치처리 필요 : mydata와 book상의 income을 합산)
         // outgoing : flag 선택값에 따라 다름
-//        income = ;
-//        outgoing = ;
         earning = income - outgoing;
 
         // 02.과세표준 계산
@@ -112,14 +123,66 @@ public class Tax {
         log.info("## [3] 산출 : {} = {} * {}", calTax, taxBase, taxRate);
 
         // 04.결정세액 계산
+        taxDeduct();
         decTax = calTax - taxDeduct;
         log.info("## [4] 결정 : {} = {} - {}", decTax, calTax, taxDeduct);
 
         // 05.최종세액 계산
+        finTax();
         finTax = decTax + addTax - paidTax;
-        log.info("## [5] 최종 : {} = {} + {} = {}", finTax, decTax, addTax, paidTax);
+        log.info("## [5] 최종 : {} = {} + {} - {}", finTax, decTax, addTax, paidTax);
 
         return finTax;
+    }
+
+    void finTax() {
+        // 가산세 : 계속사업자이고 직전년도 소득이 4800만 이상인 경우
+        if (custInfoDtl.getIsNewBusin() == 'Y' && incomes[1] >= 48000000) {
+            addTax = Double.valueOf(calTax * 0.2).longValue();
+        }
+
+        // 기납부세액 : 수입금액의 3% --> income에는 모두 3% 기납부세액이 포함되어있어야 함 (미포함시, income계산때 강제 추가)
+        Long income33 = totalIncomeRepository.selectRtIncome33(cid, year);
+        paidTax = Double.valueOf(income33 * 0.03).longValue();
+
+    }
+
+    void taxDeduct() {
+        taxDeduct = 0L;
+
+        // 자녀세액 공제 : 만7세 이상 자녀
+        // 당해년도 출생신고 : 한국나이 1세 자녀, 300000/ 500000/ 700000
+        int count = 0, countBorn = 0;
+        for (CustFamily custFamily : custFamilyList) {
+            if (custFamily.getFamily().equals("06") && Utils.realAge(custFamily.getBirth()) >= 7) {
+                count++;
+                if (count < 3) {
+                    taxDeduct += 150000;
+                }
+            }
+
+            if (custFamily.getFamily().equals("06") && Utils.koreaAge(custFamily.getBirth()) == 1) {
+                countBorn++;
+                if (countBorn == 1) taxDeduct += 300000;
+                else if (countBorn == 2) taxDeduct += 500000;
+                else taxDeduct += 700000;
+            }
+        }
+        if (count >= 3) {
+            taxDeduct += 300000 + (count-3)/2 * 600000;
+        }
+
+        // 연금계좌 세액공제 : IRP는? --> Mydata 제공 IRP??
+        if (earning <= 40000000) {
+            taxDeduct += Double.valueOf((custDeduct.getIraAmount()) * 0.15).longValue();
+        } else {
+            taxDeduct += Double.valueOf((custDeduct.getIraAmount()) * 0.12).longValue();
+        }
+
+        // 표준 세액공제 : 70000
+        // 전자 세액공제 : 20000
+        taxDeduct += 70000 + 20000;
+
     }
 
     /**
@@ -128,7 +191,75 @@ public class Tax {
      * 공제항목
      */
     void deduct() {
+        custInfo = custInfoRepository.findByCid(cid);
+        custFamilyList = custFamilyRepository.findAllByCid(cid);
+        custDeduct = custDeductRepository.findByCidAndYear(cid, year);
 
+        // 본인 공제
+        Long deductMe = deductMe();
+
+        // 부양가족 공제
+        Long deductFamily = deductFamily();
+
+        // 기타 공제
+        Long deductOthers = deductOthers();
+
+        deduct = deductMe + deductFamily + deductOthers;
+        log.info("-- [2.1] 소득공제 : {} = {} + {} + {}", deduct, deductMe, deductFamily, deductOthers);
+    }
+
+    Long deductMe() {
+        Long deductMe = 1500000L;
+
+        // 장애인
+        if (custInfoDtl.getIsDisorder().equals("Y")) deductMe += 2000000;
+
+        // 경로우대자
+        if (Utils.realAge(custInfo.getBirth()) >= 70) deductMe += 1000000;
+
+        // 한부모 공제 : 고객이 직접 체크한 값으로 계산
+        boolean isFlag = false;
+        if (custInfoDtl.getIsSinParent().equals("Y")) {
+            deductMe += 1000000;
+            isFlag = true;
+        }
+
+        // 부녀자 : 3천만원 소득 이하의 여성으로
+        if (!isFlag) {
+            if (custInfo.getGender().equals("F") && earning <= 30000000) {
+                if (custInfoDtl.getIsMarriage().equals("Y")) {
+                    deductMe += 500000;
+                } else if (custInfoDtl.getIsHshld().equals("Y") && custFamilyList.size() > 0) {
+                    deductMe += 500000;
+                }
+            }
+        }
+
+        return deductMe;
+    }
+
+    Long deductFamily() {
+        Long deductFamily = 0L;
+        for (CustFamily custFamily : custFamilyList) {
+            deductFamily += 1500000;
+
+            if (custFamily.getIsDisorder().equals("Y"))  deductFamily += 2000000;
+            if (Utils.realAge(custFamily.getBirth()) >= 70)  deductFamily += 1000000;
+        }
+
+        return deductFamily;
+    }
+
+    Long deductOthers() {
+        Double deductOthers = 0d;
+
+        deductOthers += custDeduct.getNpcAmount();
+        deductOthers += Math.min(custDeduct.getRspAmount()*0.4, 720000);   // 한도가 720000원
+        deductOthers += earning> 100000000? Math.min(custDeduct.getMedAmount(), 2000000):
+                earning> 40000000? Math.min(custDeduct.getMedAmount(), 3000000): Math.min(custDeduct.getMedAmount(), 5000000);
+        deductOthers += Math.min(earning*0.5, custDeduct.getSedAmount()*0.1);
+
+        return deductOthers.longValue();
     }
 
 

@@ -52,6 +52,7 @@ public class CustInfo extends TimeEntity{
         this.email = saveAuthVo.getEmail();
         this.birth = saveAuthVo.getBirth();
         this.mobile = saveAuthVo.getMobile();
+        this.telecom = saveAuthVo.getTelecom();
         this.gender = saveAuthVo.getGender();
     }
 
