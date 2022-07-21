@@ -1,5 +1,6 @@
 package com.hanwha.tax.apiserver.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.hanwha.tax.apiserver.model.Banner;
@@ -12,7 +13,9 @@ import java.util.List;
 @Data
 public class MainMenuDto {
 
+    @JsonIgnore
     String custGrade;
+
     List<Banner> banners = new ArrayList<>();
 
     public MainMenuDto(List<MainMenuVo> mainMenuVos) {
