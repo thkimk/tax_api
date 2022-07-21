@@ -2,8 +2,8 @@ package com.hanwha.tax.apiserver.dto;
 
 
 import com.hanwha.tax.apiserver.entity.CustInfoDtl;
-import com.hanwha.tax.apiserver.model.User;
-import com.hanwha.tax.apiserver.model.YesOrNo;
+import com.hanwha.tax.apiserver.model.type.User;
+import com.hanwha.tax.apiserver.model.type.YesOrNo;
 import com.hanwha.tax.apiserver.vo.SignupVo;
 import lombok.Data;
 import lombok.NoArgsConstructor;

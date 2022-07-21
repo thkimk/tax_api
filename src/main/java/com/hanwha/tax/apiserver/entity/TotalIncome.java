@@ -1,11 +1,12 @@
 package com.hanwha.tax.apiserver.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 
+@Getter
 @Entity
 @Table(name = "total_income")
 public class TotalIncome extends TimeEntity{

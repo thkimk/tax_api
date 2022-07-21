@@ -2,9 +2,6 @@ package com.hanwha.tax.apiserver.repository;
 
 import com.hanwha.tax.apiserver.entity.CustDeduct;
 import com.hanwha.tax.apiserver.entity.CustDeductIds;
-import com.hanwha.tax.apiserver.entity.CustFamily;
-import com.hanwha.tax.apiserver.entity.CustInfo;
-import com.hanwha.tax.apiserver.entity.ids.CustDeductIds;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

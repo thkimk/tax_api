@@ -2,8 +2,11 @@ package com.hanwha.tax.apiserver.entity;
 
 
 
+import lombok.Getter;
+
 import javax.persistence.*;
 
+@Getter
 @Entity
 @Table(name = "noti_msg")
 public class NotiMsg extends TimeEntity {

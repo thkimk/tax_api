@@ -1,15 +1,13 @@
 package com.hanwha.tax.apiserver.entity;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Getter
 @Entity
 @Table(name = "terms")
 @Where(clause="view_yn='Y'")

@@ -1,6 +1,6 @@
 package com.hanwha.tax.apiserver.vo;
 
-import com.hanwha.tax.apiserver.model.User;
+import com.hanwha.tax.apiserver.model.type.User;
 import lombok.Data;
 
 @Data

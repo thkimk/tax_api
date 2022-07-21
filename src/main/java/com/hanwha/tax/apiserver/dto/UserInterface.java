@@ -1,6 +1,6 @@
 package com.hanwha.tax.apiserver.dto;
 
-import com.hanwha.tax.apiserver.model.User;
+import com.hanwha.tax.apiserver.model.type.User;
 
  public interface UserInterface {
 
