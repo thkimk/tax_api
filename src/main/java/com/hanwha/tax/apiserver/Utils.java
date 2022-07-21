@@ -157,4 +157,11 @@ public class Utils {
         return realAge;
     }
 
+    public static int koreaAge(String birth) {
+        LocalDate now = LocalDate.now();
+        LocalDate parsedBirthDate = LocalDate.parse(birth, DateTimeFormatter.ofPattern("yyyyMMdd"));
+
+        return now.minusYears(parsedBirthDate.getYear()).getYear();
+    }
+
 }

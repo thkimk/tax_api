@@ -49,6 +49,7 @@ public class Tax {
     CustInfo custInfo = null;
     List<CustFamily> custFamilyList = null;
     CustDeduct custDeduct = null;
+    Long[] incomes = null;
 
     private final TotalIncomeRepository totalIncomeRepository;
     private final CustDeductRepository custDeductRepository;
@@ -61,10 +62,10 @@ public class Tax {
     public void saveTaxFlag(String cid, int year) {
         this.year = year;
 
-        Long[] income = custDeductRepository.selectIncomes("2206000001", this.year);
+        incomes = custDeductRepository.selectIncomes("2206000001", this.year);
         custInfoDtl = custInfoDtlRepository.findByCid("2206000001");
 
-        taxFlag = taxFlag(income[0], income[1], custInfoDtl.getIsNewBusin());
+        taxFlag = taxFlag(incomes[0], incomes[1], custInfoDtl.getIsNewBusin());
     }
 
 
@@ -127,28 +128,61 @@ public class Tax {
         log.info("## [4] 결정 : {} = {} - {}", decTax, calTax, taxDeduct);
 
         // 05.최종세액 계산
+        finTax();
         finTax = decTax + addTax - paidTax;
         log.info("## [5] 최종 : {} = {} + {} - {}", finTax, decTax, addTax, paidTax);
 
         return finTax;
     }
 
+    void finTax() {
+        // 가산세 : 계속사업자이고 직전년도 소득이 4800만 이상인 경우
+        if (custInfoDtl.getIsNewBusin() == 'Y' && incomes[1] >= 48000000) {
+            addTax = Double.valueOf(calTax * 0.2).longValue();
+        }
+
+        // 기납부세액 : 수입금액의 3% --> income에는 모두 3% 기납부세액이 포함되어있어야 함 (미포함시, income계산때 강제 추가)
+        Long income33 = totalIncomeRepository.selectRtIncome33(cid, year);
+        paidTax = Double.valueOf(income33 * 0.03).longValue();
+
+    }
+
     void taxDeduct() {
         taxDeduct = 0L;
 
-        // 자녀세액 공제
-        int count = 0;
+        // 자녀세액 공제 : 만7세 이상 자녀
+        // 당해년도 출생신고 : 한국나이 1세 자녀, 300000/ 500000/ 700000
+        int count = 0, countBorn = 0;
         for (CustFamily custFamily : custFamilyList) {
-            if (custFamily.getFamily().equals("06")) {
+            if (custFamily.getFamily().equals("06") && Utils.realAge(custFamily.getBirth()) >= 7) {
                 count++;
                 if (count < 3) {
                     taxDeduct += 150000;
                 }
             }
+
+            if (custFamily.getFamily().equals("06") && Utils.koreaAge(custFamily.getBirth()) == 1) {
+                countBorn++;
+                if (countBorn == 1) taxDeduct += 300000;
+                else if (countBorn == 2) taxDeduct += 500000;
+                else taxDeduct += 700000;
+            }
         }
         if (count >= 3) {
-            taxDeduct += 300000 + (count - 3) / 2 * 600000;
+            taxDeduct += 300000 + (count-3)/2 * 600000;
         }
+
+        // 연금계좌 세액공제 : IRP는? --> Mydata 제공 IRP??
+        if (earning <= 40000000) {
+            taxDeduct += Double.valueOf((custDeduct.getIraAmount()) * 0.15).longValue();
+        } else {
+            taxDeduct += Double.valueOf((custDeduct.getIraAmount()) * 0.12).longValue();
+        }
+
+        // 표준 세액공제 : 70000
+        // 전자 세액공제 : 20000
+        taxDeduct += 70000 + 20000;
+
     }
 
     /**
@@ -219,11 +253,11 @@ public class Tax {
     Long deductOthers() {
         Double deductOthers = 0d;
 
-        deductOthers += custDeduct.getNpcAmt();
-        deductOthers += Math.min(custDeduct.getRspAmt()*0.4, 720000);   // 한도가 720000원
-        deductOthers += earning> 100000000? Math.min(custDeduct.getMedAmt(), 2000000):
-                earning> 40000000? Math.min(custDeduct.getMedAmt(), 3000000): Math.min(custDeduct.getMedAmt(), 5000000);
-        deductOthers += Math.min(earning*0.5, custDeduct.getSedAmt()*0.1);
+        deductOthers += custDeduct.getNpcAmount();
+        deductOthers += Math.min(custDeduct.getRspAmount()*0.4, 720000);   // 한도가 720000원
+        deductOthers += earning> 100000000? Math.min(custDeduct.getMedAmount(), 2000000):
+                earning> 40000000? Math.min(custDeduct.getMedAmount(), 3000000): Math.min(custDeduct.getMedAmount(), 5000000);
+        deductOthers += Math.min(earning*0.5, custDeduct.getSedAmount()*0.1);
 
         return deductOthers.longValue();
     }

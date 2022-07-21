@@ -1,49 +1,46 @@
 package com.hanwha.tax.apiserver.entity;
 
 import com.hanwha.tax.apiserver.Utils;
+import com.hanwha.tax.apiserver.entity.ids.CustDeductIds;
 import com.hanwha.tax.apiserver.vo.NomemberVo;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.slf4j.MDC;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Builder // builder를 사용할 수 있게 한다.
-@Entity // jpa entity 임을 알린다.
-@Getter //user 필드 값의 getter를 자동생성한다.
-@NoArgsConstructor // 인자 없는 생성자를 자동으로 생성한다.
-@AllArgsConstructor // 인자를 모두 갖춘 생성자를 자동으로 생성한다.
-@Table(name = "cust_deduct") // 'user' 테이블과 매핑됨을 명시한다.
+@Entity
+@Data
+@Table(name = "cust_deduct")
+@IdClass(CustDeductIds.class)
 public class CustDeduct {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
-    @Column(name="cust_id", length = 10)
+    @Column(name = "cust_id", length = 10, columnDefinition = "varchar(10) comment '회원번호'")
     private String cid;
 
-    @Column()
-    private Integer year;
+    @Id
+    @Column(name = "year", columnDefinition = "int comment '연도'")
+    private int year;
 
-    @Column()
+    @Column(name = "income", columnDefinition = "bigint default 0 comment '수입'")
     private Long income;
 
-    @Column()
-    private Long npcAmt;
+    @Column(name = "npc_amt", columnDefinition = "bigint default 0 comment '국민연금보험료 납입액'")
+    private Long npcAmount;
 
-    @Column()
-    private Long rspAmt;
+    @Column(name = "rsp_amt", columnDefinition = "bigint default 0 comment '연금저축 보유 납입액'")
+    private Long rspAmount;
 
-    @Column()
-    private Long medAmt;
+    @Column(name = "ira_amt", columnDefinition = "bigint default 0 comment '연금저축계좌보유 납입액'")
+    private Long iraAmount;
 
-    @Column()
-    private Long sedAmt;
+    @Column(name = "med_amt", columnDefinition = "bigint default 0 comment '소상공인 공제부금 보유 납입액'")
+    private Long medAmount;
+
+    @Column(name = "sed_amt", columnDefinition = "bigint default 0 comment '중소기업창업투자 금액'")
+    private Long sedAmount;
 
     @Column(name="create_dt")
     private LocalDateTime createDt;
