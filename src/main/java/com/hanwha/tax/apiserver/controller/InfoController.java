@@ -1,6 +1,7 @@
 package com.hanwha.tax.apiserver.controller;
 
 import com.hanwha.tax.apiserver.Constants;
+import com.hanwha.tax.apiserver.dto.NotiMsgDto;
 import com.hanwha.tax.apiserver.util.Utils;
 import com.hanwha.tax.apiserver.dto.FaqDto;
 import com.hanwha.tax.apiserver.dto.TermsDetailDto;
@@ -79,6 +80,20 @@ public class InfoController {
             return responseService.result(faqDto);
         } else {
             return responseService.failResult(400, "해당 질문이 없습니다.");
+        }
+    }
+
+    @ApiOperation(value = "공지사항 상세", notes = "공지사항 상세내용을 제공한다.")
+    @GetMapping(value = "/notice/{id}")
+    public ApiDataResult getNotice(@PathVariable Long id) {
+        Utils.logCalled("notice", null);
+
+        final NotiMsgDto notice = infoService.getNotice(id);
+
+        if (notice!= null) {
+            return responseService.result(notice);
+        } else {
+            return responseService.failResult(400, "해당 내용이 없습니다.");
         }
     }
 }

@@ -3,9 +3,11 @@ package com.hanwha.tax.apiserver.service;
 import com.hanwha.tax.apiserver.advice.exception.InvalidInputValueException;
 import com.hanwha.tax.apiserver.dto.*;
 import com.hanwha.tax.apiserver.entity.Faq;
+import com.hanwha.tax.apiserver.entity.NotiMsg;
 import com.hanwha.tax.apiserver.entity.Terms;
 import com.hanwha.tax.apiserver.repository.FaqRepository;
 import com.hanwha.tax.apiserver.repository.IndustryRepository;
+import com.hanwha.tax.apiserver.repository.NotiMsgRepository;
 import com.hanwha.tax.apiserver.repository.TermsRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +33,9 @@ public class InfoService {
 
     @Autowired
     FaqRepository faqRepository;
+
+    @Autowired
+    NotiMsgRepository notiMsgRepository;
 
     public List<TermsDto> getTermsList() {
         final List<Terms> termsList = termsRepository.findAllOrderByType();
@@ -129,5 +134,18 @@ public class InfoService {
             return null;
         }
     }
+
+    public NotiMsgDto getNotice(Long id) {
+        final Optional<NotiMsg> notiMsg = notiMsgRepository.findById(id);
+        if (notiMsg.isPresent()) {
+            final NotiMsgDto notiMsgDto = new NotiMsgDto();
+            notiMsgDto.setItem(notiMsg.get());
+            return notiMsgDto;
+        } else {
+            return null;
+        }
+    }
+
+
 }
 
