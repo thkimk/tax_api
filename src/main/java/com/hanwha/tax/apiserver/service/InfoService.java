@@ -116,8 +116,7 @@ public class InfoService {
             faqDtoList.add(faqDto);
         });
 
-        final PageableDto pageDto = new PageableDto(faqDtoList, faqList);
-        return pageDto;
+        return new PageableDto<>(faqDtoList, faqList);
     }
 
     public FaqDto getFaq(Long id) {

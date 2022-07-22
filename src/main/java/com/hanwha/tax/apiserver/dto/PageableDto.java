@@ -15,11 +15,11 @@ public class PageableDto<T> {
 
     private final PageInfo page;
 
-    public PageableDto(List<T> list, Page<Object> pageable) {
+    public PageableDto(List<T> list, Page pageable) {
         this.list = list;
         this.page = new PageableDto.PageInfo(
                 pageable.getNumber() + 1,
-                pageable.hasNext() ? pageable.nextPageable().getPageNumber() : null,
+                pageable.hasNext() ? pageable.nextPageable().getPageNumber() + 1 : null,
                 pageable.getTotalPages(),
                 pageable.getTotalElements());
     }

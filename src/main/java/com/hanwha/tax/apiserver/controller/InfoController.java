@@ -19,11 +19,11 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(value = Constants.API + "/" + Constants.VERSION + "/info")
+@RequestMapping(value = Constants.PRE_ADDRESS + "info")
 public class InfoController {
 
     @Autowired
-    ResponseService responseService; // API 요청 결과에 대한 code, messageㅍ
+    ResponseService responseService; // API 요청 결과에 대한 code, message
 
     @Autowired
     InfoService infoService;

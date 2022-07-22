@@ -1,27 +1,25 @@
 package com.hanwha.tax.apiserver.dto;
 
-import com.hanwha.tax.apiserver.model.type.User;
-
- public interface UserInterface {
+public interface UserInterface {
 
     String getCid();
 
     String getName();
 
-     String getBirth();
+    String getBirth();
 
-     Character getGender();
+    Character getGender();
 
-     String getMobile();
+    String getMobile();
 
-     String getTelecom();
+    String getTelecom();
 
-     String getEmail();
+    String getEmail();
 
-     String getGrade();
+    String getGrade();
 
-     String getStatus();
+    String getStatus();
 
-     String getPin() ;
+    String getPin();
 
 }

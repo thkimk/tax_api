@@ -22,7 +22,7 @@ import java.util.List;
 @Api(tags = {"Mydata 정보"})
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(value = Constants.API + "/" + Constants.VERSION + "/mydata")
+@RequestMapping(value = Constants.PRE_ADDRESS + "mydata")
 public class MydataController {
     @Autowired
     ResponseService responseService; // API 요청 결과에 대한 code, messageㅍ

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(tags = {"소득세 정보"})
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(value = Constants.API + "/" + Constants.VERSION + "/tax")
+@RequestMapping(value = Constants.PRE_ADDRESS + "tax")
 public class TaxController {
 
     @Autowired

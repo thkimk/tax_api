@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @Api(tags = {"App 앱"})
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(value = Constants.API + "/" + Constants.VERSION + "/app")
+@RequestMapping(value = Constants.PRE_ADDRESS + "app")
 @Slf4j
 public class AppController {
 

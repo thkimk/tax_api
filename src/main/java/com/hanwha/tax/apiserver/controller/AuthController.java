@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.*;
 @Api(tags = {"Authority 인증"})
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(value = Constants.API + "/" + Constants.VERSION + "/auth")
+@RequestMapping(value =Constants.PRE_ADDRESS + "auth")
 @Slf4j
 public class AuthController {
 
