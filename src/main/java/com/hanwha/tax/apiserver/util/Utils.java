@@ -3,16 +3,14 @@ package com.hanwha.tax.apiserver.util;
 import com.coocon.plugin.crypt.Crypto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hanwha.tax.apiserver.repository.AuthInfoRepository;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.bytebuddy.utility.RandomString;
 import org.slf4j.MDC;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Random;
 
 
 @Slf4j
@@ -135,6 +133,15 @@ public class Utils {
 //        String cid = authInfoRepository.getCiByCustId(custId);
         return authInfoRepository.getCiByCustId(custId());
     }*/
+
+
+    public static PageRequest convertPageable(Pageable pageable) {
+        int page = pageable.getPageNumber() - 1;
+        if (page < 0) {
+            page = 0;
+        }
+        return PageRequest.of(page, pageable.getPageSize());
+    }
 
 
     public static String yyyymmddYester() {

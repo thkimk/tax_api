@@ -1,12 +1,8 @@
 package com.hanwha.tax.apiserver.service;
 
 import com.hanwha.tax.apiserver.advice.exception.InvalidInputValueException;
-import com.hanwha.tax.apiserver.dto.FaqDto;
-import com.hanwha.tax.apiserver.dto.JobInterface;
-import com.hanwha.tax.apiserver.dto.TermsDetailDto;
-import com.hanwha.tax.apiserver.dto.TermsDto;
+import com.hanwha.tax.apiserver.dto.*;
 import com.hanwha.tax.apiserver.entity.Faq;
-import com.hanwha.tax.apiserver.entity.Industry;
 import com.hanwha.tax.apiserver.entity.Terms;
 import com.hanwha.tax.apiserver.repository.FaqRepository;
 import com.hanwha.tax.apiserver.repository.IndustryRepository;
@@ -14,6 +10,8 @@ import com.hanwha.tax.apiserver.repository.TermsRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -109,24 +107,26 @@ public class InfoService {
     }
 */
 
-    public List<FaqDto> getFaqList() {
-       final List<Faq> faqList =  faqRepository.findAll();
-       List<FaqDto> faqDtoList = new ArrayList<>();
-        faqList.forEach(faq -> {
+    public PageableDto<FaqDto> getFaqList(Pageable pageable) {
+        final Page<Faq> faqList = faqRepository.findAll(pageable);
+        List<FaqDto> faqDtoList = new ArrayList<>();
+        faqList.getContent().forEach(faq -> {
             FaqDto faqDto = new FaqDto();
             faqDto.setFaq(faq);
             faqDtoList.add(faqDto);
         });
-       return faqDtoList;
+
+        final PageableDto pageDto = new PageableDto(faqDtoList, faqList);
+        return pageDto;
     }
 
     public FaqDto getFaq(Long id) {
-        final Optional<Faq> faq =  faqRepository.findById(id);
+        final Optional<Faq> faq = faqRepository.findById(id);
         if (faq.isPresent()) {
             FaqDto faqDto = new FaqDto();
             faqDto.setFaq(faq.get());
             return faqDto;
-        }else {
+        } else {
             return null;
         }
     }

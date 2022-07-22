@@ -1,6 +1,8 @@
 package com.hanwha.tax.apiserver.entity;
 
 
+import org.hibernate.annotations.Where;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -9,7 +11,8 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "main_menu_noti")
-public class MainMenuNoti {
+@Where(clause="use_yn='Y'")
+public class MainMenuNoti extends TimeEntity {
 
     @Id
     @Column()
@@ -26,10 +29,5 @@ public class MainMenuNoti {
 
     @Column()
     private LocalDateTime endDt;
-
-
-    @Column()
-    private LocalDateTime updateDt;
-
 
 }

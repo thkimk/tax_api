@@ -12,6 +12,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 @Api(tags = {"Info 정보"})
@@ -61,10 +62,10 @@ public class InfoController {
 
     @ApiOperation(value = "자주 묻는 질문 리스트", notes = "자주 묻는 질문 목록을 제공한다.")
     @GetMapping(value = "/faq")
-    public ApiDataResult getFaqList() {
+    public ApiDataResult getFaqList(Pageable pageable) {
         Utils.logCalled("faq", null);
 
-        return responseService.result(infoService.getFaqList());
+        return responseService.result(infoService.getFaqList(Utils.convertPageable(pageable)));
     }
 
     @ApiOperation(value = "자주 묻는 질문 상세", notes = "자주 묻는 질문 상세내용을 제공한다.")
