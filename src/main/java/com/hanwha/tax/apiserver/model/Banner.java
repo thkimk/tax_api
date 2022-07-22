@@ -50,8 +50,6 @@ public class Banner<T extends Banner.BannerBase> {
         String urlType;
         String buttonName;
 
-        @JsonIgnore
-        Long imageId;
         Image image;
 
         @Override
@@ -60,10 +58,17 @@ public class Banner<T extends Banner.BannerBase> {
             subCopy = mainMenuVo.getSubType();
             url = mainMenuVo.getUrl();
             urlType = mainMenuVo.getUrlType();
-            imageId = mainMenuVo.getImageId();
             buttonName = mainMenuVo.getButtonName();
 
             // 이미지 정보
+            if (mainMenuVo.getImageId() != null) {
+                image = new Image();
+                image.setId(mainMenuVo.getImageId());
+                image.setUrl(mainMenuVo.getImageUrl());
+                image.setBgColor(mainMenuVo.getBgColor());
+                image.setHeight(mainMenuVo.getHeight());
+                image.setWidth(mainMenuVo.getWidth());
+            }
 //            ImageMng imageMng =
         }
     }

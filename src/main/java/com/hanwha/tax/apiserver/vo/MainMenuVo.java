@@ -13,7 +13,12 @@ public interface MainMenuVo {
     public String getSubType();
     public String getUrl();
     public String getUrlType();
-    public Long getImageId();
     public String getButtonName();
+
+    public Long getImageId();
+    public String getImageUrl();
+    public String getBgColor();
+    public Integer getHeight();
+    public Integer getWidth();
 
 }
