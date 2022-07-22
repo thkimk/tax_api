@@ -1,14 +1,14 @@
 package com.hanwha.tax.apiserver.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hanwha.tax.apiserver.Constants;
-import com.hanwha.tax.apiserver.entity.*;
-import com.hanwha.tax.apiserver.entity.CustInfoDtl;
-import com.hanwha.tax.apiserver.entity.Industry;
-import com.hanwha.tax.apiserver.repository.*;
 import com.hanwha.tax.apiserver.util.Utils;
+import com.hanwha.tax.apiserver.entity.*;
+import com.hanwha.tax.apiserver.repository.*;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -77,9 +77,9 @@ public class Tax {
 
         Industry industry = industryRepository.findOneByCode(custInfoDtl.getJobCode());
         if ((Integer.parseInt(taxFlag)%10) == 1) {    // 단순경비율
-            outgoing = Math.round((Math.min(income, 40000000) * industry.getSimpleExrt().doubleValue() + Math.max(income-40000000, 0) * industry.getSimpleExrtExc().doubleValue())/100);
+            outgoing = Double.valueOf((Math.min(income, 40000000) * industry.getSimpleExrt().doubleValue() + Math.max(income-40000000, 0) * industry.getSimpleExrtExc().doubleValue())/100).longValue();
         } else {    // 기준경비율
-            outgoing = Math.round((income * industry.getStandardExrt().doubleValue())/100);
+            outgoing = Double.valueOf((income * industry.getStandardExrt().doubleValue())/100).longValue();
         }
 
         earning = income - outgoing;
@@ -119,7 +119,7 @@ public class Tax {
 
         // 03.산출세액 계산
         taxRate = taxRate(taxBase);
-        calTax = Math.round((double)(taxBase * taxRate));
+        calTax = Double.valueOf(taxBase * taxRate).longValue();
         log.info("## [3] 산출 : {} = {} * {}", calTax, taxBase, taxRate);
 
         // 04.결정세액 계산
@@ -130,6 +130,7 @@ public class Tax {
         // 05.최종세액 계산
         finTax();
         finTax = decTax + addTax - paidTax;
+        finTax = (finTax / 10) * 10;
         log.info("## [5] 최종 : {} = {} + {} - {}", finTax, decTax, addTax, paidTax);
 
         return finTax;
