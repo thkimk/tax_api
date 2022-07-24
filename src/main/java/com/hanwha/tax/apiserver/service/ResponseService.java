@@ -59,6 +59,8 @@ public class ResponseService {
     public ApiDataResult successResult() {
         final ApiDataResult result = new ApiDataResult();
         setSuccessResult(result);
+
+        Utils.logCallReturned("success", null);
         return result;
     }
 

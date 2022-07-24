@@ -1,5 +1,6 @@
 package com.hanwha.tax.apiserver.service;
 
+import com.hanwha.tax.apiserver.model.Coocon;
 import com.hanwha.tax.apiserver.util.Utils;
 import com.hanwha.tax.apiserver.dto.CcAuthorizeDto;
 import com.hanwha.tax.apiserver.entity.CustInfo;
@@ -34,17 +35,6 @@ import java.util.zip.ZipInputStream;
 @RequiredArgsConstructor
 @Slf4j
 public class MydataService {
-    @Autowired
-    RestTemplate restTemplate;
-
-    @Value("${tax.coocon.client_id}")
-    private String clientId = "";
-
-    @Value("${tax.coocon.secret}")
-    private String clientSecret = "";
-
-    @Value("${tax.coocon.url}")
-    private String cooconUrl = "";
 
     @Autowired
     AuthInfoRepository authInfoRepository;
@@ -58,47 +48,7 @@ public class MydataService {
     @Autowired
     CustInfoRepository custInfoRepository;
 
-
-    public static String COOCON_AUTH = "";
-
-
-    public void callCooconApiToken() {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(new MediaType("application", "x-www-form-urlencoded", Charset.forName("UTF-8")));
-
-        MultiValueMap<String, String> cooconTokenParams = new LinkedMultiValueMap<>();
-        {
-            cooconTokenParams.add("grant_type", "client_credentials");
-            cooconTokenParams.add("scope", "apis");
-            cooconTokenParams.add("client_id", clientId);
-            cooconTokenParams.add("client_secret", clientSecret);
-        }
-
-        HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity(cooconTokenParams, httpHeaders);
-
-        ResponseEntity<String> responseEntity = restTemplate.exchange(cooconUrl.concat("/oauth/2.0/token"), HttpMethod.POST, entity, String.class);
-        log.info("## callCooconApiToken(): responseBody: ", responseEntity.getBody());
-
-        JSONObject jsonObject = new JSONObject(responseEntity.getBody());
-        String tokenTmp = (String)jsonObject.get("access_token");
-        if (tokenTmp != null) COOCON_AUTH = tokenTmp;
-
-    }
-
-    public <T> T callCooconApi(String url, Object obj, Class<T> resType) {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        String transId = "hanwha_".concat(Utils.random10value());
-
-        httpHeaders.add("x-api-tran-id", transId);
-        httpHeaders.add("Authorization", "Bearer ".concat(COOCON_AUTH));
-
-        HttpEntity entity = new HttpEntity(obj, httpHeaders);
-        Object res = restTemplate.postForObject(cooconUrl.concat(url), entity, resType);
-        Utils.logExtCallReturned("callCooconApi", res);
-
-        return (T)res;
-    }
-
+    private final Coocon coocon;
 
     public CcIncomeDto ccIncome() {
         // 쿠콘 API 호출
@@ -106,7 +56,7 @@ public class MydataService {
         CcIncomeVo ccIncomeVo = new CcIncomeVo(ci);
 
         Utils.logExtCall("ccIncome", ccIncomeVo);
-        CcIncomeDto ccIncomeDto = (CcIncomeDto)callCooconApi("/apis/user/hw/bank/income", ccIncomeVo, CcIncomeDto.class);
+        CcIncomeDto ccIncomeDto = (CcIncomeDto)coocon.callCooconApi("/apis/user/hw/bank/income", ccIncomeVo, CcIncomeDto.class);
 
         return ccIncomeDto;
     }
@@ -143,7 +93,7 @@ public class MydataService {
 
         // 쿠콘 API 호출
         Utils.logExtCall("ccExpense", ccExpenseVo);
-        CcExpenseDto ccExpenseDto = callCooconApi("/apis/user/hw/card/expense", ccExpenseVo, CcExpenseDto.class);
+        CcExpenseDto ccExpenseDto = coocon.callCooconApi("/apis/user/hw/card/expense", ccExpenseVo, CcExpenseDto.class);
 
         return ccExpenseDto;
     }
@@ -161,7 +111,7 @@ public class MydataService {
 
         // 쿠콘 API 호출
         Utils.logExtCall("ccAuthorize", ccAuthorizeVo);
-        CcAuthorizeDto ccAuthorizeDto = callCooconApi("/apis/user/authorize", ccAuthorizeVo, CcAuthorizeDto.class);
+        CcAuthorizeDto ccAuthorizeDto = coocon.callCooconApi("/apis/user/authorize", ccAuthorizeVo, CcAuthorizeDto.class);
 
         return ccAuthorizeDto;
     }

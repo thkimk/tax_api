@@ -8,6 +8,7 @@ import com.hanwha.tax.apiserver.model.response.ApiDataResult;
 //import com.hanwha.tax.apiserver.repository.UserJpaRepository;
 import com.hanwha.tax.apiserver.service.ResponseService;
 import com.hanwha.tax.apiserver.service.CustService;
+import com.hanwha.tax.apiserver.vo.AskVo;
 import com.hanwha.tax.apiserver.vo.SaveFamilyVo;
 import com.hanwha.tax.apiserver.vo.SaveJobVo;
 import io.swagger.annotations.*;
@@ -111,5 +112,18 @@ public class CustController {
 
         return responseService.successResult();
     }
+
+
+    @ApiOperation(value = "1:1문의", notes = "고객이 문의한 사항을 처리한다. (저장 및 CS담당자 전달)")
+    @PostMapping(value = "/ask")
+    public ApiDataResult ask(@RequestBody AskVo askVo) {
+        Utils.logCalled("ask", askVo);
+        askVo.setCid(Utils.cid());
+
+        custService.ask(askVo);
+
+        return responseService.successResult();
+    }
+
 
 }

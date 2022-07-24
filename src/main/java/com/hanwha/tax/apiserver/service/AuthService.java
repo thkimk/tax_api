@@ -5,6 +5,7 @@ import com.hanwha.tax.apiserver.advice.exception.UserNotFoundException;
 import com.hanwha.tax.apiserver.config.security.JwtTokenProvider;
 import com.hanwha.tax.apiserver.dto.*;
 import com.hanwha.tax.apiserver.entity.*;
+import com.hanwha.tax.apiserver.model.Kcb;
 import com.hanwha.tax.apiserver.repository.*;
 import com.hanwha.tax.apiserver.vo.*;
 import kcb.module.v3.exception.OkCertException;
@@ -25,11 +26,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class AuthService {
-    @Value("${tax.kcbMemberKey}")
-    private String KCB_MEMBER_KEY = "";
-
-    @Value("${tax.licence}")
-    private String KCB_LICENCE = "";
 
     @Autowired
     CustRepository custRepository;
@@ -57,6 +53,8 @@ public class AuthService {
 
     @Autowired
     NotiSettingRepository notiSettingRepository;
+
+    private final Kcb kcb;
 
 
     public String genCid() {
@@ -243,19 +241,7 @@ public class AuthService {
         }
         log.info("## reqJson : {}", reqJson.toString());
 
-        JSONObject resJson = null;
-        try {
-            kcb.module.v3.OkCert okcert = new kcb.module.v3.OkCert();
-            String resultStr = okcert.callOkCert("PROD", KCB_MEMBER_KEY, "IDS_HS_EMBED_SMS_REQ", KCB_LICENCE, reqJson.toString());
-
-            if (resultStr != null) {
-                log.info("## resJson : {}", resultStr);
-                resJson = new JSONObject(resultStr);
-                idenOtpReqDto.fill(resJson);
-            }
-        } catch (OkCertException e) {
-        }
-
+        idenOtpReqDto.fill(kcb.callKcb("IDS_HS_EMBED_SMS_REQ", reqJson.toString()));
         return idenOtpReqDto;
     }
 
@@ -270,19 +256,7 @@ public class AuthService {
         }
         log.info("## reqJson : {}", reqJson.toString());
 
-        JSONObject resJson = null;
-        try {
-            kcb.module.v3.OkCert okcert = new kcb.module.v3.OkCert();
-            String resultStr = okcert.callOkCert("PROD", KCB_MEMBER_KEY, "IDS_HS_EMBED_SMS_CIDI", KCB_LICENCE, reqJson.toString());
-
-            if (resultStr != null) {
-                log.info("## resJson : {}", resultStr);
-                resJson = new JSONObject(resultStr);
-                idenOtpConfirmDto.fill(resJson);
-            }
-        } catch (OkCertException e) {
-        }
-
+        idenOtpConfirmDto.fill(kcb.callKcb("IDS_HS_EMBED_SMS_CIDI", reqJson.toString()));
         return idenOtpConfirmDto;
     }
 

@@ -1,5 +1,6 @@
 package com.hanwha.tax.apiserver.entity;
 
+import com.hanwha.tax.apiserver.entity.ids.CustDeductIds;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;

@@ -59,11 +59,11 @@ public class Tax {
     private final IndustryRepository industryRepository;
 
 
-    public void saveTaxFlag(String cid, int year) {
+    public void init(String cid, int year) {
         this.year = year;
 
-        incomes = custDeductRepository.selectIncomes("2206000001", this.year);
-        custInfoDtl = custInfoDtlRepository.findByCid("2206000001");
+        incomes = custDeductRepository.selectIncomes(cid, this.year);
+        custInfoDtl = custInfoDtlRepository.findByCid(cid);
 
         taxFlag = taxFlag(incomes[0], incomes[1], custInfoDtl.getIsNewBusin());
     }

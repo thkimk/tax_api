@@ -2,14 +2,14 @@ package com.hanwha.tax.apiserver.service;
 
 import com.hanwha.tax.apiserver.Constants;
 //import com.hanwha.tax.apiserver.repository.UserJpaRepository;
-import com.hanwha.tax.apiserver.entity.CustDeduct;
-import com.hanwha.tax.apiserver.entity.CustDeductIds;
-import com.hanwha.tax.apiserver.entity.CustFamily;
-import com.hanwha.tax.apiserver.entity.CustInfoDtl;
+import com.hanwha.tax.apiserver.entity.*;
 import com.hanwha.tax.apiserver.repository.CustDeductRepository;
 import com.hanwha.tax.apiserver.repository.CustFamilyRepository;
 import com.hanwha.tax.apiserver.repository.CustInfoDtlRepository;
+import com.hanwha.tax.apiserver.repository.HelpdeskRepository;
 import com.hanwha.tax.apiserver.util.DateUtil;
+import com.hanwha.tax.apiserver.util.Utils;
+import com.hanwha.tax.apiserver.vo.AskVo;
 import com.hanwha.tax.apiserver.vo.SaveFamilyVo;
 import com.hanwha.tax.apiserver.vo.SaveJobVo;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +33,9 @@ public class CustService {
 
     @Autowired
     CustFamilyRepository custFamilyRepository;
+
+    @Autowired
+    HelpdeskRepository helpdeskRepository;
 
 //    private final UserJpaRepository userJpaRepo; // Jpa를 활용한 CRUD 쿼리 가능
 
@@ -82,4 +85,15 @@ public class CustService {
 //        return Constants.CODE_RET_OK;
     }
 
+
+    public void ask(AskVo askVo) {
+        Helpdesk helpdesk = new Helpdesk(askVo);
+
+        helpdeskRepository.save(helpdesk);
+
+        // CS담당자 메일 발송 (핑거 연동)
+
+    }
+
 }
+
