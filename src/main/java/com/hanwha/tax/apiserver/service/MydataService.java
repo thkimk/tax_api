@@ -101,7 +101,8 @@ public class MydataService {
 
     public CcAuthorizeDto ccAuthorize() {
         String cid = Utils.cid();
-        String ci = "Gg3GIzkmziVhqfx8IOSFItnLjUP49iIM";//kkkauthInfoRepository.selectCiByCid(cid);
+//        String ci = "Gg3GIzkmziVhqfx8IOSFItnLjUP49iIM";//kkk authInfoRepository.selectCiByCid(cid);
+        String ci = authInfoRepository.selectCiByCid(cid);
         CustInfo custInfo = custInfoRepository.findByCid(cid);
         if (custInfo == null) {
             return null;

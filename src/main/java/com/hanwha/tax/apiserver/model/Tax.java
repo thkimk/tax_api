@@ -17,6 +17,7 @@ import java.util.List;
 @Component
 @Slf4j
 public class Tax {
+
     // 기준정보
     String cid;
     int year;
@@ -71,7 +72,7 @@ public class Tax {
 
     public Long calRateTax(String cid) {
         this.cid = cid;
-        log.info("## 소득세 계산(calRateTax) : {}, taxFlag {}", cid, taxFlag);
+        log.debug("## 소득세 계산(calRateTax) : {}, taxFlag {}", cid, taxFlag);
 
         income = totalIncomeRepository.selectRtIncome(cid, year);
 
@@ -84,12 +85,12 @@ public class Tax {
 
         earning = income - outgoing;
 
-        log.info("## [1] 소득 : {} = {} - {}", earning, income, outgoing);
+        log.debug("## [1] 소득 : {} = {} - {}", earning, income, outgoing);
         return calTax(earning);
     }
 
     public Long calBookTax() {
-        log.info("## 소득세 계산(calRateTax) : {}, taxFlag {}", cid, taxFlag);
+        log.info("## 소득세 계산(calRateTax) : CustId {}, taxFlag {}", cid, taxFlag);
 
         this.cid = cid;
         income = totalIncomeRepository.selectRtIncome(cid, year);
@@ -206,7 +207,7 @@ public class Tax {
         Long deductOthers = deductOthers();
 
         deduct = deductMe + deductFamily + deductOthers;
-        log.info("-- [2.1] 소득공제 : {} = {} + {} + {}", deduct, deductMe, deductFamily, deductOthers);
+        log.debug("-- [2.1] 소득공제 : {} = {} + {} + {}", deduct, deductMe, deductFamily, deductOthers);
     }
 
     Long deductMe() {

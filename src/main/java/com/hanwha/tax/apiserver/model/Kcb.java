@@ -24,7 +24,7 @@ public class Kcb {
             String resultStr = okcert.callOkCert("PROD", KCB_MEMBER_KEY, svcName, KCB_LICENCE, param);
 
             if (resultStr != null) {
-                log.info("## resJson : {}", resultStr);
+                log.debug("## resJson : {}", resultStr);
                 return new JSONObject(resultStr);
             }
         } catch (OkCertException e) {

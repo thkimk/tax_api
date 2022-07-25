@@ -216,7 +216,7 @@ public class AuthService {
 
             reqJson.put("NAME", idenOtpReqVo.getName()); // 성명
             reqJson.put("BIRTHDAY", idenOtpReqVo.getBirth());       // 생년월일
-            reqJson.put("SEX_CD", String.valueOf(idenOtpReqVo.getSexCd()));         // 성별 (M, F)
+            reqJson.put("SEX_CD", idenOtpReqVo.getSexCd().toCharacter());         // 성별 (M, F)
             reqJson.put("NTV_FRNR_CD", String.valueOf(idenOtpReqVo.getFrnrCd()));   // 내외국인구분 (L, F)
             reqJson.put("TEL_COM_CD", idenOtpReqVo.getTelComCd());  // 통신사코드
             reqJson.put("TEL_NO", idenOtpReqVo.getTelNo());         // 휴대폰번호
@@ -239,7 +239,7 @@ public class AuthService {
             reqJson.put("AGREE3", "Y");
             reqJson.put("AGREE4", "Y");
         }
-        log.info("## reqJson : {}", reqJson.toString());
+        log.debug("## reqJson : {}", reqJson.toString());
 
         idenOtpReqDto.fill(kcb.callKcb("IDS_HS_EMBED_SMS_REQ", reqJson.toString()));
         return idenOtpReqDto;
@@ -254,7 +254,7 @@ public class AuthService {
             reqJson.put("TEL_NO", idenOtpConfirmVo.getTelNo());
             reqJson.put("OTP_NO", idenOtpConfirmVo.getOtpNo());
         }
-        log.info("## reqJson : {}", reqJson.toString());
+        log.debug("## reqJson : {}", reqJson.toString());
 
         idenOtpConfirmDto.fill(kcb.callKcb("IDS_HS_EMBED_SMS_CIDI", reqJson.toString()));
         return idenOtpConfirmDto;

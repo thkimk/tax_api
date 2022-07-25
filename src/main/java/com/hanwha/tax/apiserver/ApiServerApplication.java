@@ -10,7 +10,7 @@ public class ApiServerApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ApiServerApplication.class, args);
-		log.info("## ApiServerApplication(): app starts....");
+		log.debug("## ApiServerApplication(): app starts....");
 	}
 
 

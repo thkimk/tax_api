@@ -3,12 +3,15 @@ package com.hanwha.tax.apiserver.entity;
 import com.hanwha.tax.apiserver.util.Utils;
 import com.hanwha.tax.apiserver.vo.SaveAuthVo;
 import com.hanwha.tax.apiserver.vo.SignupVo;
+import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Getter
 @Entity
+@Data
+@NoArgsConstructor
 @Table(name = "cust_info")
 public class CustInfo extends TimeEntity{
 

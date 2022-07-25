@@ -49,7 +49,7 @@ public class Coocon {
         HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity(cooconTokenParams, httpHeaders);
 
         ResponseEntity<String> responseEntity = restTemplate.exchange(cooconUrl.concat("/oauth/2.0/token"), HttpMethod.POST, entity, String.class);
-        log.info("## callCooconApiToken(): responseBody: ", responseEntity.getBody());
+        log.debug("## callCooconApiToken(): responseBody: ", responseEntity.getBody());
 
         JSONObject jsonObject = new JSONObject(responseEntity.getBody());
         String tokenTmp = (String)jsonObject.get("access_token");

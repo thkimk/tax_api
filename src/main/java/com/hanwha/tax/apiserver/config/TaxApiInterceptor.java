@@ -19,10 +19,10 @@ public class TaxApiInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         log.info("## TaxApiInterceptor: preHandle(): {}", request.getRequestURI());
-        log.info("## TaxApiInterceptor: preHandle(): User-Agent : {}", request.getHeader("User-Agent"));
-        log.info("## TaxApiInterceptor: preHandle(): cid : {}", request.getHeader("cid"));
-        log.info("## TaxApiInterceptor: preHandle(): uid : {}", request.getHeader("uid"));
-        log.info("## TaxApiInterceptor: preHandle(): jwt : {}", request.getHeader("jwt"));
+        log.debug("## TaxApiInterceptor: preHandle(): User-Agent : {}", request.getHeader("User-Agent"));
+        log.debug("## TaxApiInterceptor: preHandle(): cid : {}", request.getHeader("cid"));
+        log.debug("## TaxApiInterceptor: preHandle(): uid : {}", request.getHeader("uid"));
+        log.debug("## TaxApiInterceptor: preHandle(): jwt : {}", request.getHeader("jwt"));
 
         MDC.put("ua", request.getHeader("User-Agent"));
         MDC.put("cid", request.getHeader("cid"));
@@ -34,16 +34,16 @@ public class TaxApiInterceptor implements HandlerInterceptor {
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
 /*
-        log.info("## postHandle: [1] {}", MDC.get("ci"));
+        log.debug("## postHandle: [1] {}", MDC.get("ci"));
         Thread.sleep(5000);
-        log.info("## postHandle: [2] {}", MDC.get("ci"));
+        log.debug("## postHandle: [2] {}", MDC.get("ci"));
 */
     }
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object object, Exception ex) throws Exception {
 //        String tmp = getResponseBody(response);
-//        log.info("## {}", tmp);
+//        log.debug("## {}", tmp);
     }
 
     private String getResponseBody(final HttpServletResponse response) throws IOException {

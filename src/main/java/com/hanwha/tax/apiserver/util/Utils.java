@@ -29,10 +29,10 @@ public class Utils {
         else {
             try {
                 ObjectMapper mapper = new ObjectMapper();
-                log.info("## [CALLED] {}() : {}", op, mapper.writeValueAsString(object));
+                log.debug("## [CALLED] {}() : {}", op, mapper.writeValueAsString(object));
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
-                log.info("## [CALLED] {}() : {}", op, object.toString());
+                log.debug("## [CALLED] {}() : {}", op, object.toString());
             }
         }
     }
@@ -43,10 +43,10 @@ public class Utils {
         else {
             try {
                 ObjectMapper mapper = new ObjectMapper();
-                log.info("## [RETURN] {}() : {}", op, mapper.writeValueAsString(object));
+                log.debug("## [RETURN] {}() : {}", op, mapper.writeValueAsString(object));
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
-                log.info("## [RETURN] {}() : {}", op, object.toString());
+                log.debug("## [RETURN] {}() : {}", op, object.toString());
             }
         }
     }
@@ -56,10 +56,10 @@ public class Utils {
         else {
             try {
                 ObjectMapper mapper = new ObjectMapper();
-                log.info("## [EXT_CALL] {}() : {}", op, mapper.writeValueAsString(object));
+                log.debug("## [EXT_CALL] {}() : {}", op, mapper.writeValueAsString(object));
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
-                log.info("## [EXT_CALL] {}() : {}", op, object.toString());
+                log.debug("## [EXT_CALL] {}() : {}", op, object.toString());
             }
         }
     }
@@ -69,10 +69,10 @@ public class Utils {
         else {
             try {
                 ObjectMapper mapper = new ObjectMapper();
-                log.info("## [EXT_RETURN] {}() : {}", op, mapper.writeValueAsString(object));
+                log.debug("## [EXT_RETURN] {}() : {}", op, mapper.writeValueAsString(object));
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
-                log.info("## [EXT_RETURN] {}() : {}", op, object.toString());
+                log.debug("## [EXT_RETURN] {}() : {}", op, object.toString());
             }
         }
     }
