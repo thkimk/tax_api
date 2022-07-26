@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "auth_info")
+@NoArgsConstructor
 public class AuthInfo extends TimeEntity {
     @Id
     @Column(name = "cust_id", length = 10)

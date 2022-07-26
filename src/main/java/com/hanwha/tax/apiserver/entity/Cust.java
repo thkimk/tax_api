@@ -3,12 +3,14 @@ package com.hanwha.tax.apiserver.entity;
 import com.hanwha.tax.apiserver.Constants;
 import com.hanwha.tax.apiserver.vo.SignupRegVo;
 import com.hanwha.tax.apiserver.vo.SignupVo;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "cust")
+@NoArgsConstructor
 public class Cust extends TimeEntity {
 
     @Id
