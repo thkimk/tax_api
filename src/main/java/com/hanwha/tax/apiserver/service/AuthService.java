@@ -87,6 +87,9 @@ public class AuthService {
 
             final Cust cust = new Cust(signupVo);
             custRepository.save(cust);
+
+            userDto.setGrade(cust.getCustGrade());
+            userDto.setStatus(cust.getCustStatus());
         } else { //준회원 이상 조회
             userDto = new UserDto(userInterface);
             final CustInfoDtl custInfoDtl = custInfoDtlRepository.findByCid(userDto.getCid());

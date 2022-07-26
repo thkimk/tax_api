@@ -4,5 +4,5 @@ import java.io.Serializable;
 
 public class CustTermsAgmtIds implements Serializable {
     private String cid;
-    private int termsId;
+    private long termsId;
 }
