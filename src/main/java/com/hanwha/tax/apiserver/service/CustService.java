@@ -2,14 +2,14 @@ package com.hanwha.tax.apiserver.service;
 
 import com.hanwha.tax.apiserver.Constants;
 //import com.hanwha.tax.apiserver.repository.UserJpaRepository;
-import com.hanwha.tax.apiserver.advice.exception.UserNotFoundException;
-import com.hanwha.tax.apiserver.dto.*;
 import com.hanwha.tax.apiserver.entity.*;
-import com.hanwha.tax.apiserver.repository.*;
+import com.hanwha.tax.apiserver.repository.CustDeductRepository;
+import com.hanwha.tax.apiserver.repository.CustFamilyRepository;
+import com.hanwha.tax.apiserver.repository.CustInfoDtlRepository;
+import com.hanwha.tax.apiserver.repository.HelpdeskRepository;
 import com.hanwha.tax.apiserver.util.DateUtil;
 import com.hanwha.tax.apiserver.util.Utils;
 import com.hanwha.tax.apiserver.vo.AskVo;
-import com.hanwha.tax.apiserver.vo.DeductVo;
 import com.hanwha.tax.apiserver.vo.SaveFamilyVo;
 import com.hanwha.tax.apiserver.vo.SaveJobVo;
 import lombok.RequiredArgsConstructor;
@@ -36,10 +36,6 @@ public class CustService {
 
     @Autowired
     HelpdeskRepository helpdeskRepository;
-
-    @Autowired
-    AuthInfoRepository authInfoRepository;
-
 
 //    private final UserJpaRepository userJpaRepo; // Jpa를 활용한 CRUD 쿼리 가능
 
@@ -99,62 +95,5 @@ public class CustService {
 
     }
 
-
-    public MemberDto infos(String cid) {
-        final UserInterface userInterface = authInfoRepository.selectUserByCid(cid);
-        if (userInterface == null) {
-            throw new UserNotFoundException();
-        }
-
-        final CustInfoDtl custInfoDtl = custInfoDtlRepository.findByCid(cid);
-
-        final UserDto userDto = new UserDto(userInterface);
-        userDto.setAdditional(custInfoDtl);
-
-        final MemberDto memberDto = new MemberDto();
-        memberDto.setUser(userDto);
-
-        return memberDto;
-    }
-
-
-    public DeductDto deduct(String cid, int year) {
-        CustDeduct custDeduct = custDeductRepository.selectByIds(cid, year);
-        if (custDeduct == null) {
-        }
-
-        return new DeductDto(custDeduct);
-    }
-
-    public void saveDeduct(DeductVo deductVo) {
-        CustDeduct custDeduct = new CustDeduct(deductVo);
-
-        custDeductRepository.save(custDeduct);
-    }
-
-
-    public List<FamilyDto> family(String cid) {
-        List<CustFamily> custFamilyList = custFamilyRepository.findAllByCid(cid);
-        if (custFamilyList == null) {
-        }
-
-        List<FamilyDto> familyDtos = new ArrayList<>();
-        custFamilyList.forEach(family -> {
-            FamilyDto familyDto = new FamilyDto(family);
-            familyDtos.add(familyDto);
-        });
-
-        return familyDtos;
-    }
-
 }
 
-/*
-        final Page<Faq> faqList = faqRepository.findAll(pageable);
-        List<FaqDto> faqDtoList = new ArrayList<>();
-        faqList.getContent().forEach(faq -> {
-            FaqDto faqDto = new FaqDto();
-            faqDto.setFaq(faq);
-            faqDtoList.add(faqDto);
-        });
- */

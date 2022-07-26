@@ -3,7 +3,6 @@ package com.hanwha.tax.apiserver.entity;
 import com.hanwha.tax.apiserver.util.Utils;
 import com.hanwha.tax.apiserver.vo.LoginVo;
 import com.hanwha.tax.apiserver.vo.SignupVo;
-import lombok.NoArgsConstructor;
 import org.slf4j.MDC;
 
 import javax.persistence.Column;
@@ -13,7 +12,6 @@ import javax.persistence.Table;
 
 
 @Entity
-@NoArgsConstructor
 @Table(name = "dev_info")
 public class DevInfo extends TimeEntity {
     @Id

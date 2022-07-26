@@ -1,9 +1,7 @@
 package com.hanwha.tax.apiserver.entity;
 
 import com.hanwha.tax.apiserver.entity.ids.CustDeductIds;
-import com.hanwha.tax.apiserver.vo.DeductVo;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -11,7 +9,6 @@ import javax.persistence.*;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @Entity
 @Table(name = "cust_deduct")
 @IdClass(CustDeductIds.class)
@@ -49,16 +46,4 @@ public class CustDeduct extends TimeEntity {
     @Column(name = "sed_amt", nullable = false, columnDefinition = "bigint default 0 comment '중소기업창업투자 금액'")
     private Long sedAmount = 0L;
 
-
-    public CustDeduct(DeductVo deductVo) {
-        cid = deductVo.getCid();
-        year = deductVo.getYear();
-
-        npcAmount = deductVo.getNpcAmount();
-        rspAmount = deductVo.getRspAmount();
-        iraAmount = deductVo.getIraAmount();
-        medAmount = deductVo.getMedAmount();
-        sedAmount = deductVo.getSedAmount();
-
-    }
 }

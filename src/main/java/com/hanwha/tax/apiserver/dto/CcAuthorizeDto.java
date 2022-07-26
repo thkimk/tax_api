@@ -9,9 +9,11 @@ import java.util.List;
 @Data
 public class CcAuthorizeDto {
     @JsonIgnore
+    @JsonProperty("rsp_code")
     private String rspCode;
 
     @JsonIgnore
+    @JsonProperty("rsp_message")
     private String rspMessage;
 
     @JsonProperty("code")
@@ -21,6 +23,7 @@ public class CcAuthorizeDto {
     private String accessCode;
 
     @JsonIgnore
+    @JsonProperty("expire_in")
     private String expireIn;
 
 }
