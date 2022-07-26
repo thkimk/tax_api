@@ -15,7 +15,6 @@ import javax.persistence.Table;
 @Entity
 @NoArgsConstructor
 @Table(name = "dev_info")
-@NoArgsConstructor
 public class DevInfo extends TimeEntity {
     @Id
     @Column(name="cust_id", length = 10)

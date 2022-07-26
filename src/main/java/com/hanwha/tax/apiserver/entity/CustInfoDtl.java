@@ -12,7 +12,6 @@ import javax.persistence.Table;
 @Getter
 @NoArgsConstructor
 @Entity
-@NoArgsConstructor
 @Table(name = "cust_info_dtl")
 public class CustInfoDtl extends TimeEntity {
 
