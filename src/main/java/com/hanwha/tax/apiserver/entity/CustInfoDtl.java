@@ -2,6 +2,7 @@ package com.hanwha.tax.apiserver.entity;
 
 import com.hanwha.tax.apiserver.vo.SaveJobVo;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +11,7 @@ import javax.persistence.Table;
 
 @Getter
 @Entity
+@NoArgsConstructor
 @Table(name = "cust_info_dtl")
 public class CustInfoDtl extends TimeEntity {
 

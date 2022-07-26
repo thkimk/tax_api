@@ -65,10 +65,10 @@ public class Coocon {
         httpHeaders.add("Authorization", "Bearer ".concat(COOCON_AUTH));
 
         HttpEntity entity = new HttpEntity(obj, httpHeaders);
-        Object res = restTemplate.postForObject(cooconUrl.concat(url), entity, resType);
+        T res = restTemplate.postForObject(cooconUrl.concat(url), entity, resType);
         Utils.logExtCallReturned("callCooconApi", res);
 
-        return (T)res;
+        return res;
     }
 
 }

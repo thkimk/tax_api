@@ -2,6 +2,7 @@ package com.hanwha.tax.apiserver.controller;
 
 import com.hanwha.tax.apiserver.Constants;
 //import com.hanwha.tax.apiserver.entity.User;
+import com.hanwha.tax.apiserver.dto.MemberDto;
 import com.hanwha.tax.apiserver.util.Utils;
 import com.hanwha.tax.apiserver.model.response.ApiDataResult;
 
@@ -9,6 +10,7 @@ import com.hanwha.tax.apiserver.model.response.ApiDataResult;
 import com.hanwha.tax.apiserver.service.ResponseService;
 import com.hanwha.tax.apiserver.service.CustService;
 import com.hanwha.tax.apiserver.vo.AskVo;
+import com.hanwha.tax.apiserver.vo.DeductVo;
 import com.hanwha.tax.apiserver.vo.SaveFamilyVo;
 import com.hanwha.tax.apiserver.vo.SaveJobVo;
 import io.swagger.annotations.*;
@@ -123,6 +125,46 @@ public class CustController {
         custService.ask(askVo);
 
         return responseService.successResult();
+    }
+
+
+    @ApiOperation(value = "고객의 상세정보 조회", notes = "회원가입시 고객이 제공한 정보 조회")
+    @GetMapping(value = "/infos")
+    public ApiDataResult infos() {
+        Utils.logCalled("infos", null);
+
+        MemberDto memberDto = custService.infos(Utils.cid());
+
+        return responseService.result(memberDto);
+    }
+
+
+    @ApiOperation(value = "고객의 공제정보 조회", notes = "회원가입시 고객이 제공한 공제정보 조회")
+    @GetMapping(value = "/deduct")
+    public ApiDataResult deduct(@ApiParam(value = "연도") @RequestParam(required = false) Integer year) {
+        Utils.logCalled("deduct", year);
+
+        return responseService.result(custService.deduct(Utils.cid(), year));
+    }
+
+
+    @ApiOperation(value = "고객의 공제정보 저장", notes = "회원가입시 고객이 제공한 공제정보 저장")
+    @PostMapping(value = "/saveDeduct")
+    public ApiDataResult saveDeduct(@RequestBody DeductVo deductVo) {
+        Utils.logCalled("saveDeduct", deductVo);
+        deductVo.setCid(Utils.cid());
+
+        custService.saveDeduct(deductVo);
+
+        return responseService.successResult();
+    }
+
+    @ApiOperation(value = "고객의 부양가족 정보 조회", notes = "고객이 제공한 부양가족 정보 조회")
+    @GetMapping(value = "/family")
+    public ApiDataResult family() {
+        Utils.logCalled("family", null);
+
+        return responseService.result(custService.family(Utils.cid()));
     }
 
 
