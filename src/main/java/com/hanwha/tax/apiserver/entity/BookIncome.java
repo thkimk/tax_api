@@ -1,11 +1,14 @@
 package com.hanwha.tax.apiserver.entity;
 
 
+import lombok.Data;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "book_income")
+@Data
 public class BookIncome extends TimeEntity {
 
     @Id
@@ -15,20 +18,8 @@ public class BookIncome extends TimeEntity {
     @Column(name="cust_id", length = 10)
     private String custId;
 
-    @Column(length = 10)
-    private String orgCode;
-
-    @Column()
-    private String accountNum;
-
     @Column()
     private Long transAmt;
-
-    @Column()
-    private String currencyCode;
-
-    @Column()
-    private Character isIncome;
 
     @Column(name="is_33")
     private Character is33;

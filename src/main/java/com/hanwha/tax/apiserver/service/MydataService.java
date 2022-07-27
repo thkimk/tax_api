@@ -1,11 +1,9 @@
 package com.hanwha.tax.apiserver.service;
 
+import com.hanwha.tax.apiserver.entity.*;
 import com.hanwha.tax.apiserver.model.Coocon;
 import com.hanwha.tax.apiserver.util.Utils;
 import com.hanwha.tax.apiserver.dto.CcAuthorizeDto;
-import com.hanwha.tax.apiserver.entity.CustInfo;
-import com.hanwha.tax.apiserver.entity.TotalIncome;
-import com.hanwha.tax.apiserver.entity.TotalOutgoing;
 import com.hanwha.tax.apiserver.repository.*;
 import com.hanwha.tax.apiserver.vo.*;
 import com.hanwha.tax.apiserver.dto.CcExpenseDto;
@@ -48,6 +46,13 @@ public class MydataService {
     @Autowired
     CustInfoRepository custInfoRepository;
 
+    @Autowired
+    BookIncomeRepository bookIncomeRepository;
+
+    @Autowired
+    BookOutgoingRepository bookOutgoingRepository;
+
+
     private final Coocon coocon;
 
     public CcIncomeDto ccIncome() {
@@ -56,7 +61,7 @@ public class MydataService {
         CcIncomeVo ccIncomeVo = new CcIncomeVo(ci);
 
         Utils.logExtCall("ccIncome", ccIncomeVo);
-        CcIncomeDto ccIncomeDto = (CcIncomeDto)coocon.callCooconApi("/apis/user/hw/bank/income", ccIncomeVo, CcIncomeDto.class);
+        CcIncomeDto ccIncomeDto = (CcIncomeDto) coocon.callCooconApi("/apis/user/hw/bank/income", ccIncomeVo, CcIncomeDto.class);
 
         return ccIncomeDto;
     }
@@ -129,7 +134,7 @@ public class MydataService {
 
                 int size = totalIncomes.size();
                 if (size < 12) {
-                    for (int i=1; i<=12; i++) {
+                    for (int i = 1; i <= 12; i++) {
                         boolean exists = false;
                         for (TotalIncome tmp : totalIncomes) {
                             if (tmp.getMonth() == i) {
@@ -176,7 +181,7 @@ public class MydataService {
 
                 int size = totalOutgoings.size();
                 if (size < 12) {
-                    for (int i=1; i<=12; i++) {
+                    for (int i = 1; i <= 12; i++) {
                         boolean exists = false;
                         for (TotalOutgoing tmp : totalOutgoings) {
                             if (tmp.getMonth() == i) {
@@ -220,16 +225,16 @@ public class MydataService {
 
         // SFTP Get 수행 (/nas/tax/down)
         mydataSftpGet(down_path);
-        
+
         // zip 압축 해제 (/nas/tax/mydata/yyyymmdd/*)
-        mydata_path = mydata_path.concat("/".concat(yyyymmdd))+ "/";
+        mydata_path = mydata_path.concat("/".concat(yyyymmdd)) + "/";
         mydataUnzip(down_path.concat(yyyymmdd.concat("_IS000001_01_BANK_TRANS.zip")), mydata_path);
         mydataUnzip(down_path.concat(yyyymmdd.concat("_IS000001_01_CARD_APPR.zip")), mydata_path);
 
         // File load (parsing)
         // DB Upsert (mydata_income)
-        mydataIncomeLoad(mydata_path.concat(yyyymmdd+ "_IS000001_01_BANK_TRANS"));
-        mydataOutgoingLoad(mydata_path.concat(yyyymmdd+ "_IS000001_01_CARD_APPR"));
+        mydataIncomeLoad(mydata_path.concat(yyyymmdd + "_IS000001_01_BANK_TRANS"));
+        mydataOutgoingLoad(mydata_path.concat(yyyymmdd + "_IS000001_01_CARD_APPR"));
 
     }
 
@@ -240,8 +245,8 @@ public class MydataService {
         String host = "183.111.160.204";
         int port = 3300;
         String yyyymmdd = Utils.yyyymmddYester(); //yyyymmdd = "20220705";//kkk
-        String sourceFile1 = "/data/".concat(yyyymmdd)+ "/"+ yyyymmdd+ "_IS000001_01_BANK_TRANS.zip";
-        String sourceFile2 = "/data/".concat(yyyymmdd)+ "/"+ yyyymmdd+ "_IS000001_01_CARD_APPR.zip";
+        String sourceFile1 = "/data/".concat(yyyymmdd) + "/" + yyyymmdd + "_IS000001_01_BANK_TRANS.zip";
+        String sourceFile2 = "/data/".concat(yyyymmdd) + "/" + yyyymmdd + "_IS000001_01_CARD_APPR.zip";
         Properties config = new Properties();
         config.put("StrictHostKeyChecking", "no");
 
@@ -291,7 +296,7 @@ public class MydataService {
                         String[] data = str.split("|");
                         if (data == null) break;
 
-                        System.out.println("## mydataIncomeLoad : "+ str);
+                        System.out.println("## mydataIncomeLoad : " + str);
                     }
                 }
             }
@@ -321,7 +326,7 @@ public class MydataService {
                         String[] data = str.split("|");
                         if (data == null) break;
 
-                        System.out.println("## mydataOutgoingLoad : "+ str);
+                        System.out.println("## mydataOutgoingLoad : " + str);
                     }
                 }
             }
@@ -352,7 +357,7 @@ public class MydataService {
                 ZipEntry zipEntry = null;
                 while ((zipEntry = zipInputStream.getNextEntry()) != null) {
                     int len = 0;
-                    try (BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(target_path+ zipEntry.getName()))) {
+                    try (BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(target_path + zipEntry.getName()))) {
                         while ((len = zipInputStream.read()) != -1) {
                             out.write(len);
                         }
@@ -366,5 +371,41 @@ public class MydataService {
         }
     }
 
+
+    public List<BookIncome> bookIncome(String cid, Integer year, Integer month) {
+        List<BookIncome> bookIncomes = null;
+
+        if (year != null) {
+            if (month != null) {
+                bookIncomes = bookIncomeRepository.selectByYearAndMonth(cid, year, month);
+            } else {
+                bookIncomes = bookIncomeRepository.selectByYear(cid, year);
+            }
+        } else {    // find all
+            bookIncomes = bookIncomeRepository.findByCustIdOrderByTransDtimeDesc(cid);
+        }
+
+        return bookIncomes;
+    }
+
+
+    public List<BookOutgoing> bookOutgoing(String cid, Integer year, Integer month) {
+        List<BookOutgoing> bookOutgoings = null;
+
+        if (year != null) {
+            if (month != null) {
+                bookOutgoings = bookOutgoingRepository.selectByYearAndMonth(cid, year, month);
+            } else {
+                bookOutgoings = bookOutgoingRepository.selectByYear(cid, year);
+            }
+        } else {    // find all
+            bookOutgoings = bookOutgoingRepository.findByCustIdOrderByApprDtimeDesc(cid);
+        }
+
+        return bookOutgoings;
+    }
+
 }
+
+
 

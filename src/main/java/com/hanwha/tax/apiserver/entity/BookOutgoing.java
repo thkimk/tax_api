@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor // 인자 없는 생성자를 자동으로 생성한다.
 @AllArgsConstructor // 인자를 모두 갖춘 생성자를 자동으로 생성한다.
 @Table(name = "book_outgoing") // 'user' 테이블과 매핑됨을 명시한다.
-public class BookOutgoing {
+public class BookOutgoing extends TimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,9 +23,6 @@ public class BookOutgoing {
 
     @Column(name="cust_id", length = 10)
     private String custId;
-
-    @Column(length = 10)
-    private String orgCode;
 
     @Column()
     private String merchantName;
@@ -39,7 +36,5 @@ public class BookOutgoing {
     @Column()
     private LocalDateTime apprDtime;
 
-    @Column()
-    private LocalDateTime createDt;
 
 }

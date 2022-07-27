@@ -2,6 +2,8 @@ package com.hanwha.tax.apiserver.controller;
 
 
 import com.hanwha.tax.apiserver.Constants;
+import com.hanwha.tax.apiserver.entity.BookIncome;
+import com.hanwha.tax.apiserver.entity.BookOutgoing;
 import com.hanwha.tax.apiserver.util.Utils;
 import com.hanwha.tax.apiserver.dto.CcAuthorizeDto;
 import com.hanwha.tax.apiserver.dto.CcExpenseDto;
@@ -83,6 +85,26 @@ public class MydataController {
         return responseService.result(totalOutgoings);
     }
 
+
+    @ApiOperation(value = "간편장부 수입 조회", notes = "간편장부에 입력한 수입을 월별로 조회한다.")
+    @GetMapping(value = "/bookIncome")
+    public ApiDataResult bookIncome(@RequestParam(required = false) Integer year, @RequestParam(required = false) Integer month) {
+        Utils.logCalled("bookIncome", year+", "+ month);
+
+        List<BookIncome> bookIncomes = mydataService.bookIncome(Utils.cid(), year, month);
+
+        return responseService.result(bookIncomes);
+    }
+
+    @ApiOperation(value = "간편장부 지출 조회", notes = "간편장부에 입력한 지출을 월별로 조회한다.")
+    @GetMapping(value = "/bookOutgoing")
+    public ApiDataResult bookOutgoing(@RequestParam(required = false) Integer year, @RequestParam(required = false) Integer month) {
+        Utils.logCalled("bookOutgoing", year+", "+ month);
+
+        List<BookOutgoing> bookOutgoings = mydataService.bookOutgoing(Utils.cid(), year, month);
+
+        return responseService.result(bookOutgoings);
+    }
 
 
     @ApiOperation(value = "마이데이터 수입데이터 수집", notes = "마이데이터 수입데이터를 수집한다.")
