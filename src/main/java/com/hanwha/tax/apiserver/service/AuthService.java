@@ -129,12 +129,26 @@ public class AuthService {
 
 
     public void signupReg(SignupRegVo signupRegVo) {
-        String custId = authInfoRepository.selectCidByCi(signupRegVo.getCi());
-        signupRegVo.setCid(custId);
+        String cid = authInfoRepository.selectCidByCi(signupRegVo.getCi());
+        signupRegVo.setCid(cid);
 
         // cust 업데이트 (cust_grade: 준회원 --> 정회원)
         Cust cust = new Cust(signupRegVo);
         custRepository.save(cust);
+
+        log.info("## signupReg: ---> Regular member was added ({})", cid);
+    }
+
+
+    public void signoutReg(SignoutRegVo signoutRegVo) {
+        String cid = authInfoRepository.selectCidByCi(signoutRegVo.getCi());
+        signoutRegVo.setCid(cid);
+
+        // cust 업데이트 (cust_grade: 준회원 --> 정회원)
+        Cust cust = new Cust(signoutRegVo);
+        custRepository.save(cust);
+
+        log.info("## signoutReg: ---> Regular member was removed ({})", cid);
     }
 
 

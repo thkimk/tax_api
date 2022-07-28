@@ -78,7 +78,7 @@ public class AuthController {
     }
 
 
-    @ApiOperation(value = "회원 가입(정회원)", notes = "정회원 회원가입 처리를 한다.(Regular)")
+    @ApiOperation(value = "회원 가입(정회원)", notes = "[쿠콘 역호출]정회원 가입 처리를 한다.(Regular)")
     @PostMapping(value = "/signupReg")
     public ApiDataResult signupReg(@ApiParam(value = "회원가입에 필요한 정보를 전달하고, 회원가입 처리", required = true) @RequestBody SignupRegVo signupRegVo) {
         Utils.logCalled("signupReg", signupRegVo);
@@ -90,6 +90,17 @@ public class AuthController {
         return responseService.successResult();
     }
 
+    @ApiOperation(value = "회원 탈퇴(정회원)", notes = "[쿠콘 역호출] 정회원 탈퇴 처리를 한다.(Regular)")
+    @PostMapping(value = "/signoutReg")
+    public ApiDataResult signoutReg(@ApiParam(value = "회원가입에 필요한 정보를 전달하고, 회원탈퇴 처리", required = true) @RequestBody SignoutRegVo signoutRegVo) {
+        Utils.logCalled("signoutReg", signoutRegVo);
+        if (!signoutRegVo.getTaxToken().equals(taxToken)) {
+            throw new AuthenticationEntryPointException();
+        }
+
+        authService.signoutReg(signoutRegVo);
+        return responseService.successResult();
+    }
 
 /*
     @ApiOperation(value = "본인 확인", notes = "본인확인 인증 토큰으로 최종 확정한다.")

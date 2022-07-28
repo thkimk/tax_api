@@ -25,7 +25,7 @@ public class TaxBatch {
         this.mydataService = mydataService;
         this.coocon = coocon;
 
-        coocon.callCooconApiToken();   //kkk
+//        coocon.callCooconApiToken();   //kkk
     }
 
 
