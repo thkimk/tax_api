@@ -405,6 +405,20 @@ public class MydataService {
         return bookOutgoings;
     }
 
+    public void saveBookIncome(BookIncomeVo bookIncomeVo) {
+        BookIncome bookIncome = new BookIncome(bookIncomeVo);
+
+        bookIncomeRepository.save(bookIncome);
+    }
+
+
+    public void saveBookOutgoing(BookOutgoingVo bookOutgoingVo) {
+        BookOutgoing bookOutgoing = new BookOutgoing(bookOutgoingVo);
+
+        bookOutgoingRepository.save(bookOutgoing);
+    }
+
+
 }
 
 

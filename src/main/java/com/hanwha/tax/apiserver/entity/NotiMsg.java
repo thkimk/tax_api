@@ -15,7 +15,7 @@ public class NotiMsg extends TimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column()
+    @Column(name="noti_type")
     private char notiType;
 
     @Column(length = 200)
@@ -24,10 +24,10 @@ public class NotiMsg extends TimeEntity {
     @Column(length = 2000)
     private String content;
 
-    @Column()
+    @Column(name="send_type")
     private char sendType;
 
-    @Column(length = 3)
+    @Column(name="send_status", length = 3)
     private String sendStatus;
 
     @Column(length = 50)

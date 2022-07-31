@@ -21,20 +21,20 @@ public class DevInfo extends TimeEntity {
     private String cid;
 
 //    @Id
-    @Column(length = 36)
+    @Column(name="dev_uid", length = 36)
     private String devUid;
 
-    @Column(length = 200)
+    @Column(name="push_token", length = 200)
     private String pushToken;
 
 
-    @Column(length = 50)
+    @Column(name="dev_name", length = 50)
     private String devName;
 
-    @Column(length = 10)
+    @Column(name="os_type", length = 10)
     private String osType;
 
-    @Column(length = 20)
+    @Column(name="os_ver", length = 20)
     private String osVer;
 
     // 회원가입시 생성

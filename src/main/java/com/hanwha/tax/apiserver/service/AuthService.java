@@ -1,6 +1,7 @@
 package com.hanwha.tax.apiserver.service;
 
 
+import com.hanwha.tax.apiserver.Constants;
 import com.hanwha.tax.apiserver.advice.exception.UserNotFoundException;
 import com.hanwha.tax.apiserver.config.security.JwtTokenProvider;
 import com.hanwha.tax.apiserver.dto.*;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -156,15 +158,15 @@ public class AuthService {
     public MemberDto login(LoginVo loginVo) {
         final String cid = loginVo.getCid();
         // auth_info에서 pin번호 비교 (cust_id가 아이디, pin번호가 패스워드 역할)
-        final UserInterface userInterface = authInfoRepository.selectUserByCid(cid);
-        if (userInterface == null) {
+        AuthInfo authInfo = authInfoRepository.findByCid(cid);
+        if (authInfo == null) {
             throw new UserNotFoundException();
-        } /*kkk else if (!authInfo.getPin().equals(loginVo.getPin())) {
+        } else if (!authInfo.getPin().equals(loginVo.getPin())) {
             throw new UserNotFoundException();
-        }*/
-
+        }
 
         // JWT 토큰 생성 및 저장
+        final UserInterface userInterface = authInfoRepository.selectUserByCid(cid);
         final CustInfoDtl custInfoDtl = custInfoDtlRepository.findByCid(cid);
         final String jwt = jwtTokenProvider.createToken(cid);
 
@@ -181,11 +183,32 @@ public class AuthService {
         final DevInfo devInfo = new DevInfo(loginVo);
         devInfoRepository.save(devInfo);
 
+        // authStatus 상태 초기화
+        authInfo.setAuthStatus(Constants.CUST_ST_NORMAL);
+        authInfoRepository.save(authInfo);
+
         // login_hst에 이력 저장
         LoginHst loginHst = new LoginHst(loginVo);
         loginHstRepository.save(loginHst);
 
         return memberDto;
+    }
+
+
+    public void logout(String cid) {
+        AuthInfo authInfo = authInfoRepository.findByCid(cid);
+        if (authInfo == null) {
+            throw new UserNotFoundException();
+        }
+
+        // auth_info 저장
+        authInfo.setAuthStatus(Constants.CUST_ST_SIGNOUT);
+        authInfoRepository.save(authInfo);
+
+        // login_hst에 이력 저장
+        log.info("## logout : cid {}, {}", cid, LocalDateTime.now());
+//        LoginHst loginHst = new LoginHst(loginVo);
+//        loginHstRepository.save(loginHst);
     }
 
 

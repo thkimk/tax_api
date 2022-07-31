@@ -18,34 +18,34 @@ public class MydataIncome  {
     @Column(name = "cust_id", length = 10)
     private String custId;
 
-    @Column(length = 10)
+    @Column(name="org_code", length = 10)
     private String orgCode;
 
-    @Column()
+    @Column(name="account_num")
     private String accountNum;
 
     @Column()
     private Integer seq;
 
-    @Column()
+    @Column(name="trans_amt")
     private Long transAmt;
 
-    @Column()
+    @Column(name="trans_type")
     private String transType;
 
-    @Column()
+    @Column(name="trans_class")
     private String transClass;
 
-    @Column()
+    @Column(name="currency_code")
     private String currencyCode;
 
-    @Column()
+    @Column(name="is_income")
     private Character isIncome;
 
     @Column(name = "is_33")
     private Character is33;
 
-    @Column()
+    @Column(name="trans_dtime")
     private LocalDateTime transDtime;
 
     @JsonIgnore

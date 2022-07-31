@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "terms")
 @Where(clause="view_yn='Y'")
-public class Terms {
+public class Terms extends TimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +26,7 @@ public class Terms {
     @Column(length = 2)
     private String type;
 
-    @Column()
+    @Column(name="view_yn")
     private char viewYn;
 
     @Column(columnDefinition="TEXT")
@@ -35,11 +35,9 @@ public class Terms {
     @Column(length = 200)
     private String url;
 
-    @Column()
-    private LocalDateTime createDt;
-
     @Column(length = 50)
     private String creater;
 
-
+    @Column(length = 50)
+    private String updater;
 }

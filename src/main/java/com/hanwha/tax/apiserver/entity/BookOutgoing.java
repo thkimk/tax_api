@@ -1,6 +1,8 @@
 package com.hanwha.tax.apiserver.entity;
 
 
+import com.hanwha.tax.apiserver.vo.BookIncomeVo;
+import com.hanwha.tax.apiserver.vo.BookOutgoingVo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,17 +26,27 @@ public class BookOutgoing extends TimeEntity {
     @Column(name="cust_id", length = 10)
     private String custId;
 
-    @Column()
+    @Column(name="merchant_name")
     private String merchantName;
 
     @Column()
     private String category;
 
-    @Column()
+    @Column(name="appr_amt")
     private Long apprAmt;
 
-    @Column()
+    @Column(name="appr_dtime")
     private LocalDateTime apprDtime;
 
+
+    public BookOutgoing(BookOutgoingVo bookOutgoingVo) {
+        custId = bookOutgoingVo.getCid();
+
+        merchantName = bookOutgoingVo.getMerchantName();
+        category = bookOutgoingVo.getCategory();
+        apprAmt = bookOutgoingVo.getAmount();
+        apprDtime = bookOutgoingVo.getDtime();
+
+    }
 
 }

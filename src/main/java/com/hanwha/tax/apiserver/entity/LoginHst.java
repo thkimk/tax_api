@@ -3,11 +3,13 @@ package com.hanwha.tax.apiserver.entity;
 
 import com.hanwha.tax.apiserver.util.Utils;
 import com.hanwha.tax.apiserver.vo.LoginVo;
+import lombok.NoArgsConstructor;
 import org.slf4j.MDC;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@NoArgsConstructor
 @Entity // jpa entity 임을 알린다.
 @Table(name = "login_hst") // 'user' 테이블과 매핑됨을 명시한다.
 public class LoginHst {
@@ -22,16 +24,16 @@ public class LoginHst {
     @Column(length = 10)
     private String authType;
 
-    @Column()
+    @Column(name="dev_uid")
     private String devUid;
 
-    @Column()
+    @Column(name="dev_name")
     private String devName;
 
-    @Column()
+    @Column(name="os_name")
     private String osName;
 
-    @Column()
+    @Column(name="login_dt")
     private LocalDateTime loginDt;
 
 

@@ -3,10 +3,7 @@ package com.hanwha.tax.apiserver.entity;
 
 import com.hanwha.tax.apiserver.vo.SaveAuthVo;
 import com.hanwha.tax.apiserver.vo.SignupVo;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -14,6 +11,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "auth_info")
 @NoArgsConstructor
+@Data
 public class AuthInfo extends TimeEntity {
     @Id
     @Column(name = "cust_id", length = 10)

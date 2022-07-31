@@ -3,26 +3,33 @@ package com.hanwha.tax.apiserver.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hanwha.tax.apiserver.Constants;
+import com.hanwha.tax.apiserver.dto.FamilyDto;
 import com.hanwha.tax.apiserver.util.Utils;
 import com.hanwha.tax.apiserver.entity.*;
 import com.hanwha.tax.apiserver.repository.*;
+import com.hanwha.tax.apiserver.vo.SimTaxVo;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @Component
 @Slf4j
 public class Tax {
+    boolean simFlag = false;
+    StringBuffer result = null;
+    SimTaxVo simTaxVo = null;
 
     // 기준정보
     String cid;
     int year;
     Character businType;
     String taxFlag = Constants.TAX_FLAG_SBSTR;
+    String jobCode;
 
     // 01.소득(earning) = 수입 - 지출
     Long earning = 0L;
@@ -46,10 +53,11 @@ public class Tax {
     Long addTax = 0L;
     Long paidTax = 0L;
 
-    CustInfoDtl custInfoDtl = null;
     CustInfo custInfo = null;
+    CustInfoDtl custInfoDtl = null;
     List<CustFamily> custFamilyList = null;
     CustDeduct custDeduct = null;
+
     Long[] incomes = null;
 
     private final TotalIncomeRepository totalIncomeRepository;
@@ -62,21 +70,40 @@ public class Tax {
 
     public void init(String cid, int year) {
         this.year = year;
+        this.cid = cid;
 
         incomes = custDeductRepository.selectIncomes(cid, this.year);
         custInfoDtl = custInfoDtlRepository.findByCid(cid);
+        jobCode = custInfoDtl.getJobCode();
+        businType = custInfoDtl.getIsNewBusin();
 
-        taxFlag = taxFlag(incomes[0], incomes[1], custInfoDtl.getIsNewBusin());
+        taxFlag = taxFlag(incomes[0], incomes[1], businType);
+    }
+
+    public void init(SimTaxVo simTaxVo, StringBuffer result) {
+        simFlag = true;
+        this.simTaxVo = simTaxVo;
+        this.result = result;
+
+        incomes = new Long[] { simTaxVo.getPreIncome(), simTaxVo.getIncome()};
+        custInfoDtl = new CustInfoDtl(simTaxVo);
+        jobCode = simTaxVo.getJobCode();
+        businType = incomes[0] == 0L ? 'Y' : 'N';
+
+        income = incomes[1];
+        outgoing = simTaxVo.getOutgoing();
+
+        taxFlag = taxFlag(incomes[0], incomes[1], businType);
+        result.append(String.format("## 소득세 계산(calRateTax) : taxFlag %s", taxFlag));
     }
 
 
-    public Long calRateTax(String cid) {
-        this.cid = cid;
+    public Long calRateTax() {
         log.debug("## 소득세 계산(calRateTax) : {}, taxFlag {}", cid, taxFlag);
 
-        income = totalIncomeRepository.selectRtIncome(cid, year);
+        if (!simFlag) income = totalIncomeRepository.selectRtIncome(cid, year);
 
-        Industry industry = industryRepository.findOneByCode(custInfoDtl.getJobCode());
+        Industry industry = industryRepository.findOneByCode(jobCode);
         if ((Integer.parseInt(taxFlag)%10) == 1) {    // 단순경비율
             outgoing = Double.valueOf((Math.min(income, 40000000) * industry.getSimpleExrt().doubleValue() + Math.max(income-40000000, 0) * industry.getSimpleExrtExc().doubleValue())/100).longValue();
         } else {    // 기준경비율
@@ -92,9 +119,10 @@ public class Tax {
     public Long calBookTax() {
         log.info("## 소득세 계산(calRateTax) : CustId {}, taxFlag {}", cid, taxFlag);
 
-        this.cid = cid;
-        income = totalIncomeRepository.selectRtIncome(cid, year);
-        outgoing = totalIncomeRepository.selectRtOutgoing(cid, year);
+        if (!simFlag) {
+            income = totalIncomeRepository.selectRtIncome(cid, year);
+            outgoing = totalIncomeRepository.selectRtOutgoing(cid, year);
+        }
         earning = income - outgoing;
 
         log.info("## [1] 소득 : {} = {} - {}", earning, income, outgoing);
@@ -193,9 +221,19 @@ public class Tax {
      * 공제항목
      */
     void deduct() {
-        custInfo = custInfoRepository.findByCid(cid);
-        custFamilyList = custFamilyRepository.findAllByCid(cid);
-        custDeduct = custDeductRepository.findByCidAndYear(cid, year);
+        if (simFlag) {
+            custInfo = new CustInfo(simTaxVo);
+            custDeduct = new CustDeduct(simTaxVo);
+            custFamilyList = new ArrayList<>();
+            simTaxVo.getDetails().getFamilys().forEach(family -> {
+                CustFamily custFamily = new CustFamily(family);
+                custFamilyList.add(custFamily);
+            });
+        } else {
+            custInfo = custInfoRepository.findByCid(cid);
+            custDeduct = custDeductRepository.findByCidAndYear(cid, year);
+            custFamilyList = custFamilyRepository.findAllByCid(cid);
+        }
 
         // 본인 공제
         Long deductMe = deductMe();

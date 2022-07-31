@@ -22,25 +22,25 @@ public class MainMenuBanner extends TimeEntity {
     @Column()
     private String title;
 
-    @Column()
+    @Column(name="sub_copy")
     private String subCopy;
 
     @Column()
     private String url;
 
-    @Column()
+    @Column(name="url_type")
     private Character urlType;
 
-    @Column()
+    @Column(name="image_url")
     private String imageUrl;
 
-    @Column()
+    @Column(name="button_name")
     private String buttonName;
 
-    @Column()
+    @Column(name="begin_dt")
     private LocalDateTime beginDt;
 
-    @Column()
+    @Column(name="end_dt")
     private LocalDateTime endDt;
 
 }

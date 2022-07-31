@@ -2,6 +2,7 @@ package com.hanwha.tax.apiserver.controller;
 
 import com.hanwha.tax.apiserver.Constants;
 //import com.hanwha.tax.apiserver.entity.User;
+import com.hanwha.tax.apiserver.dto.AnswerDto;
 import com.hanwha.tax.apiserver.dto.MemberDto;
 import com.hanwha.tax.apiserver.util.Utils;
 import com.hanwha.tax.apiserver.model.response.ApiDataResult;
@@ -16,7 +17,11 @@ import com.hanwha.tax.apiserver.vo.SaveJobVo;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 //@PreAuthorize("hasRole('ROLE_USER')") //추가내용
 @Api(tags = {"User 사용자"}) // UserController를 대표하는 최상단 타이틀 영역에 표시될 값 세팅
@@ -127,6 +132,16 @@ public class CustController {
         return responseService.successResult();
     }
 
+    @ApiOperation(value = "고객의 1:1문의 조회", notes = "고객이 문의한 1:1문의 내용과 답변 조회")
+    @GetMapping(value = "/answer")
+    public ApiDataResult answer(Pageable pageable) {
+        Utils.logCalled("answer", null);
+
+        Page<AnswerDto> answerDtos = custService.answer(Utils.cid(), pageable);
+
+        return responseService.result(answerDtos.getContent());
+    }
+
 
     @ApiOperation(value = "고객의 상세정보 조회", notes = "회원가입시 고객이 제공한 정보 조회")
     @GetMapping(value = "/infos")
@@ -135,7 +150,7 @@ public class CustController {
 
         MemberDto memberDto = custService.infos(Utils.cid());
 
-        return responseService.result(memberDto);
+        return responseService.result(memberDto.getUser());
     }
 
 

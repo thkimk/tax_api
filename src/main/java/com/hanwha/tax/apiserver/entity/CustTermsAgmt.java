@@ -26,13 +26,13 @@ public class CustTermsAgmt extends TimeEntity {
     private String cid;
 
     @Id
-    @Column()
+    @Column(name="terms_id")
     private Long termsId;
 
-    @Column()
+    @Column(name="is_agree")
     private Character isAgree;
 
-    @Column()
+    @Column(name="agmt_dt")
     private LocalDateTime agmtDt;
 
     public CustTermsAgmt(SignupVo signupVo) {

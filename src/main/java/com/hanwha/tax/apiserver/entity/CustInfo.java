@@ -3,6 +3,7 @@ package com.hanwha.tax.apiserver.entity;
 import com.hanwha.tax.apiserver.util.Utils;
 import com.hanwha.tax.apiserver.vo.SaveAuthVo;
 import com.hanwha.tax.apiserver.vo.SignupVo;
+import com.hanwha.tax.apiserver.vo.SimTaxVo;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -57,6 +58,10 @@ public class CustInfo extends TimeEntity{
         this.mobile = saveAuthVo.getMobile();
         this.telecom = saveAuthVo.getTelecom();
         this.gender = saveAuthVo.getGender();
+    }
+
+    public CustInfo(SimTaxVo simTaxVo) {
+
     }
 
 }

@@ -5,25 +5,27 @@ import com.hanwha.tax.apiserver.Constants;
 import com.hanwha.tax.apiserver.advice.exception.UserNotFoundException;
 import com.hanwha.tax.apiserver.dto.*;
 import com.hanwha.tax.apiserver.entity.*;
+import com.hanwha.tax.apiserver.entitysecond.MailReceiver;
 import com.hanwha.tax.apiserver.repository.*;
+import com.hanwha.tax.apiserver.repositorysecond.MailReceiverRepository;
 import com.hanwha.tax.apiserver.util.DateUtil;
-import com.hanwha.tax.apiserver.util.Utils;
 import com.hanwha.tax.apiserver.vo.AskVo;
 import com.hanwha.tax.apiserver.vo.DeductVo;
 import com.hanwha.tax.apiserver.vo.SaveFamilyVo;
 import com.hanwha.tax.apiserver.vo.SaveJobVo;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.MDC;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CustService {
     @Autowired
     CustInfoDtlRepository custInfoDtlRepository;
@@ -95,8 +97,13 @@ public class CustService {
 
         helpdeskRepository.save(helpdesk);
 
-        // CS담당자 메일 발송 (핑거 연동)
 
+    }
+
+    public Page<AnswerDto> answer(String cid, Pageable pageable) {
+        Page<AnswerDto> answerDtos = helpdeskRepository.selectAnswer(cid, pageable);
+
+        return answerDtos;
     }
 
 

@@ -25,7 +25,7 @@ public class ImageMng {
     @Column()
     private String url;
 
-    @Column(length = 255)
+    @Column(name="bg_color", length = 255)
     private String bgColor;
 
     @Column()
@@ -34,7 +34,7 @@ public class ImageMng {
     @Column()
     private int width;
 
-    @Column()
+    @Column(name="anmt_cnt")
     private int anmtCnt;
 
 }

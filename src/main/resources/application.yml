@@ -14,6 +14,16 @@ spring:
       enabled: always
   application:
     name: tax-api
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    open-in-view: false
+    show-sql: true
+    hibernate:
+#      hbm2ddl:
+#        auto: validate
+      format_sql: true
+      ddl-auto: validate
+      dialect: org.hibernate.dialect.MySQL5Dialect
 
 management:
   endpoints:

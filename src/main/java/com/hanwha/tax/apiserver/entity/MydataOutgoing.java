@@ -19,40 +19,40 @@ public class MydataOutgoing  {
     @Column(name="cust_id", length = 10)
     private String custId;
 
-    @Column(length = 10)
+    @Column(name="org_code", length = 10)
     private String orgCode;
 
-    @Column()
+    @Column(name="card_id")
     private String cardId;
 
     @Column()
     private Integer seq;
 
-    @Column()
+    @Column(name="pay_type")
     private String payType;
 
     @Column()
     private String status;
 
-    @Column()
+    @Column(name="merchant_name")
     private String merchantName;
 
     @Column()
     private String category;
 
-    @Column()
+    @Column(name="appr_num")
     private String apprNum;
 
-    @Column()
+    @Column(name="appr_amt")
     private Long apprAmt;
 
-    @Column()
+    @Column(name="mod_amt")
     private Long modAmt;
 
-    @Column()
+    @Column(name="appr_dtime")
     private LocalDateTime apprDtime;
 
-    @Column()
+    @Column(name="trans_dtime")
     private LocalDateTime transDtime;
 
     @JsonIgnore

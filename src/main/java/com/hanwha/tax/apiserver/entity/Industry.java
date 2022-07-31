@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Getter
 @Entity
 @Table(name = "industry")
-public class Industry {
+public class Industry extends TimeEntity {
 
     @Id
     @Column(length = 6)
@@ -21,28 +21,20 @@ public class Industry {
     private String name;
 
     @JsonIgnore
-    @Column()
+    @Column(name="simple_exrt")
     private BigDecimal simpleExrt;
 
     @JsonIgnore
-    @Column()
+    @Column(name="simple_exrt_exc")
     private BigDecimal simpleExrtExc;
 
     @JsonIgnore
-    @Column()
+    @Column(name="standard_exrt")
     private BigDecimal standardExrt;
 
     @JsonIgnore
-    @Column(length = 200)
+    @Column(name="search_terms", length = 200)
     private String searchTerms;
-
-    @JsonIgnore
-    @Column()
-    private LocalDateTime createDt;
-
-    @JsonIgnore
-    @Column()
-    private LocalDateTime updateDt;
 
     @JsonIgnore
     @Column(length = 50)

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hanwha.tax.apiserver.model.type.YesOrNo;
 import com.hanwha.tax.apiserver.vo.AskVo;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Entity
+@NoArgsConstructor
 @Table(name = "helpdesk")
 public class Helpdesk {
 
@@ -22,7 +24,7 @@ public class Helpdesk {
     @Column(name="cust_id", length = 10)
     private String cid;
 
-    @Column()
+    @Column(name="ans_yn")
     private Character ansYn;
 
     @Column()

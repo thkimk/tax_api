@@ -2,6 +2,7 @@ package com.hanwha.tax.apiserver.entity;
 
 import com.hanwha.tax.apiserver.entity.ids.CustDeductIds;
 import com.hanwha.tax.apiserver.vo.DeductVo;
+import com.hanwha.tax.apiserver.vo.SimTaxVo;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -61,4 +62,9 @@ public class CustDeduct extends TimeEntity {
         sedAmount = deductVo.getSedAmount();
 
     }
+
+    public CustDeduct(SimTaxVo simTaxVo) {
+
+    }
+
 }

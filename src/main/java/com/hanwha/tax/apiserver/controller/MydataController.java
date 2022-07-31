@@ -13,6 +13,9 @@ import com.hanwha.tax.apiserver.entity.TotalOutgoing;
 import com.hanwha.tax.apiserver.model.response.ApiDataResult;
 import com.hanwha.tax.apiserver.service.MydataService;
 import com.hanwha.tax.apiserver.service.ResponseService;
+import com.hanwha.tax.apiserver.vo.BookIncomeVo;
+import com.hanwha.tax.apiserver.vo.BookOutgoingVo;
+import com.hanwha.tax.apiserver.vo.DeductVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -104,6 +107,30 @@ public class MydataController {
         List<BookOutgoing> bookOutgoings = mydataService.bookOutgoing(Utils.cid(), year, month);
 
         return responseService.result(bookOutgoings);
+    }
+
+
+    @ApiOperation(value = "고객의 수입 간편장부 저장", notes = "고객이 수기로 수입정보를 간편장부에 저장")
+    @PostMapping(value = "/saveBookIncome")
+    public ApiDataResult saveBookIncome(@RequestBody BookIncomeVo bookIncomeVo) {
+        Utils.logCalled("saveBookIncome", bookIncomeVo);
+        bookIncomeVo.setCid(Utils.cid());
+
+        mydataService.saveBookIncome(bookIncomeVo);
+
+        return responseService.successResult();
+    }
+
+
+    @ApiOperation(value = "고객의 지출 간편장부 저장", notes = "고객이 수기로 지출정보를 간편장부에 저장")
+    @PostMapping(value = "/saveBookOutgoing")
+    public ApiDataResult saveBookOutgoing(@RequestBody BookOutgoingVo bookOutgoingVo) {
+        Utils.logCalled("saveBookOutgoing", bookOutgoingVo);
+        bookOutgoingVo.setCid(Utils.cid());
+
+        mydataService.saveBookOutgoing(bookOutgoingVo);
+
+        return responseService.successResult();
     }
 
 

@@ -15,19 +15,19 @@ import java.time.LocalDateTime;
 public class MainMenuNoti extends TimeEntity {
 
     @Id
-    @Column()
+    @Column(name="noti_id")
     private String notiId;
 
-    @Column()
+    @Column(name="use_yn")
     private Character useYn;
 
     @Column()
     private String content;
 
-    @Column()
+    @Column(name="begin_dt")
     private LocalDateTime beginDt;
 
-    @Column()
+    @Column(name="end_dt")
     private LocalDateTime endDt;
 
 }

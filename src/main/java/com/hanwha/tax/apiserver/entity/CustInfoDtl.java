@@ -1,6 +1,7 @@
 package com.hanwha.tax.apiserver.entity;
 
 import com.hanwha.tax.apiserver.vo.SaveJobVo;
+import com.hanwha.tax.apiserver.vo.SimTaxVo;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -37,7 +38,7 @@ public class CustInfoDtl extends TimeEntity {
     @Column(name="is_sin_parent")
     private Character isSinParent;
 
-    @Column()
+    @Column(name="tax_flag")
     private String taxFlag = "00";
 
     public Character getIsDisorder() {
@@ -61,5 +62,10 @@ public class CustInfoDtl extends TimeEntity {
         }
         this.jobCode = saveJobVo.getJobCode();
     }
+
+    public CustInfoDtl(SimTaxVo simTaxVo) {
+
+    }
+
 
 }

@@ -1,6 +1,7 @@
 package com.hanwha.tax.apiserver.entity;
 
 import com.hanwha.tax.apiserver.vo.SaveFamilyVo;
+import com.hanwha.tax.apiserver.vo.SimTaxVo;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -34,6 +35,10 @@ public class CustFamily extends TimeEntity {
         this.family = family.getFamily();
         this.birth = family.getBirth();
         this.isDisorder = family.getIsDisorder();
+    }
+
+    public CustFamily(SimTaxVo.DetailsVo.FamilyVo familyVo) {
+
     }
 
 }

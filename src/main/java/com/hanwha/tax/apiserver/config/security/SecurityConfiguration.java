@@ -39,7 +39,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
                 .and().authorizeRequests()    // 다음 리퀘스트에 대한 사용권한 체크
                 .antMatchers("/api/*/auth/*", "/actuator/**").permitAll()
-                .antMatchers("/api/info/**").permitAll()
+//                .antMatchers("/api/info/**").permitAll()
                 .antMatchers("/api/**").permitAll()
                 .antMatchers("/test/**").permitAll()
 //                .antMatchers( "/api/*").hasRole("USER")

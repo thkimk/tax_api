@@ -15,10 +15,10 @@ public class MainMenuInfo extends TimeEntity{
     @Column()
     private long main_menu_id;
 
-    @Column()
+    @Column(name="cust_grade")
     private String custGrade;
 
-    @Column()
+    @Column(name="banner_id")
     private String bannerId;
 
     @Column()
