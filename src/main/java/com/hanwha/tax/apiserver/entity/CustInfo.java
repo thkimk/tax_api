@@ -61,7 +61,13 @@ public class CustInfo extends TimeEntity{
     }
 
     public CustInfo(SimTaxVo simTaxVo) {
-
+        if (simTaxVo.getDetails() != null) {
+            birth = simTaxVo.getDetails().getBirth();
+            gender = simTaxVo.getDetails().getGender();
+        } else {
+            birth = "10040202";
+            gender = 'M';
+        }
     }
 
 }

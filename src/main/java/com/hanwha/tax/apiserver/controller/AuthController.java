@@ -44,7 +44,7 @@ public class AuthController {
     @ApiOperation(value = "로그인", notes = "이메일 회원 로그인을 한다.")
     @PostMapping(value = "/login")
     public ApiDataResult login(@ApiParam(value = "회원ID : 이메일", required = true) @RequestBody LoginVo loginVo) {
-        Utils.logCalled("login", loginVo);
+        Utils.logCalled("auth/login", loginVo);
         loginVo.setCid(Utils.cid());
 /*
         User user = userJpaRepo.findByUid(id).orElseThrow(EmailSigninFailedException::new);
@@ -61,7 +61,7 @@ public class AuthController {
     @ApiOperation(value = "로그아웃", notes = "이메일 회원 로그아웃을 한다.")
     @PostMapping(value = "/logout")
     public ApiDataResult logout() {
-        Utils.logCalled("logout", null);
+        Utils.logCalled("auth/logout", null);
 
         authService.logout(Utils.cid());
         return responseService.successResult();
@@ -71,7 +71,7 @@ public class AuthController {
     @ApiOperation(value = "회원 가입(준회원)", notes = "준회원 회원가입 처리를 한다.")
     @PostMapping(value = "/signup")
     public ApiDataResult signup(@ApiParam(value = "회원가입에 필요한 정보를 전달하고, 회원가입 처리", required = true) @RequestBody SignupVo signupVo) {
-        Utils.logCalled("signup", signupVo);
+        Utils.logCalled("auth/signup", signupVo);
 
         final MemberDto memberDto = authService.signup(signupVo);
         return responseService.result(memberDto);
@@ -91,7 +91,7 @@ public class AuthController {
     @ApiOperation(value = "회원 가입(정회원)", notes = "[쿠콘 역호출]정회원 가입 처리를 한다.(Regular)")
     @PostMapping(value = "/signupReg")
     public ApiDataResult signupReg(@ApiParam(value = "회원가입에 필요한 정보를 전달하고, 회원가입 처리", required = true) @RequestBody SignupRegVo signupRegVo) {
-        Utils.logCalled("signupReg", signupRegVo);
+        Utils.logCalled("auth/signupReg", signupRegVo);
         if (!signupRegVo.getTaxToken().equals(taxToken)) {
             throw new AuthenticationEntryPointException();
         }
@@ -103,7 +103,7 @@ public class AuthController {
     @ApiOperation(value = "회원 탈퇴(정회원)", notes = "[쿠콘 역호출] 정회원 탈퇴 처리를 한다.(Regular)")
     @PostMapping(value = "/signoutReg")
     public ApiDataResult signoutReg(@ApiParam(value = "회원가입에 필요한 정보를 전달하고, 회원탈퇴 처리", required = true) @RequestBody SignoutRegVo signoutRegVo) {
-        Utils.logCalled("signoutReg", signoutRegVo);
+        Utils.logCalled("auth/signoutReg", signoutRegVo);
         if (!signoutRegVo.getTaxToken().equals(taxToken)) {
             throw new AuthenticationEntryPointException();
         }
@@ -124,7 +124,7 @@ public class AuthController {
     @ApiOperation(value = "비밀번호 재등록", notes = "사용자의 비밀번호를 재등록한다.")
     @PostMapping(value = "/saveAuth")
     public ApiDataResult saveAuth(@RequestBody SaveAuthVo saveAuthVo) {
-        Utils.logCalled("saveAuth", saveAuthVo);
+        Utils.logCalled("auth/saveAuth", saveAuthVo);
 
         authService.saveAuth(saveAuthVo);
 
@@ -135,7 +135,7 @@ public class AuthController {
     @ApiOperation(value = "본인확인 OTP 요청", notes = "본인확인을 위한 OTP발송을 요청한다.")
     @PostMapping(value = "/idenOtpReq")
     public ApiDataResult idenOtpReq(@RequestBody IdenOtpReqVo idenOtpReqVo) {
-        Utils.logCalled("idenOtpReq", idenOtpReqVo);
+        Utils.logCalled("auth/idenOtpReq", idenOtpReqVo);
 
         if (idenOtpReqVo.getTxSeqNo() != null) idenOtpReqVo.setTxSeqNo(null);
 
@@ -150,7 +150,7 @@ public class AuthController {
     @ApiOperation(value = "본인확인 OTP 재요청", notes = "본인확인을 위한 OTP발송을 재요청한다.")
     @PostMapping(value = "/idenOtpReqRetry")
     public ApiDataResult idenOtpReqRetry(@RequestBody IdenOtpReqVo idenOtpReqVo) {
-        Utils.logCalled("idenOtpReqRetry", idenOtpReqVo);
+        Utils.logCalled("auth/idenOtpReqRetry", idenOtpReqVo);
 
         if (idenOtpReqVo.getTxSeqNo() == null) {
             return responseService.failResult();
@@ -167,7 +167,7 @@ public class AuthController {
     @ApiOperation(value = "본인확인 OTP 확인", notes = "본인확인을 위한 OTP확인을 요청한다.")
     @PostMapping(value = "/idenOtpConfirm")
     public ApiDataResult idenOtpConfirm(@RequestBody IdenOtpConfirmVo idenOtpConfirmVo) {
-        Utils.logCalled("idenOtpConfirm", idenOtpConfirmVo);
+        Utils.logCalled("auth/idenOtpConfirm", idenOtpConfirmVo);
 
         IdenOtpConfirmDto idenOtpConfirmDto = authService.idenOtpConfirm(idenOtpConfirmVo);
         if (!idenOtpConfirmDto.getRsltCd().equals(Constants.KCB_RES_B000)) {

@@ -38,7 +38,9 @@ public class CustFamily extends TimeEntity {
     }
 
     public CustFamily(SimTaxVo.DetailsVo.FamilyVo familyVo) {
-
+        this.family = familyVo.getFamily();
+        this.birth = familyVo.getBirth();
+        this.isDisorder = familyVo.getIsDisorder();
     }
 
 }

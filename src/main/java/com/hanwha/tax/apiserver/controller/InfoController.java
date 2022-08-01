@@ -33,7 +33,7 @@ public class InfoController {
     @ApiOperation(value = "약관 정보", notes = "약관동의에 필요한 약관정보를 제공한다.")
     @GetMapping(value = "/terms")
     public ApiDataResult getTermsList() {
-        Utils.logCalled("terms", null);
+        Utils.logCalled("info/terms", null);
 
         return responseService.result(infoService.getTermsList());
     }
@@ -41,7 +41,7 @@ public class InfoController {
     @ApiOperation(value = "약관 상세 정보", notes = "약관 상세정보를 제공한다.")
     @GetMapping(value = "/terms/{id}")
     public ApiDataResult getTermsDetail(@PathVariable Long id) {
-        Utils.logCalled("terms", null);
+        Utils.logCalled("info/terms", null);
         final TermsDetailDto termsDetail = infoService.getTerms(id);
 
         if (termsDetail!= null) {
@@ -55,7 +55,7 @@ public class InfoController {
     @GetMapping(value = "/jobs")
     public ApiDataResult jobs(@ApiParam(value = "업종 코드") @RequestParam(required = false) String code,
                               @ApiParam(value = "업종명") @RequestParam(required = false) String name) throws Exception {
-        Utils.logCalled("jobs", code + ", " + name);
+        Utils.logCalled("info/jobs", code + ", " + name);
 
         return responseService.result(infoService.jobs(code, name));
     }
@@ -64,7 +64,7 @@ public class InfoController {
     @ApiOperation(value = "자주 묻는 질문 리스트", notes = "자주 묻는 질문 목록을 제공한다.")
     @GetMapping(value = "/faq")
     public ApiDataResult getFaqList(Pageable pageable) {
-        Utils.logCalled("faq", null);
+        Utils.logCalled("info/faq", null);
 
         return responseService.result(infoService.getFaqList(Utils.convertPageable(pageable)));
     }
@@ -72,7 +72,7 @@ public class InfoController {
     @ApiOperation(value = "자주 묻는 질문 상세", notes = "자주 묻는 질문 상세내용을 제공한다.")
     @GetMapping(value = "/faq/{id}")
     public ApiDataResult getFaq(@PathVariable Long id) {
-        Utils.logCalled("faq", null);
+        Utils.logCalled("info/faq", null);
 
         final FaqDto faqDto = infoService.getFaq(id);
 
@@ -86,7 +86,7 @@ public class InfoController {
     @ApiOperation(value = "공지사항 상세", notes = "공지사항 상세내용을 제공한다.")
     @GetMapping(value = "/notice/{id}")
     public ApiDataResult getNotice(@PathVariable Long id) {
-        Utils.logCalled("notice", null);
+        Utils.logCalled("info/notice", null);
 
         final NotiMsgDto notice = infoService.getNotice(id);
 

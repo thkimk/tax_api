@@ -32,7 +32,7 @@ public class MainController {
     @ApiOperation(value = "메인 List", notes = "고객 등급에 따른 메인 정보를 제공한다.")
     @GetMapping(value = "/list")
     public ApiDataResult getMainList(Pageable pageable) {
-        Utils.logCalled("mainMenu", "");
+        Utils.logCalled("main/mainMenu", "");
 
         return responseService.result(mainService.getMainList(Utils.convertPageable(pageable)));
     }

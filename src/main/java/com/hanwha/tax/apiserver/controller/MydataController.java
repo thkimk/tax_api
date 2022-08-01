@@ -39,7 +39,7 @@ public class MydataController {
     @ApiOperation(value = "Income 요청", notes = "마이데이터(수입정보)를 실시간 조회한다.")
     @GetMapping(value = "/ccIncome")
     public ApiDataResult ccIncome() {
-        Utils.logCalled("ccIncome", "");
+        Utils.logCalled("mydata/ccIncome", "");
 
         CcIncomeDto ccIncomeDto = mydataService.ccIncome();
 
@@ -50,7 +50,7 @@ public class MydataController {
     @ApiOperation(value = "Exponse 요청", notes = "마이데이터(지출정보)를 실시간 조회한다.")
     @GetMapping(value = "/ccExpense")
     public ApiDataResult ccExpense() {
-        Utils.logCalled("ccExpense", "");
+        Utils.logCalled("mydata/ccExpense", "");
 
         CcExpenseDto ccExpenseDto = mydataService.ccExpense();
 
@@ -61,7 +61,7 @@ public class MydataController {
     @ApiOperation(value = "쿠콘 인증번호 요청", notes = "쿠콘의 인증번호를 요청한다.")
     @GetMapping(value = "/ccAuthorize")
     public ApiDataResult ccAuthorize() {
-        Utils.logCalled("ccAuthorize", "");
+        Utils.logCalled("mydata/ccAuthorize", "");
 
         CcAuthorizeDto ccAuthorizeDto = mydataService.ccAuthorize();
 
@@ -71,7 +71,7 @@ public class MydataController {
     @ApiOperation(value = "전체 수입 조회", notes = "전체 수입을 월별로 조회한다.")
     @GetMapping(value = "/totalIncome")
     public ApiDataResult totalIncome(@RequestParam(required = false) Integer year, @RequestParam(required = false) Integer month) {
-        Utils.logCalled("totalIncome", year+", "+ month);
+        Utils.logCalled("mydata/totalIncome", year+", "+ month);
 
         List<TotalIncome> totalIncomes = mydataService.totalIncome(year, month);
 
@@ -81,7 +81,7 @@ public class MydataController {
     @ApiOperation(value = "전체 지출 조회", notes = "전체 지출을 월별로 조회한다.")
     @GetMapping(value = "/totalOutgoing")
     public ApiDataResult totalOutgoing(@RequestParam(required = false) Integer year, @RequestParam(required = false) Integer month) {
-        Utils.logCalled("totalOutgoing", year+", "+ month);
+        Utils.logCalled("mydata/totalOutgoing", year+", "+ month);
 
         List<TotalOutgoing> totalOutgoings = mydataService.totalOutgoing(year, month);
 
@@ -92,7 +92,7 @@ public class MydataController {
     @ApiOperation(value = "간편장부 수입 조회", notes = "간편장부에 입력한 수입을 월별로 조회한다.")
     @GetMapping(value = "/bookIncome")
     public ApiDataResult bookIncome(@RequestParam(required = false) Integer year, @RequestParam(required = false) Integer month) {
-        Utils.logCalled("bookIncome", year+", "+ month);
+        Utils.logCalled("mydata/bookIncome", year+", "+ month);
 
         List<BookIncome> bookIncomes = mydataService.bookIncome(Utils.cid(), year, month);
 
@@ -102,7 +102,7 @@ public class MydataController {
     @ApiOperation(value = "간편장부 지출 조회", notes = "간편장부에 입력한 지출을 월별로 조회한다.")
     @GetMapping(value = "/bookOutgoing")
     public ApiDataResult bookOutgoing(@RequestParam(required = false) Integer year, @RequestParam(required = false) Integer month) {
-        Utils.logCalled("bookOutgoing", year+", "+ month);
+        Utils.logCalled("mydata/bookOutgoing", year+", "+ month);
 
         List<BookOutgoing> bookOutgoings = mydataService.bookOutgoing(Utils.cid(), year, month);
 
@@ -113,7 +113,7 @@ public class MydataController {
     @ApiOperation(value = "고객의 수입 간편장부 저장", notes = "고객이 수기로 수입정보를 간편장부에 저장")
     @PostMapping(value = "/saveBookIncome")
     public ApiDataResult saveBookIncome(@RequestBody BookIncomeVo bookIncomeVo) {
-        Utils.logCalled("saveBookIncome", bookIncomeVo);
+        Utils.logCalled("mydata/saveBookIncome", bookIncomeVo);
         bookIncomeVo.setCid(Utils.cid());
 
         mydataService.saveBookIncome(bookIncomeVo);
@@ -125,7 +125,7 @@ public class MydataController {
     @ApiOperation(value = "고객의 지출 간편장부 저장", notes = "고객이 수기로 지출정보를 간편장부에 저장")
     @PostMapping(value = "/saveBookOutgoing")
     public ApiDataResult saveBookOutgoing(@RequestBody BookOutgoingVo bookOutgoingVo) {
-        Utils.logCalled("saveBookOutgoing", bookOutgoingVo);
+        Utils.logCalled("mydata/saveBookOutgoing", bookOutgoingVo);
         bookOutgoingVo.setCid(Utils.cid());
 
         mydataService.saveBookOutgoing(bookOutgoingVo);
@@ -137,7 +137,7 @@ public class MydataController {
     @ApiOperation(value = "마이데이터 수입데이터 수집", notes = "마이데이터 수입데이터를 수집한다.")
     @PostMapping(value = "/batchDataJob")
     public ApiDataResult batchDataJob() {
-        Utils.logCalled("batchIncomeJob", "");
+        Utils.logCalled("mydata/batchIncomeJob", "");
 
         mydataService.batchDataJob();
 

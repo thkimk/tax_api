@@ -144,6 +144,7 @@ public class Tax {
         // deduct(소득공제) 계산 : 본인, 부양가족, 기타
         deduct();
         taxBase = earning - deduct;
+        if (taxBase < 0) taxBase = 0L;
         log.info("## [2] 과표 : {} = {} - {}", taxBase, earning, deduct);
 
         // 03.산출세액 계산
@@ -172,7 +173,10 @@ public class Tax {
         }
 
         // 기납부세액 : 수입금액의 3% --> income에는 모두 3% 기납부세액이 포함되어있어야 함 (미포함시, income계산때 강제 추가)
-        Long income33 = totalIncomeRepository.selectRtIncome33(cid, year);
+        Long income33 = 0L;
+        if (simFlag) income33 = income;
+        else income33 = totalIncomeRepository.selectRtIncome33(cid, year);
+
         paidTax = Double.valueOf(income33 * 0.03).longValue();
 
     }
@@ -225,10 +229,12 @@ public class Tax {
             custInfo = new CustInfo(simTaxVo);
             custDeduct = new CustDeduct(simTaxVo);
             custFamilyList = new ArrayList<>();
-            simTaxVo.getDetails().getFamilys().forEach(family -> {
-                CustFamily custFamily = new CustFamily(family);
-                custFamilyList.add(custFamily);
-            });
+            if (simTaxVo.getDetails() != null) {
+                simTaxVo.getDetails().getFamilys().forEach(family -> {
+                    CustFamily custFamily = new CustFamily(family);
+                    custFamilyList.add(custFamily);
+                });
+            }
         } else {
             custInfo = custInfoRepository.findByCid(cid);
             custDeduct = custDeductRepository.findByCidAndYear(cid, year);
@@ -368,6 +374,10 @@ public class Tax {
                 return Constants.TAX_FLAG_CBSTR;            // 복식, 기준경비
             }
         }
+    }
+
+    public static String simTaxFlag(String taxFlag, Long outgoing) {
+        return "";
     }
 
 }

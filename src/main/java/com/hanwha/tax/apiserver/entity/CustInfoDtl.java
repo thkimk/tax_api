@@ -48,8 +48,8 @@ public class CustInfoDtl extends TimeEntity {
 
     public CustInfoDtl(SaveJobVo saveJobVo) {
         this.cid = saveJobVo.getCid();
-        this.isNewBusin = saveJobVo.getIsNewBusin().toCharacter();
         this.jobCode = saveJobVo.getJobCode();
+        this.isNewBusin = saveJobVo.getIsNewBusin().toCharacter();
         this.isDisorder = 'N';
         this.isHshld = 'N';
         this.isMarriage = 'N';
@@ -64,7 +64,21 @@ public class CustInfoDtl extends TimeEntity {
     }
 
     public CustInfoDtl(SimTaxVo simTaxVo) {
+        jobCode = simTaxVo.getJobCode();
+        if (simTaxVo.getDetails() != null) {
+            this.isNewBusin = simTaxVo.getDetails().getIsNewBusin();
+            this.isDisorder = simTaxVo.getDetails().getIsDisorder();
+            this.isHshld = simTaxVo.getDetails().getIsHshld();
+            this.isMarriage = simTaxVo.getDetails().getIsMarriage();
+            this.isSinParent = simTaxVo.getDetails().getIsSinParent();
+        } else {
+            this.isNewBusin = 'N';
+            this.isDisorder = 'N';
+            this.isHshld = 'N';
+            this.isMarriage = 'N';
+            this.isSinParent = 'N';
 
+        }
     }
 
 

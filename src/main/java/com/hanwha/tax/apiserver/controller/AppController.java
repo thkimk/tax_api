@@ -32,7 +32,7 @@ public class AppController {
     @ApiOperation(value = "App 기동시 셋업데이터", notes = "App 기동시 필요한 데이터를 제공한다.")
     @GetMapping(value = "/inits")
     public ApiDataResult inits() throws Exception {
-        Utils.logCalled("inits", "");
+        Utils.logCalled("app/inits", "");
 
         final AppInitsDto appInitsDto = appService.inits();
         return responseService.result(appInitsDto);
@@ -42,7 +42,7 @@ public class AppController {
     @ApiOperation(value = "App 기동시 비회원 메타정보", notes = "App 기동시, App에서 비회원 메타정보를 서버로 전달한다.")
     @PostMapping(value = "/nomember")
     public ApiDataResult nomember(@RequestBody NomemberVo nomemberVo) throws Exception {
-        Utils.logCalled("nomember", nomemberVo);
+        Utils.logCalled("app/nomember", nomemberVo);
         appService.nomember(nomemberVo);
 
         return responseService.successResult();
@@ -52,7 +52,7 @@ public class AppController {
     @ApiOperation(value = "메인메뉴 정보", notes = "App 기동시, 고객 등급에 따른 메인메뉴 정보를 제공한다.")
     @GetMapping(value = "/mainMenu")
     public ApiDataResult mainMenu() throws Exception {
-        Utils.logCalled("mainMenu", "");
+        Utils.logCalled("app/mainMenu", "");
         final MainMenuDto mainMenuDto = appService.mainMenu();
 
         return responseService.result(mainMenuDto);

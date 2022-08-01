@@ -3,6 +3,7 @@ package com.hanwha.tax.apiserver.controller;
 import com.hanwha.tax.apiserver.Constants;
 //import com.hanwha.tax.apiserver.entity.User;
 import com.hanwha.tax.apiserver.dto.AnswerDto;
+import com.hanwha.tax.apiserver.dto.CustTermsDto;
 import com.hanwha.tax.apiserver.dto.MemberDto;
 import com.hanwha.tax.apiserver.util.Utils;
 import com.hanwha.tax.apiserver.model.response.ApiDataResult;
@@ -96,7 +97,7 @@ public class CustController {
     @ApiOperation(value = "사용자 업종 선택", notes = "사용자의 업종을 선택해서 저장한다.")
     @PostMapping(value = "/saveJob")
     public ApiDataResult saveJob(@ApiParam(value = "회원ID : 이메일", required = true) @RequestBody SaveJobVo saveJobVo) {
-        Utils.logCalled("saveJob", saveJobVo);
+        Utils.logCalled("cust/saveJob", saveJobVo);
         if (saveJobVo.getCid() == null) {
             saveJobVo.setCid(Utils.cid());
         }
@@ -111,7 +112,7 @@ public class CustController {
     @ApiOperation(value = "부양가족 저장", notes = "사용자의 부양가족 정보를 저장한다.")
     @PostMapping(value = "/saveFamily")
     public ApiDataResult saveFamily(@ApiParam(value = "회원ID : 이메일", required = true) @RequestBody SaveFamilyVo saveFamilyVo) {
-        Utils.logCalled("saveFamily", saveFamilyVo);
+        Utils.logCalled("cust/saveFamily", saveFamilyVo);
         saveFamilyVo.setCid(Utils.cid());
 
         // cust_info_dtl 업데이트 필요
@@ -124,7 +125,7 @@ public class CustController {
     @ApiOperation(value = "1:1문의", notes = "고객이 문의한 사항을 처리한다. (저장 및 CS담당자 전달)")
     @PostMapping(value = "/ask")
     public ApiDataResult ask(@RequestBody AskVo askVo) {
-        Utils.logCalled("ask", askVo);
+        Utils.logCalled("cust/ask", askVo);
         askVo.setCid(Utils.cid());
 
         custService.ask(askVo);
@@ -135,7 +136,7 @@ public class CustController {
     @ApiOperation(value = "고객의 1:1문의 조회", notes = "고객이 문의한 1:1문의 내용과 답변 조회")
     @GetMapping(value = "/answer")
     public ApiDataResult answer(Pageable pageable) {
-        Utils.logCalled("answer", null);
+        Utils.logCalled("cust/answer", null);
 
         Page<AnswerDto> answerDtos = custService.answer(Utils.cid(), pageable);
 
@@ -146,7 +147,7 @@ public class CustController {
     @ApiOperation(value = "고객의 상세정보 조회", notes = "회원가입시 고객이 제공한 정보 조회")
     @GetMapping(value = "/infos")
     public ApiDataResult infos() {
-        Utils.logCalled("infos", null);
+        Utils.logCalled("cust/infos", null);
 
         MemberDto memberDto = custService.infos(Utils.cid());
 
@@ -157,7 +158,7 @@ public class CustController {
     @ApiOperation(value = "고객의 공제정보 조회", notes = "회원가입시 고객이 제공한 공제정보 조회")
     @GetMapping(value = "/deduct")
     public ApiDataResult deduct(@ApiParam(value = "연도") @RequestParam(required = false) Integer year) {
-        Utils.logCalled("deduct", year);
+        Utils.logCalled("cust/deduct", year);
 
         return responseService.result(custService.deduct(Utils.cid(), year));
     }
@@ -166,7 +167,7 @@ public class CustController {
     @ApiOperation(value = "고객의 공제정보 저장", notes = "회원가입시 고객이 제공한 공제정보 저장")
     @PostMapping(value = "/saveDeduct")
     public ApiDataResult saveDeduct(@RequestBody DeductVo deductVo) {
-        Utils.logCalled("saveDeduct", deductVo);
+        Utils.logCalled("cust/saveDeduct", deductVo);
         deductVo.setCid(Utils.cid());
 
         custService.saveDeduct(deductVo);
@@ -177,9 +178,20 @@ public class CustController {
     @ApiOperation(value = "고객의 부양가족 정보 조회", notes = "고객이 제공한 부양가족 정보 조회")
     @GetMapping(value = "/family")
     public ApiDataResult family() {
-        Utils.logCalled("family", null);
+        Utils.logCalled("cust/family", null);
 
         return responseService.result(custService.family(Utils.cid()));
+    }
+
+
+    @ApiOperation(value = "고객의 약관 및 수신 동의정보 조회", notes = "회원가입시 고객이 동의한 정보들 조회 (약관, 수신, 수신매체 등)")
+    @GetMapping(value = "/terms")
+    public ApiDataResult terms() {
+        Utils.logCalled("cust/terms", null);
+
+        CustTermsDto custTermsDto = custService.terms(Utils.cid());
+
+        return responseService.result(custTermsDto);
     }
 
 

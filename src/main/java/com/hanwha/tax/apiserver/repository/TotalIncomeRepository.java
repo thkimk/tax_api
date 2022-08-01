@@ -23,7 +23,7 @@ public interface TotalIncomeRepository extends JpaRepository<TotalIncome, Long> 
 
     @Query(value="select sum(b.amount) from (" +
             "select a.trans_amt as amount from mydata_income a where a.cust_id = :cid and a.is_income = 'Y' and year(a.trans_dtime)=:year union " +
-            "select a.trans_amt as amount from book_income a where a.cust_id = :cid and a.is_income = 'Y' and year(a.trans_dtime)=:year) b", nativeQuery=true)
+            "select a.trans_amt as amount from book_income a where a.cust_id = :cid and year(a.trans_dtime)=:year) b", nativeQuery=true)
     Long selectRtIncome(@Param("cid") String cid, @Param("year") int year);
 
     @Query(value="select sum(b.amount) from (" +
@@ -33,7 +33,7 @@ public interface TotalIncomeRepository extends JpaRepository<TotalIncome, Long> 
 
     @Query(value="select sum(b.amount) from (" +
             "select a.trans_amt as amount from mydata_income a where a.cust_id = :cid and a.is_income = 'Y' and year(a.trans_dtime)=:year and a.is_33='Y' union " +
-            "select a.trans_amt as amount from book_income a where a.cust_id = :cid and a.is_income = 'Y' and year(a.trans_dtime)=:year and a.is_33='Y') b", nativeQuery=true)
+            "select a.trans_amt as amount from book_income a where a.cust_id = :cid and year(a.trans_dtime)=:year and a.is_33='Y') b", nativeQuery=true)
     Long selectRtIncome33(@Param("cid") String cid, @Param("year") int year);
 
 }

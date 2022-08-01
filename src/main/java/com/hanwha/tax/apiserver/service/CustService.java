@@ -9,10 +9,7 @@ import com.hanwha.tax.apiserver.entitysecond.MailReceiver;
 import com.hanwha.tax.apiserver.repository.*;
 import com.hanwha.tax.apiserver.repositorysecond.MailReceiverRepository;
 import com.hanwha.tax.apiserver.util.DateUtil;
-import com.hanwha.tax.apiserver.vo.AskVo;
-import com.hanwha.tax.apiserver.vo.DeductVo;
-import com.hanwha.tax.apiserver.vo.SaveFamilyVo;
-import com.hanwha.tax.apiserver.vo.SaveJobVo;
+import com.hanwha.tax.apiserver.vo.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +38,12 @@ public class CustService {
 
     @Autowired
     AuthInfoRepository authInfoRepository;
+
+    @Autowired
+    CustTermsAgmtRepository custTermsAgmtRepository;
+
+    @Autowired
+    NotiSettingRepository notiSettingRepository;
 
 
 //    private final UserJpaRepository userJpaRepo; // Jpa를 활용한 CRUD 쿼리 가능
@@ -86,6 +89,7 @@ public class CustService {
         }
 
         if (custFamilies.size() > 0) {
+            custFamilyRepository.deleteAllByCid(saveFamilyVo.getCid());
             custFamilyRepository.saveAll(custFamilies);
         }
 //        return Constants.CODE_RET_OK;
@@ -152,6 +156,15 @@ public class CustService {
         });
 
         return familyDtos;
+    }
+
+
+    public CustTermsDto terms(String cid) {
+        List<CustTermsVo> custTermsVo = custTermsAgmtRepository.selectCustTerms(cid);
+        NotiSetting notiSetting = notiSettingRepository.findByCid(cid);
+        CustTermsDto custTermsDto = new CustTermsDto(custTermsVo, notiSetting);
+
+        return custTermsDto;
     }
 
 }

@@ -2,6 +2,7 @@ package com.hanwha.tax.apiserver.entity;
 
 
 import com.hanwha.tax.apiserver.vo.SignupVo;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
@@ -12,6 +13,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "noti_setting")
 @NoArgsConstructor
+@Getter
 public class NotiSetting extends TimeEntity {
     @Id
     @Column(name="cust_id", length = 10)

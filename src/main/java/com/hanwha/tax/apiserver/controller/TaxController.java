@@ -28,7 +28,7 @@ public class TaxController {
     @ApiOperation(value = "예상 소득세 요청", notes = "고객의 특정년도 예상소득세를 조회한다.")
     @GetMapping(value = "/predTax")
     public ApiDataResult predTax(@RequestParam(required = false) Integer year) {
-        Utils.logCalled("predTax", year);
+        Utils.logCalled("tax/predTax", year);
 
         Long tax = taxService.predTax(year);
 
@@ -46,7 +46,7 @@ public class TaxController {
     @ApiOperation(value = "예상 소득세 시뮬레이션", notes = "고객의 특정년도 예상소득세를 시뮬레이션한다.")
     @GetMapping(value = "/simTax")
     public ApiDataResult simTax(SimTaxVo simTaxVo) {
-        Utils.logCalled("simTax", simTaxVo);
+        Utils.logCalled("tax/simTax", simTaxVo);
 
         String tax = taxService.simTax(simTaxVo);
 
@@ -56,7 +56,7 @@ public class TaxController {
     @ApiOperation(value = "예상 소득세 시뮬레이션", notes = "고객의 특정년도 예상소득세를 시뮬레이션한다.")
     @PostMapping(value = "/simTaxDetails")
     public ApiDataResult simTaxDetails(@RequestBody SimTaxVo simTaxVo) {
-        Utils.logCalled("simTaxDetails", simTaxVo);
+        Utils.logCalled("tax/simTaxDetails", simTaxVo);
 
         String tax = taxService.simTax(simTaxVo);
 
