@@ -1,17 +1,18 @@
 server:
+#  port: 8080
   port: 8090
 
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    jdbcUrl: jdbc:mysql://tax-database.c1ttexowmmks.ap-northeast-2.rds.amazonaws.com:3306/tax?autoReconnection=true&useSSL=false&allowMultiQueries=true
+    jdbcUrl: jdbc:mysql://tax-database.c1ttexowmmks.ap-northeast-2.rds.amazonaws.com:3306/tax?autoReconnection=true&useSSL=false&allowMultiQueries=true&zeroDateTimeBehavior=convertToNull
     username: tax_admin
     password: hli6363!
   datasource-second:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    jdbcUrl: jdbc:mysql://tax-database.c1ttexowmmks.ap-northeast-2.rds.amazonaws.com:3306/fiinger_auto?autoReconnection=true&useSSL=false&allowMultiQueries=true
-    username: tax_admin
-    password: hli6363!
+    jdbcUrl: jdbc:mysql://tax-dbms.cjzouundkjlm.ap-northeast-2.rds.amazonaws.com:3306/finger_auto?autoReconnection=true&useSSL=false&allowMultiQueries=true
+    username: root
+    password: welcome123
 
 logging:
   register-shutdown-hook: false

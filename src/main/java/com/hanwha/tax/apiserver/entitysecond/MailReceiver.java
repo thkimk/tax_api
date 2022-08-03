@@ -14,7 +14,7 @@ import javax.persistence.*;
 public class MailReceiver {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="mail_receiver_no")
     private Long mailReceiverNo;
 
@@ -76,7 +76,34 @@ public class MailReceiver {
     private String mailSenderIp;
 
 
-    public MailReceiver(AskVo askVo) {
+    public MailReceiver(AskVo askVo, Long mailNo) {
+        Long unixTime = System.currentTimeMillis();
+
+        this.mailNo = mailNo;
+        mailReceiverNo = unixTime;
+        mailReceiverName = "CS1";
+        mailReceiverEmail = "thtmn@naver.com";
+        mailReceiverSendDate = unixTime / 1000 + 10;
+        {
+            mailReceiverRevNo = 0L;
+            mailTmptSeq = 0L;
+            mailSerialnum = 0L;
+            mailReceiverReportSeq = 0L;
+
+            mailReceiverReplaceJson = "";
+            mailReceiverOpen = 0L;
+            mailReceiverOpenDate = 0L;
+            mailReceiverLinkOpen = 0L;
+            mailReceiverLinkOpenDate = 0L;
+
+            mailReceiverCompleteDate = 0L;
+
+            mailReceiverSmtpMsg = "";
+            mailReceiverResultCode = 1L;
+            mailReceiverResend = 1L;
+            mailSenderIp = "127.0.0.1";
+            mailReceiverReportResp = 0L;
+        }
     }
 
 

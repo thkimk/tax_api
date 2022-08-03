@@ -9,6 +9,6 @@ public class AskVo {
     String cid;
 
     String type;
-    String subject;
+    String email;
     String content;
 }

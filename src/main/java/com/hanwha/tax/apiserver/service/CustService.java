@@ -5,8 +5,11 @@ import com.hanwha.tax.apiserver.Constants;
 import com.hanwha.tax.apiserver.advice.exception.UserNotFoundException;
 import com.hanwha.tax.apiserver.dto.*;
 import com.hanwha.tax.apiserver.entity.*;
+import com.hanwha.tax.apiserver.entitysecond.MailHistory;
 import com.hanwha.tax.apiserver.entitysecond.MailReceiver;
+import com.hanwha.tax.apiserver.model.Finger;
 import com.hanwha.tax.apiserver.repository.*;
+import com.hanwha.tax.apiserver.repositorysecond.MailHistoryRepository;
 import com.hanwha.tax.apiserver.repositorysecond.MailReceiverRepository;
 import com.hanwha.tax.apiserver.util.DateUtil;
 import com.hanwha.tax.apiserver.vo.*;
@@ -44,6 +47,9 @@ public class CustService {
 
     @Autowired
     NotiSettingRepository notiSettingRepository;
+
+    @Autowired
+    Finger finger;
 
 
 //    private final UserJpaRepository userJpaRepo; // Jpa를 활용한 CRUD 쿼리 가능
@@ -89,7 +95,8 @@ public class CustService {
         }
 
         if (custFamilies.size() > 0) {
-            custFamilyRepository.deleteAllByCid(saveFamilyVo.getCid());
+            List<CustFamily> families = custFamilyRepository.findAllByCid(saveFamilyVo.getCid());
+            custFamilyRepository.deleteAll(families);
             custFamilyRepository.saveAll(custFamilies);
         }
 //        return Constants.CODE_RET_OK;
@@ -98,9 +105,10 @@ public class CustService {
 
     public void ask(AskVo askVo) {
         Helpdesk helpdesk = new Helpdesk(askVo);
-
         helpdeskRepository.save(helpdesk);
 
+        // CS담당자에게 이메일 통지
+        finger.sendEmail(askVo);
 
     }
 

@@ -28,13 +28,16 @@ public class Helpdesk {
     private Character ansYn;
 
     @Column()
-    private String ask_type;
+    private String type;
 
     @Column()
-    private String ask_subject;
+    private String subject;
 
     @Column()
-    private String ask_content;
+    private String content;
+
+    @Column()
+    private String email;
 
     @Column()
     private LocalDateTime ask_dt;
@@ -42,9 +45,10 @@ public class Helpdesk {
     public Helpdesk(AskVo askVo) {
         cid = askVo.getCid();
 
-        ask_type = askVo.getType();
-        ask_subject = askVo.getSubject();
-        ask_content = askVo.getContent();
+        type = askVo.getType();
+        subject = askVo.getType();
+        email = askVo.getEmail();
+        content = askVo.getContent();
         ask_dt = LocalDateTime.now();
 
     }

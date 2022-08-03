@@ -76,6 +76,9 @@ dependencies {
 	// httpClient
 	implementation 'org.apache.httpcomponents:httpclient:4.5.13'
 
+	// Thymeleaf
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
 }
 
 tasks.named('test') {

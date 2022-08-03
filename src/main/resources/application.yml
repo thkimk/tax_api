@@ -24,6 +24,9 @@ spring:
       format_sql: true
       ddl-auto: validate
       dialect: org.hibernate.dialect.MySQL5Dialect
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
 
 management:
   endpoints:
@@ -44,4 +47,4 @@ tax:
     client_id: qnM81eEtpIEtR8acDxKLcXNZI4OrVnJM
     secret: bfUcJjV81k2Ttd56bQSDxpmGuA8PyRmZ
     url: https://plugin-uat.coocon.co.kr:8443
-  tax_token: "taxtoken0001"
+  coocon_token: tax-token-coocon001

@@ -14,7 +14,7 @@ import javax.persistence.*;
 public class MailHistory {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="mail_no")
     private Long mailNo;
 
@@ -49,10 +49,10 @@ public class MailHistory {
     private Long mailSendResendYn;
 
     @Column(name="mail_send_userid")
-    private Long mailSendUserid;
+    private String mailSendUserid;
 
     @Column(name="mail_send_name")
-    private Long mailSendName;
+    private String mailSendName;
 
     @Column(name="mail_send_email")
     private String mailSendEmail;
@@ -74,6 +74,31 @@ public class MailHistory {
 
 
     public MailHistory(AskVo askVo) {
+        Long unixTime = System.currentTimeMillis();
+
+        mailNo = unixTime;
+        mailSendSubject = askVo.getType();
+        mailSendContents = askVo.getContent();
+        mailSendName = "소크라택스";
+        mailSendEmail = "tax@hanwha.com";
+        {
+            mailRevNo = 0L;
+            mailTmptSeq = 0L;
+            mailSerialnum = 0L;
+            mailSendFlag = 1L;
+            mailSendOrder = 1L;
+            mailSendReserve = 0L;
+            mailSendCount = 1L;
+
+            mailSendSuccessCount = 0L;
+            mailSendFailedCount = 0L;
+            mailSendDenyCount = 0L;
+            mailSendDate = 0L;
+            mailSendCompleteDate = 0L;
+
+            mailSendResendYn = 0L;
+            mailSendUserid = "";
+        }
     }
 
 }

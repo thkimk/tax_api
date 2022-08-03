@@ -262,10 +262,10 @@ public class AuthService {
             reqJson.put("TEL_NO", idenOtpReqVo.getTelNo());         // 휴대폰번호
             reqJson.put("USER_IP", "10.0.0.1");
             reqJson.put("SITE_URL", "www.taxsol.co.kr");
-            reqJson.put("SITE_NAME", "TaxSolution");
+            reqJson.put("SITE_NAME", "Socratax");
             reqJson.put("RQST_CAUS_CD", "00");                      // 인증요청사유코드 (00:회원가입, 01:성인인증, 02:회원정보수정, 03:비밀번호찾기, 04:상품구매, 99:기타)
             reqJson.put("CHNL_CD", "");                             // Optional
-            reqJson.put("APP_HASH_STR", "iEEEN/CqECx");                        // Optional
+            reqJson.put("APP_HASH_STR", "jSB6jh9airo");                        // Optional
 
             if (idenOtpReqVo.getTxSeqNo() != null) {
                 reqJson.put("TX_SEQ_NO", idenOtpReqVo.getTxSeqNo());       // 거래고유번호. 동일문자열을 두번 사용할 수 없음.

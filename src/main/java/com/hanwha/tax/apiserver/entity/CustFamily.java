@@ -15,6 +15,7 @@ public class CustFamily extends TimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "family_seq")
     private long familySeq;
 
     @Column(name = "cust_id", length = 10)

@@ -14,7 +14,7 @@ import javax.persistence.Table;
 @Table(name = "noti_setting")
 @NoArgsConstructor
 @Getter
-public class NotiSetting extends TimeEntity {
+public class NotiSetting {
     @Id
     @Column(name="cust_id", length = 10)
     private String cid;

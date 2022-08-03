@@ -23,11 +23,12 @@ public class Finger {
         // CS담당자 메일 발송 (핑거 연동)
 //        List<MailReceiver> mailReceivers = mailReceiverRepository.findAll();
 //        log.info("## ask : {}", mailReceivers);
-        MailReceiver mailReceiver = new MailReceiver(askVo);
-        mailReceiverRepository.save(mailReceiver);
 
         MailHistory mailHistory = new MailHistory(askVo);
         mailHistoryRepository.save(mailHistory);
+
+        MailReceiver mailReceiver = new MailReceiver(askVo, mailHistory.getMailNo());
+        mailReceiverRepository.save(mailReceiver);
 
     }
 

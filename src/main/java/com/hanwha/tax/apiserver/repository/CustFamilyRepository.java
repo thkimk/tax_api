@@ -12,10 +12,8 @@ import java.util.List;
 public interface CustFamilyRepository extends JpaRepository<CustFamily, Long> {
     List<CustFamily> findAllByCid(String cid);
 
+//    @Modifying(clearAutomatically = true, flushAutomatically = true)
 //    @Query(value="delete from cust_family a where a.cust_id = :cid", nativeQuery = true)
 //    void removeByCid(@Param("cid") String cid);
 
-//    @Modifying(clearAutomatically = true, flushAutomatically = true)
-    @Query("delete from cust_family a where a.cust_id = :cid")
-    void deleteAllByCid(String cid);
 }

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>예상세액 계산기</title>
+</head>
+<body>
+<table border="1">
+    <tbody>
+        <tr>
+            <td colspan="2"><b>◉ Tax Solution 예상세액 계산기 (입력정보)</b></td> <td><span th:text="${simtax.taxFlag}"><b>val</b></span></td>
+        </tr>
+
+        <tr>
+            <td rowspan="4">기본 입력정보</td> <td>업종</td> <td><span th:text="${simtax.jobCode}"></span></td>
+        </tr>
+        <tr>
+            <td>직전년도 수입</td> <td><span th:text="${simtax.preIncome}"></span></td>
+        </tr>
+        <tr>
+            <td>수입</td> <td><span th:text="${simtax.income}"></span></td>
+        </tr>
+        <tr>
+            <td>지출</td> <td><span th:text="${simtax.outgoing}"/></td>
+        </tr>
+
+        <tr>
+            <td rowspan="6">공제정보(본인)</td> <td>장애인 여부</td> <td><span th:text="${simtax.isOrder}"/></td>
+        </tr>
+        <tr>
+            <td>성별</td> <td><span th:text="${simtax.gender}"/></td>
+        </tr>
+        <tr>
+            <td>생년월일</td> <td><span th:text="${simtax.birth}"/></td>
+        </tr>
+        <tr>
+            <td>한부모 여부</td> <td><span th:text="${simtax.isSinParent}"/></td>
+        </tr>
+        <tr>
+            <td>결혼 여부</td> <td><span th:text="${simtax.isMarriage}"/></td>
+        </tr>
+        <tr>
+            <td>세대주 여부</td> <td><span th:text="${simtax.isHshld}"/></td>
+        </tr>
+
+        <tr th:each="m:${simtax.custFamilyList}">
+            <td rowspan="1">공제정보(가족)</td> <td>자식</td> <td>장애와 생년월일</td>
+        </tr>
+		
+        <tr>
+            <td rowspan="4">공제정보(기타)</td> <td>연금저축 납입액</td> <td><span th:text="${simtax.rsp}"/></td>
+        </tr>
+        <tr>
+            <td>국민연금 납입액</td> <td><span th:text="${simtax.npc}"/></td>
+        </tr>
+        <tr>
+            <td>소상공인 공제금</td> <td><span th:text="${simtax.med}"/></td>
+        </tr>
+        <tr>
+            <td>중소기업 공제금</td> <td><span th:text="${simtax.sed}"/></td>
+        </tr>
+
+        <tr>
+            <td rowspan="3">세액 공제정보</td> <td>자식공제</td> <td>상동(생략)</td>
+        </tr>
+        <tr>
+            <td>연금계좌 납입액</td> <td><span th:text="${simtax.ira}"/></td>
+        </tr>
+        <tr>
+            <td>기타 공제금</td> <td>표준(70,000), 전자(20,000)</td>
+        </tr>
+		
+		<tr><td colspan="3"><b>◉ 세금계산 결과</b></td></tr>
+		
+		<tr>
+            <td>소득</td> <td>수입 - 지출</td> <td><span th:text="${simtax.earning}"/> = ( <span th:text="${simtax.income}"/> - <span th:text="${simtax.outgoing}"/> )</td>
+        </tr>
+        <tr>
+            <td>공제</td> <td>본인+가족+기타</td> <td><span th:text="${simtax.deduct}"/> = ( <span th:text="${simtax.deductMe}"/> + <span th:text="${simtax.deductFamily}"/> + <span th:text="${simtax.deductOthers}"/> )</td>
+        </tr>
+        <tr>
+            <td>과세표준</td> <td>소득 - 공제</td> <td><span th:text="${simtax.taxBase}"/> = ( <span th:text="${simtax.earning}"/> - <span th:text="${simtax.deduct}"/> )</td>
+        </tr>
+        <tr>
+            <td>산출세액</td> <td>과세표준 * 세율</td> <td><span th:text="${simtax.calTax}"/> = ( <span th:text="${simtax.taxBase}"/> * <span th:text="${simtax.taxRate}"/> )</td>
+        </tr>
+        <tr>
+            <td>결정세액</td> <td>산출세액 - 세액공제</td> <td><span th:text="${simtax.decTax}"/> = ( <span th:text="${simtax.calTax}"/> - <span th:text="${simtax.taxDeduct}"/> )</td>
+        </tr>
+        <tr>
+            <td>최종세액</td> <td>결정세액 + 가산금 - 기납부세액</td> <td><span th:text="${simtax.finTax}"/> = ( <span th:text="${simtax.decTax}"/> + <span th:text="${simtax.addTax}"/> - <span th:text="${simtax.paidTax}"/> )</td>
+        </tr>
+
+
+    </tbody>
+</table><br/>
+
+</body>
+</html>

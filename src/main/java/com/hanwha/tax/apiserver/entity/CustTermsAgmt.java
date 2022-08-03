@@ -19,7 +19,7 @@ import java.util.List;
 @Table(name = "cust_terms_agmt")
 @IdClass(CustTermsAgmtIds.class)
 @NoArgsConstructor
-public class CustTermsAgmt extends TimeEntity {
+public class CustTermsAgmt {
 
     @Id
     @Column(name = "cust_id", length = 10)
@@ -55,6 +55,7 @@ public class CustTermsAgmt extends TimeEntity {
                 custTermsAgmt.setAgmtDt(LocalDateTime.now());
                 custTermsAgmt.setTermsId(Long.valueOf(termsAgmt));
 
+//                custTermsAgmt.setC
                 custTermsAgmts.add(custTermsAgmt);
             }
 

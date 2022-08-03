@@ -29,7 +29,6 @@ public class Tax {
     int year;
     Character businType;
     String taxFlag = Constants.TAX_FLAG_SBSTR;
-    String jobCode;
 
     // 01.소득(earning) = 수입 - 지출
     Long earning = 0L;
@@ -39,6 +38,7 @@ public class Tax {
     // 02.과세표준(taxBase) = 01.소득 - 소득공제
     Long taxBase = 0L;
     Long deduct = 0L;
+    Long deductMe=0L, deductFamily=0L, deductOthers=0L;
 
     // 03.산출세액(calTax) = 02.과표 * 세율(6%~45%)
     Long calTax = 0L;
@@ -57,6 +57,7 @@ public class Tax {
     CustInfoDtl custInfoDtl = null;
     List<CustFamily> custFamilyList = null;
     CustDeduct custDeduct = null;
+    Industry industry = null;
 
     Long[] incomes = null;
 
@@ -72,9 +73,11 @@ public class Tax {
         this.year = year;
         this.cid = cid;
 
+        industry = industryRepository.findOneByCode(custInfoDtl.getJobCode());
+        if (industry == null) return;
+
         incomes = custDeductRepository.selectIncomes(cid, this.year);
         custInfoDtl = custInfoDtlRepository.findByCid(cid);
-        jobCode = custInfoDtl.getJobCode();
         businType = custInfoDtl.getIsNewBusin();
 
         taxFlag = taxFlag(incomes[0], incomes[1], businType);
@@ -85,16 +88,17 @@ public class Tax {
         this.simTaxVo = simTaxVo;
         this.result = result;
 
+        industry = industryRepository.findOneByCode(simTaxVo.getJobCode());
+        if (industry == null) return;
+
         incomes = new Long[] { simTaxVo.getPreIncome(), simTaxVo.getIncome()};
         custInfoDtl = new CustInfoDtl(simTaxVo);
-        jobCode = simTaxVo.getJobCode();
         businType = incomes[0] == 0L ? 'Y' : 'N';
 
         income = incomes[1];
         outgoing = simTaxVo.getOutgoing();
 
         taxFlag = taxFlag(incomes[0], incomes[1], businType);
-        result.append(String.format("## 소득세 계산(calRateTax) : taxFlag %s", taxFlag));
     }
 
 
@@ -102,8 +106,6 @@ public class Tax {
         log.debug("## 소득세 계산(calRateTax) : {}, taxFlag {}", cid, taxFlag);
 
         if (!simFlag) income = totalIncomeRepository.selectRtIncome(cid, year);
-
-        Industry industry = industryRepository.findOneByCode(jobCode);
         if ((Integer.parseInt(taxFlag)%10) == 1) {    // 단순경비율
             outgoing = Double.valueOf((Math.min(income, 40000000) * industry.getSimpleExrt().doubleValue() + Math.max(income-40000000, 0) * industry.getSimpleExrtExc().doubleValue())/100).longValue();
         } else {    // 기준경비율
@@ -163,6 +165,7 @@ public class Tax {
         finTax = (finTax / 10) * 10;
         log.info("## [5] 최종 : {} = {} + {} - {}", finTax, decTax, addTax, paidTax);
 
+        simTaxPrint();
         return finTax;
     }
 
@@ -242,13 +245,13 @@ public class Tax {
         }
 
         // 본인 공제
-        Long deductMe = deductMe();
+        deductMe = deductMe();
 
         // 부양가족 공제
-        Long deductFamily = deductFamily();
+        deductFamily = deductFamily();
 
         // 기타 공제
-        Long deductOthers = deductOthers();
+        deductOthers = deductOthers();
 
         deduct = deductMe + deductFamily + deductOthers;
         log.debug("-- [2.1] 소득공제 : {} = {} + {} + {}", deduct, deductMe, deductFamily, deductOthers);
@@ -376,8 +379,41 @@ public class Tax {
         }
     }
 
-    public static String simTaxFlag(String taxFlag, Long outgoing) {
-        return "";
+    public static String simTaxFlag(String taxFlag) {
+        switch (taxFlag) {
+            case Constants.TAX_FLAG_SBSIR:
+                return "간편장부/단순경비율 대상";
+            case Constants.TAX_FLAG_SBSTR:
+                return "간편장부/기준경비율 대상";
+            case Constants.TAX_FLAG_CBSIR:
+                return "복식부기/단순경비율 대상";
+            case Constants.TAX_FLAG_CBSTR:
+                return "복식부기/기준경비율 대상";
+        }
+
+        return "해당대상 없음";
+    }
+
+
+    public void simTaxPrint() {
+        result.append("===================================================================== <br/>");
+        result.append(String.format("예상 소득세 계산식 : taxFlag %s <br/>", simTaxFlag(taxFlag)));
+        result.append(String.format("- 직전년도 수입 : %,d \n", incomes[0]));
+        result.append(String.format("- 당해년도 수입 : %,d \n", incomes[1]));
+        result.append(String.format("- 당해년도 지출 : %,d \n", outgoing));
+//        result.append(String.format("- 업종코드 : %s \n", jobCode));
+//        result.append(String.format("- 공제정보(본인) : %s \n", jobCode));
+//        result.append(String.format("- 공제정보(가족) : %s \n", jobCode));
+//        result.append(String.format("- 공제정보(기타) : %s \n", jobCode));
+//        result.append(String.format("- 세액공제정보 : %s \n", jobCode));
+        result.append("=====================================================================\n");
+        result.append(String.format("- 소득 : %,d \n", earning));
+        result.append(String.format("- 소득공제(본인+가족+기타) : %,d (%,d + %,d + %,d) \n", deduct, deductMe, deductFamily, deductOthers));
+        result.append(String.format("- 과세표준 : %,d \n", taxBase));
+        result.append(String.format("- 산출세액(세율) : %,d (%f) \n", calTax, taxRate));
+        result.append("=====================================================================");
+
+        System.out.println(result);
     }
 
 }

@@ -34,7 +34,7 @@ public class AuthController {
     @Autowired
     AuthService authService;
 
-    @Value("tax.token")
+    @Value("${tax.coocon_token}")
     private String taxToken;
 
 //    private final UserJpaRepository userJpaRepo; // jpa 쿼리 활용
